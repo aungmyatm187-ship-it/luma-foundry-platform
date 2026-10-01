@@ -1,0 +1,22 @@
+{
+  "name": "@luma/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Luma Foundry workspace API (tRPC) — the surface the web app calls.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsx watch src/server.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@luma/core": "*",
+    "@trpc/server": "^11.19.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.3"
+  }
+}
