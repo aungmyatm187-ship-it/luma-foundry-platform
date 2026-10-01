@@ -13,18 +13,50 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 
 import {
+  CAPABILITIES,
   DECISION_STATUSES,
   EVIDENCE_KINDS,
   PRIORITIES,
   PRODUCT_STATUSES,
   ROLES,
+  WORKFLOWS,
   WORK_ITEM_STATUSES,
   Workspace,
+  advance,
   evaluateClearance,
+  evaluateExit,
+  findWorkflow,
+  options,
+  startRun,
+  type Capability,
+  type RunContext,
+  type WorkflowRun,
 } from '@luma/core';
 
 export const SERVER_NAME = 'luma-foundry';
 export const SERVER_VERSION = '0.1.0';
+
+/**
+ * Workflow runs started through the MCP surface.
+ *
+ * Kept beside the workspace for the same reason: process-local, swappable behind
+ * an interface when persistence lands.
+ */
+const workflowRuns = new Map<string, WorkflowRun>();
+
+/** Evidence recorded for a product, as the workflow engine expects it. */
+function contextFor(ws: Workspace, productId: string): RunContext {
+  const product = ws.snapshot().products.find((p) => p.id === productId);
+  const evidence = ws.evidenceFor(productId).map((e) => e.kind);
+  const decisions = ws
+    .snapshot()
+    .decisions.filter((d) => d.productId === productId && d.status === 'approved');
+  return {
+    evidence,
+    approvals: decisions.length > 0 ? ['owner'] : [],
+    artifacts: product && product.status !== 'concept' ? ['build'] : [],
+  };
+}
 
 /** Wrap a tool result as MCP text content. */
 function ok(data: unknown) {
@@ -277,6 +309,130 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     async ({ productId, status }) => {
       try {
         return ok(ws.updateProductStatus(productId, status));
+      } catch (e) {
+        return fail(e);
+      }
+    },
+  );
+
+  server.registerTool(
+    'list_workflows',
+    {
+      title: 'List workflows',
+      description:
+        'List the platform functions (workflows) and their stages. Use this to discover what ' +
+        'can be run before calling start_workflow.',
+      inputSchema: {},
+    },
+    async () =>
+      ok(
+        WORKFLOWS.map((w) => ({
+          id: w.id,
+          name: w.name,
+          purpose: w.purpose,
+          entry: w.entry,
+          stages: w.stages.map((s) => ({
+            id: s.id,
+            name: s.name,
+            requires: s.requires,
+            gates: s.gates.map((g) => g.label),
+          })),
+        })),
+      ),
+  );
+
+  server.registerTool(
+    'start_workflow',
+    {
+      title: 'Start workflow',
+      description:
+        'Start a function (workflow) for a product. Fails if the actor lacks the entry ' +
+        'capability. Returns the run id and the stages reachable next.',
+      inputSchema: {
+        workflowId: z.string().describe('e.g. hero-asset, workshop-track, evidence-review'),
+        productId: z.string(),
+        actor: z.string().describe('Who is acting, e.g. "Manus"'),
+        capabilities: z.array(z.enum(CAPABILITIES)).describe('Capabilities the actor holds'),
+      },
+    },
+    async ({ workflowId, productId, actor, capabilities }) => {
+      try {
+        const wf = findWorkflow(workflowId);
+        const run = startRun(wf, {
+          id: `run-${workflowRuns.size + 1}`,
+          goalId: productId,
+          productId,
+          actor,
+          capabilities: capabilities as Capability[],
+        });
+        workflowRuns.set(run.id, run);
+        return ok({
+          runId: run.id,
+          workflow: wf.id,
+          stage: run.currentStageId,
+          next: options(wf, run, capabilities as Capability[], contextFor(ws, productId)),
+        });
+      } catch (e) {
+        return fail(e);
+      }
+    },
+  );
+
+  server.registerTool(
+    'advance_workflow',
+    {
+      title: 'Advance workflow',
+      description:
+        "Move a run to another stage. The engine enforces the current stage's gates and the " +
+        'target stage\'s capabilities — there is no force flag. Returns the blockers if refused.',
+      inputSchema: {
+        runId: z.string(),
+        to: z.string().describe('Target stage id'),
+        actor: z.string(),
+        capabilities: z.array(z.enum(CAPABILITIES)),
+      },
+    },
+    async ({ runId, to, actor, capabilities }) => {
+      try {
+        const run = workflowRuns.get(runId);
+        if (!run) return fail(new Error(`Unknown run: ${runId}`));
+        const wf = findWorkflow(run.workflowId);
+        const productId = run.productId ?? run.goalId;
+        const moved = advance(wf, run, {
+          to,
+          actor,
+          capabilities: capabilities as Capability[],
+          context: contextFor(ws, productId),
+        });
+        workflowRuns.set(moved.id, moved);
+        return ok({
+          runId: moved.id,
+          stage: moved.currentStageId,
+          history: moved.history.map((h) => ({ stage: h.stageId, by: h.enteredBy })),
+          next: options(wf, moved, capabilities as Capability[], contextFor(ws, productId)),
+        });
+      } catch (e) {
+        return fail(e);
+      }
+    },
+  );
+
+  server.registerTool(
+    'workflow_gates',
+    {
+      title: 'Workflow gates',
+      description:
+        'Read-only: exactly what is blocking a run, and what it may move to next. Never mutates.',
+      inputSchema: { runId: z.string() },
+    },
+    async ({ runId }) => {
+      try {
+        const run = workflowRuns.get(runId);
+        if (!run) return fail(new Error(`Unknown run: ${runId}`));
+        const wf = findWorkflow(run.workflowId);
+        const stage = wf.stages.find((s) => s.id === run.currentStageId);
+        if (!stage) return fail(new Error(`Unknown stage: ${run.currentStageId}`));
+        return ok(evaluateExit(stage, contextFor(ws, run.productId ?? run.goalId)));
       } catch (e) {
         return fail(e);
       }
