@@ -3,6 +3,7 @@
   "references": [
     { "path": "packages/core" },
     { "path": "packages/mcp-server" },
-    { "path": "apps/api" }
+    { "path": "apps/api" },
+    { "path": "apps/slack" }
   ]
 }
