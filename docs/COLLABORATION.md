@@ -76,8 +76,7 @@ set_product_status     { status: "cleared" }
 ## Recovering the original work
 
 The original Operator A and Operator B histories are the source material for this platform's
-vocabulary. They are held outside version control because they contain credentials the owner
-pasted into chat — those should be rotated.
+vocabulary. They are held outside version control (`manus/out/` is gitignored).
 
 | Artifact | Location | Committed |
 |---|---|---|
@@ -85,6 +84,9 @@ pasted into chat — those should be rotated.
 | Full transcripts | `manus/out/` | no |
 | 50-product catalogue | `luma-foundry-core/` | yes |
 | Governance/evidence documents | `drive/` | yes |
+
+The five recovered repositories had a live GitHub token embedded in their `.git/config`
+(remote URL). It has been scrubbed. See `SECURITY.md`.
 
 Derived findings live in `SITE_AND_PRODUCT_STUDY.md` and `PROJECT_RECONSTRUCTION.md` at the
 repository root.
