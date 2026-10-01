@@ -40,17 +40,21 @@ describe('MCP server surface', () => {
     expect(names).toContain('check_clearance');
     expect(names).toContain('set_product_status');
     expect(names).toEqual([
+      'advance_workflow',
       'check_clearance',
       'create_decision',
       'create_goal',
       'create_handoff',
       'create_product',
       'create_work_item',
+      'list_workflows',
       'record_evidence',
       'set_product_status',
       'snapshot',
+      'start_workflow',
       'update_decision_status',
       'update_work_item_status',
+      'workflow_gates',
     ]);
   });
 
@@ -136,5 +140,88 @@ describe('MCP governance enforcement', () => {
   it('returns a structured error for an unknown product', async () => {
     const result = await call('check_clearance', { productId: 'prd-9999' });
     expect(result.error).toMatch(/Unknown product/);
+  });
+});
+
+describe('MCP workflow surface', () => {
+  it('lists the platform functions', async () => {
+    const list = (await call('list_workflows')) as unknown as Array<Record<string, unknown>>;
+    const ids = list.map((w) => w.id);
+    expect(ids).toContain('hero-asset');
+    expect(ids).toContain('workshop-track');
+    expect(ids).toContain('evidence-review');
+    expect(ids).toContain('product-release');
+    expect(ids).toContain('automation-deploy');
+  });
+
+  it('starts a hero-asset run and reports the licence gate', async () => {
+    const user = ws.createUser('Owner2', 'owner');
+    const goal = ws.createGoal({ ownerId: user.id, title: 'Heroes', outcome: 'licensed' });
+    const product = ws.createProduct({
+      goalId: goal.id,
+      name: 'Axiom Grid',
+      category: 'AI infrastructure',
+      route: '/axiom-grid',
+    });
+
+    const started = await call('start_workflow', {
+      workflowId: 'hero-asset',
+      productId: product.id,
+      actor: 'Manus',
+      capabilities: ['design', 'build', 'operate'],
+    });
+    expect(started.stage).toBe('intake');
+
+    const runId = started.runId as string;
+
+    const toDesign = await call('advance_workflow', {
+      runId, to: 'design', actor: 'Manus', capabilities: ['design', 'build', 'operate'],
+    });
+    expect(toDesign.stage).toBe('design');
+
+    const toAssets = await call('advance_workflow', {
+      runId, to: 'assets', actor: 'Manus', capabilities: ['design', 'build', 'operate'],
+    });
+    expect(toAssets.stage).toBe('assets');
+
+    // assets -> review demands the licence
+    const blocked = await call('advance_workflow', {
+      runId, to: 'review', actor: 'Manus', capabilities: ['design', 'build', 'operate'],
+    });
+    expect(blocked.error).toMatch(/Asset licence recorded/);
+
+    // gates reports the same blocker without mutating
+    const gates = await call('workflow_gates', { runId });
+    expect(gates.clear).toBe(false);
+    expect((gates.blockers as string[]).join(' ')).toMatch(/asset_licence/);
+
+    // record the licence, then it clears
+    await call('record_evidence', {
+      productId: product.id,
+      kind: 'asset_licence',
+      reference: 'ref://licence',
+      note: 'generated under commercial licence',
+      recordedBy: 'operator_b',
+    });
+
+    const moved = await call('advance_workflow', {
+      runId, to: 'review', actor: 'OpenHands', capabilities: ['review', 'evidence', 'operate'],
+    });
+    expect(moved.stage).toBe('review');
+  });
+
+  it('refuses to start without the entry capability', async () => {
+    const r = await call('start_workflow', {
+      workflowId: 'hero-asset',
+      productId: 'x',
+      actor: 'Stranger',
+      capabilities: [],
+    });
+    expect(r.error).toMatch(/Cannot start/);
+  });
+
+  it('returns a structured error for an unknown run', async () => {
+    const r = await call('workflow_gates', { runId: 'run-9999' });
+    expect(r.error).toMatch(/Unknown run/);
   });
 });
