@@ -9,7 +9,7 @@ here is not a bug in a feature; it is a bug in the whole premise.
 Two things are untrusted until proven otherwise:
 
 1. **Agent input.** Anything an agent produces is a proposal. A build, a commit, a passing
-test, a live URL — all of it is evidence *to be reviewed*, never a clearance to be granted.
+   test, a live URL — all of it is evidence *to be reviewed*, never a clearance to be granted.
    The governance gate exists precisely because agents (and humans) will otherwise conflate
    the two.
 2. **External content.** Issue text, PR comments, handoffs, webhook payloads. Content that
@@ -46,9 +46,18 @@ requires a different role to supply the rights evidence.
 
 ## Secrets in the recovered material
 
-The Manus task histories contain **plaintext credentials the owner pasted into chat** (a bearer
-token, a Render API key, and others). They are held outside version control (`manus/out/` is
-gitignored) and should be rotated. Anyone with account access can read them.
+**Corrected 2026-10-01.** An earlier version of this document claimed the Manus task histories
+contained plaintext credentials pasted into chat. A full scan found **no credentials in
+`manus/out/`** — no API keys, bearer tokens, JWTs, or private keys. That claim was wrong.
+
+The real leak is elsewhere: a **live GitHub token was embedded in the `.git/config` of the five
+recovered repositories** (`ember-lite`, `ember-signal`, `ember-signal-backend`,
+`luma-foundry-core`, `marketing-analytics-dashboard`). It was written when the repos were cloned
+with a token in the remote URL. It was never committed to any repository, but it sat in
+plaintext on disk in six places.
+
+Status: **scrubbed from all remotes; the token itself still needs rotating by the owner**, since
+it remained valid and was readable by anything with filesystem access.
 
 If a secret is ever committed by accident:
 
