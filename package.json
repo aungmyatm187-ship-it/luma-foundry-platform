@@ -1,0 +1,22 @@
+{
+  "name": "luma-foundry-platform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Luma Foundry — AI workshop & automation platform. Evidence-gated product pipeline with an MCP tool surface.",
+  "engines": { "node": ">=20" },
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty",
+    "clean": "tsc -b --clean && rm -rf packages/*/dist apps/*/dist",
+    "test": "npm run test --workspaces --if-present",
+    "dev:mcp": "npm run dev -w @luma/mcp-server",
+    "dev:api": "npm run dev -w @luma/api"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}
