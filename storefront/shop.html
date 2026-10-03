@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080808" />
+    <meta name="description" content="Browse Luma Foundry's current collection of original digital worlds." />
+    <title>Browse Templates — Luma Foundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="shop-page">
+    <a class="skip-link" href="#catalogue">Skip to templates</a>
+    <header class="site-header shop-header" id="top">
+      <a class="brand" href="/" aria-label="Luma Foundry home"><span class="brand-mark" aria-hidden="true">L</span><span>Luma Foundry</span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="sr-only">Toggle navigation</span><span aria-hidden="true">Menu</span></button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary navigation"><a href="/shop.html" aria-current="page">Shop</a><a href="/#how-it-works">How it works</a><a href="/#licensing">Licensing</a><a href="/#bespoke">Bespoke</a></nav>
+      <a class="header-cta" href="/">Foundry index <span aria-hidden="true">↗</span></a>
+    </header>
+    <main>
+      <section class="shop-hero" aria-labelledby="shop-title"><p class="eyebrow">Luma Foundry / Curated releases</p><h1 id="shop-title">Browse the<br /><em>live collection.</em></h1><p>Each template is a self-contained visual world. Open a live demo before deciding whether the direction belongs to your next launch.</p><div class="shop-meta"><span>Current collection</span><span><b data-active-count>50</b> active concepts</span><span>Payment offline in this preview</span></div></section>
+      <section class="shop-catalogue" id="catalogue" aria-labelledby="catalogue-title"><div class="catalogue-controls"><p id="catalogue-title">Filter by direction</p><div class="filter-group" role="group" aria-label="Template categories"><button type="button" class="filter is-active" data-filter="all" aria-pressed="true">All</button><button type="button" class="filter" data-filter="systems" aria-pressed="false">AI systems</button><button type="button" class="filter" data-filter="insight" aria-pressed="false">Research &amp; insight</button><button type="button" class="filter" data-filter="luxury" aria-pressed="false">Luxury &amp; wellness</button><button type="button" class="filter" data-filter="spatial" aria-pressed="false">Spaces &amp; stays</button><button type="button" class="filter" data-filter="objects" aria-pressed="false">Objects &amp; goods</button><button type="button" class="filter" data-filter="practice" aria-pressed="false">Studios &amp; advisory</button></div><p id="catalogue-count" aria-live="polite">50 live directions</p></div><div id="catalogue-grid" class="catalogue-grid" aria-live="polite"></div></section>
+      <section class="shop-footer-cta"><p class="eyebrow">The work behind the work</p><h2>Need something<br /><em>made from first principles?</em></h2><a class="button button-signal" href="/#bespoke">Explore bespoke work <span aria-hidden="true">↗</span></a></section>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">L</span><span>Luma Foundry</span></a><p>Original digital worlds for real launches.</p></div><div class="footer-links"><a href="/shop.html">Shop</a><a href="/#licensing">Licensing</a><a href="/#archive">Legal archive</a><a href="/#bespoke">Bespoke</a></div><p class="footer-state">Preview build<br />Payment offline</p></footer>
+    <dialog id="product-dialog" class="product-dialog" aria-labelledby="product-dialog-title"><button class="dialog-close" type="button" data-dialog-close aria-label="Close product details">×</button><div id="product-dialog-content"></div></dialog>
+    <script type="module" src="/shop.js"></script>
+  </body>
+</html>

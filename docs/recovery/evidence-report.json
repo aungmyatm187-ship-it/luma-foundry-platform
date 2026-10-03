@@ -1,0 +1,264 @@
+{
+  "generatedAtUtc": "2026-10-03T08:39:47.214Z",
+  "sourceCommit": "695842a8e436aa6ddff43f5adb9d0b53397d48aa",
+  "recoveredSourcePath": "docs/recovery/literal-source/",
+  "catalogue": {
+    "total": 50,
+    "fontResaleSafe": 30,
+    "fontBlocked": 20,
+    "blocked": [
+      {
+        "route": "selene-agents",
+        "name": "Selene Agents",
+        "clear": false,
+        "blocked": [
+          "Canela"
+        ]
+      },
+      {
+        "route": "lattice-labs",
+        "name": "Lattice Labs",
+        "clear": false,
+        "blocked": [
+          "Söhne-style grotesk"
+        ]
+      },
+      {
+        "route": "morrow-compute",
+        "name": "Morrow Compute",
+        "clear": false,
+        "blocked": [
+          "Neue Haas-like sans",
+          "DIN Mono"
+        ]
+      },
+      {
+        "route": "vanta-proof",
+        "name": "Vanta Proof",
+        "clear": false,
+        "blocked": [
+          "Aeonik"
+        ]
+      },
+      {
+        "route": "helio-relay",
+        "name": "Helio Relay",
+        "clear": false,
+        "blocked": [
+          "ABC Diatype-style sans"
+        ]
+      },
+      {
+        "route": "folio-forms",
+        "name": "Folio Forms",
+        "clear": false,
+        "blocked": [
+          "Neue Montreal"
+        ]
+      },
+      {
+        "route": "aster-alder",
+        "name": "Aster & Alder",
+        "clear": false,
+        "blocked": [
+          "Didot",
+          "Suisse Int'l"
+        ]
+      },
+      {
+        "route": "elan-method",
+        "name": "Élan Method",
+        "clear": false,
+        "blocked": [
+          "Editorial New"
+        ]
+      },
+      {
+        "route": "sardis-parfums",
+        "name": "Sardis Parfums",
+        "clear": false,
+        "blocked": [
+          "Optima-style serif"
+        ]
+      },
+      {
+        "route": "tempo-atelier",
+        "name": "Tempo Atelier",
+        "clear": false,
+        "blocked": [
+          "Univers-style sans",
+          "OCR Mono"
+        ]
+      },
+      {
+        "route": "peregrine-editions",
+        "name": "Peregrine Editions",
+        "clear": false,
+        "blocked": [
+          "Optima",
+          "Arial-like utility labels"
+        ]
+      },
+      {
+        "route": "caldera-optical",
+        "name": "Caldera Optical",
+        "clear": false,
+        "blocked": [
+          "Neue Haas-like sans"
+        ]
+      },
+      {
+        "route": "mare-house",
+        "name": "Maré House",
+        "clear": false,
+        "blocked": [
+          "Recoleta",
+          "Avenir-like sans"
+        ]
+      },
+      {
+        "route": "monolith-works",
+        "name": "Monolith Works",
+        "clear": false,
+        "blocked": [
+          "Helvetica Now",
+          "Tiempos"
+        ]
+      },
+      {
+        "route": "nocturne-estates",
+        "name": "Nocturne Estates",
+        "clear": false,
+        "blocked": [
+          "Editorial New",
+          "Suisse"
+        ]
+      },
+      {
+        "route": "alder-house",
+        "name": "Alder House",
+        "clear": false,
+        "blocked": [
+          "Freight Text",
+          "Basis Grotesque"
+        ]
+      },
+      {
+        "route": "formwell-interiors",
+        "name": "Formwell Interiors",
+        "clear": false,
+        "blocked": [
+          "PP Editorial New",
+          "Graphik"
+        ]
+      },
+      {
+        "route": "terra-forma",
+        "name": "Terra Forma",
+        "clear": false,
+        "blocked": [
+          "Lyon Text",
+          "ABC Favorit"
+        ]
+      },
+      {
+        "route": "veloce-district",
+        "name": "Veloce District",
+        "clear": false,
+        "blocked": [
+          "Druk Condensed"
+        ]
+      },
+      {
+        "route": "fieldnote-cabins",
+        "name": "Fieldnote Cabins",
+        "clear": false,
+        "blocked": [
+          "National-style sans"
+        ]
+      }
+    ]
+  },
+  "sbom": {
+    "dependencies": [
+      {
+        "name": "react",
+        "licence": "MIT",
+        "resaleSafe": true
+      },
+      {
+        "name": "react-dom",
+        "licence": "MIT",
+        "resaleSafe": true
+      },
+      {
+        "name": "wouter",
+        "licence": "MIT",
+        "resaleSafe": true
+      },
+      {
+        "name": "sonner",
+        "licence": "MIT",
+        "resaleSafe": true
+      },
+      {
+        "name": "lucide-react",
+        "licence": "ISC",
+        "resaleSafe": true
+      },
+      {
+        "name": "class-variance-authority",
+        "licence": "Apache-2.0",
+        "resaleSafe": true
+      },
+      {
+        "name": "@radix-ui/react-slot",
+        "licence": "MIT",
+        "resaleSafe": true
+      }
+    ],
+    "allResaleSafe": true
+  },
+  "thirdPartyNotices": "react — MIT (resale-safe)\nreact-dom — MIT (resale-safe)\nwouter — MIT (resale-safe)\nsonner — MIT (resale-safe)\nlucide-react — ISC (resale-safe)\nclass-variance-authority — Apache-2.0 (resale-safe)\n@radix-ui/react-slot — MIT (resale-safe)",
+  "clearance": {
+    "requiredEvidence": [
+      "source_commit",
+      "design_history",
+      "asset_licence",
+      "contributor_rights",
+      "dependency_sbom",
+      "third_party_notices",
+      "counsel_review",
+      "buyer_terms"
+    ],
+    "productsClearable": 0,
+    "productsTotal": 50,
+    "sample": {
+      "productId": "prd-axiom-grid",
+      "status": "live",
+      "clearable": false,
+      "present": [],
+      "missing": [
+        "source_commit",
+        "design_history",
+        "asset_licence",
+        "contributor_rights",
+        "dependency_sbom",
+        "third_party_notices",
+        "counsel_review",
+        "buyer_terms"
+      ],
+      "traceabilityOnly": [],
+      "blockers": [
+        "Missing required evidence: source_commit",
+        "Missing required evidence: design_history",
+        "Missing required evidence: asset_licence",
+        "Missing required evidence: contributor_rights",
+        "Missing required evidence: dependency_sbom",
+        "Missing required evidence: third_party_notices",
+        "Missing required evidence: counsel_review",
+        "Missing required evidence: buyer_terms"
+      ]
+    }
+  }
+}

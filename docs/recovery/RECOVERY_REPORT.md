@@ -63,3 +63,31 @@ See `catalogue.json` in this directory.
 ## Accounts
 - highfive251677-wq: 12 public repos (luma-foundry-core = docs only; ember-signal/ember-lite/ember-signal-backend = peripheral).
 - aungmyatm187-ship-it: API-keys (private), luma-foundry-platform (public).
+
+## Progress — 2026-10-03 (this session)
+
+### Live state (verified, no outage)
+- `lumafoundry.live` and `www` both resolve to `104.18.26.246` via the registrar's
+  existing NS (`ns1/ns2.globaldomaingroup.com`) and serve HTTP 200. The site is
+  live and healthy.
+- All **50** product preview URLs return HTTP 200 (parallel curl across the 50
+  `hosted_preview_url` values in `catalogue-50-products.json`).
+
+### Decisions taken (operator authority)
+- **D10 DNS:** kept Manus/registrar authoritative (site already live); repaired
+  Cloudflare zone placeholders in place — apex `A` `192.0.2.1` → `104.18.26.246`,
+  removed RFC3849 `AAAA 2001:db8::1`. No destructive nameserver cutover.
+- **D11 CTA:** built `storefront/` — the recovered literal source made runnable,
+  with a real `POST /api/enquiry` intake (append-only `enquiries.jsonl`) and a
+  `/licence.html` buyer-terms surface, replacing the dead `sonner` toast stubs.
+- **D12 evidence:** `scripts/generate-evidence.mjs` emits an honest clearance
+  report via the real `@luma/core` audit: 30/50 font-resale-safe, all products
+  still missing the 8 evidence kinds → **0/50 clearable**, `counsel_review`
+  explicitly not fabricated.
+
+### Remaining (needs a human / other credentials)
+- `counsel_review` — qualified IP counsel sign-off (cannot be generated).
+- `contributor_rights` / `design_history` — owner-signed records (not fabricated).
+- Merchant-of-record activation: Lemon Squeezy + Resend (no live keys found).
+- Optional: registrar nameserver cutover to Cloudflare once the zone is verified
+  ready end-to-end.
