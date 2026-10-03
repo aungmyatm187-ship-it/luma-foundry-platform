@@ -1,0 +1,68 @@
+name: Agent review
+
+# Starts an OpenHands conversation to review a pull request.
+#
+# Requires the repository secret OPENHANDS_API_KEY. Until that secret is set the
+# job is skipped, so this workflow is safe to commit before the key exists.
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, labeled]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  review:
+    name: OpenHands review
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: >-
+      github.event.pull_request.draft == false &&
+      (github.event.action != 'labeled' || github.event.label.name == 'openhands')
+    env:
+      HAS_KEY: ${{ secrets.OPENHANDS_API_KEY != '' }}
+
+    steps:
+      - name: Check for API key
+        run: |
+          if [ "$HAS_KEY" != "true" ]; then
+            echo "OPENHANDS_API_KEY is not set - skipping agent review."
+            echo "SKIP=true" >> "$GITHUB_ENV"
+          fi
+
+      - uses: actions/checkout@v4
+        if: env.SKIP != 'true'
+        with:
+          fetch-depth: 0
+
+      - name: Write review prompt
+        if: env.SKIP != 'true'
+        run: |
+          cat > /tmp/review-prompt.md <<'EOF'
+          Review this pull request against the Luma Foundry governance rules.
+
+          Focus on:
+          1. Does any change weaken the clearance gate in packages/core/src/governance.ts?
+             A product must never be markable as "cleared" without every required
+             evidence kind. Traceability evidence (source_commit, dependency_sbom)
+             must never on its own imply clearance.
+          2. Do the MCP tool surface and the tRPC router still enforce the same rules?
+             They must not be able to disagree about what "cleared" means.
+          3. Are new domain writes validated (unknown goal/product ids rejected)?
+          4. Are tests exercising real code paths rather than mocks?
+
+          Report concrete findings with file and line references. Do not restate the diff.
+          EOF
+
+      - name: Start OpenHands review conversation
+        if: env.SKIP != 'true'
+        uses: OpenHands/openhands-github-action@v1
+        with:
+          prompt: /tmp/review-prompt.md
+          repository: ${{ github.repository }}
+          selected-branch: ${{ github.head_ref }}
+          openhands-api-key: ${{ secrets.OPENHANDS_API_KEY }}
+          poll: 'true'
+          timeout-seconds: '1500'
