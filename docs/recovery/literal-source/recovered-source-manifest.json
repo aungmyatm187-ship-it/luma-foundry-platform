@@ -1,0 +1,1142 @@
+[
+  {
+    "source": "A1",
+    "display_name": "manifest.json",
+    "path": "source/A1__manifest.json",
+    "size": 25086
+  },
+  {
+    "source": "A1",
+    "display_name": "EMBER-SIGNAL-RELEASE.json",
+    "path": "source/A1__EMBER-SIGNAL-RELEASE.json",
+    "size": 685
+  },
+  {
+    "source": "A1",
+    "display_name": "pyproject.toml",
+    "path": "source/A1__pyproject.toml",
+    "size": 935
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignalSource.test.ts",
+    "path": "source/A1__emberSignalSource.test.ts",
+    "size": 2240
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignalSource.ts",
+    "path": "source/A1__emberSignalSource.ts",
+    "size": 4045
+  },
+  {
+    "source": "A1",
+    "display_name": "env.ts",
+    "path": "source/A1__env.ts",
+    "size": 428
+  },
+  {
+    "source": "A1",
+    "display_name": "luma-db-review.json",
+    "path": "source/A1__luma-db-review.json",
+    "size": 2131
+  },
+  {
+    "source": "A1",
+    "display_name": "read_luma_db.mjs",
+    "path": "source/A1__read_luma_db.mjs",
+    "size": 856
+  },
+  {
+    "source": "A1",
+    "display_name": "read_luma_db.mjs",
+    "path": "source/A1__read_luma_db.mjs",
+    "size": 856
+  },
+  {
+    "source": "A1",
+    "display_name": "ember-signal-web-service.json",
+    "path": "source/A1__ember-signal-web-service.json",
+    "size": 519
+  },
+  {
+    "source": "A1",
+    "display_name": "zai-api-connector-draft.json",
+    "path": "source/A1__zai-api-connector-draft.json",
+    "size": 1246
+  },
+  {
+    "source": "A1",
+    "display_name": "render-api-connector-draft.json",
+    "path": "source/A1__render-api-connector-draft.json",
+    "size": 1166
+  },
+  {
+    "source": "A1",
+    "display_name": "EMBER-LITE-EXPECTED-EMBER-SIGNAL-OUTPUT-2026-09-21.json",
+    "path": "source/A1__EMBER-LITE-EXPECTED-EMBER-SIGNAL-OUTPUT-2026-09-21.json",
+    "size": 841
+  },
+  {
+    "source": "A1",
+    "display_name": "EMBER-LITE-VERIFIED-BUNDLE-FIXTURE-2026-09-21.json",
+    "path": "source/A1__EMBER-LITE-VERIFIED-BUNDLE-FIXTURE-2026-09-21.json",
+    "size": 363
+  },
+  {
+    "source": "A1",
+    "display_name": "generate-ember-lite-output.ts",
+    "path": "source/A1__generate-ember-lite-output.ts",
+    "size": 400
+  },
+  {
+    "source": "A1",
+    "display_name": "verified-bundle.json",
+    "path": "source/A1__verified-bundle.json",
+    "size": 363
+  },
+  {
+    "source": "A1",
+    "display_name": "emberLiteEvidenceAdapter.test.ts",
+    "path": "source/A1__emberLiteEvidenceAdapter.test.ts",
+    "size": 1943
+  },
+  {
+    "source": "A1",
+    "display_name": "emberLiteEvidenceAdapter.ts",
+    "path": "source/A1__emberLiteEvidenceAdapter.ts",
+    "size": 3521
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignalsApi.test.ts",
+    "path": "source/A1__emberSignalsApi.test.ts",
+    "size": 1373
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignalEvidence.test.ts",
+    "path": "source/A1__emberSignalEvidence.test.ts",
+    "size": 2415
+  },
+  {
+    "source": "A1",
+    "display_name": "ember-signal-evidence.json",
+    "path": "source/A1__ember-signal-evidence.json",
+    "size": 318
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignalsApi.ts",
+    "path": "source/A1__emberSignalsApi.ts",
+    "size": 904
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignalEvidence.ts",
+    "path": "source/A1__emberSignalEvidence.ts",
+    "size": 3457
+  },
+  {
+    "source": "A1",
+    "display_name": "lumafoundry-update.yml",
+    "path": "source/A1__lumafoundry-update.yml",
+    "size": 2190
+  },
+  {
+    "source": "A1",
+    "display_name": "appTitle.test.ts",
+    "path": "source/A1__appTitle.test.ts",
+    "size": 345
+  },
+  {
+    "source": "A1",
+    "display_name": ".project-config.json",
+    "path": "source/A1__.project-config.json",
+    "size": 1943
+  },
+  {
+    "source": "A1",
+    "display_name": "kanpi_published_six_step_focus_audit_final.json",
+    "path": "source/A1__kanpi_published_six_step_focus_audit_final.json",
+    "size": 151251
+  },
+  {
+    "source": "A1",
+    "display_name": "kanpi_local_six_step_focus_audit_final.json",
+    "path": "source/A1__kanpi_local_six_step_focus_audit_final.json",
+    "size": 150773
+  },
+  {
+    "source": "A1",
+    "display_name": "kanpi_published_six_step_focus_audit.json",
+    "path": "source/A1__kanpi_published_six_step_focus_audit.json",
+    "size": 141829
+  },
+  {
+    "source": "A1",
+    "display_name": "kanpi_local_six_step_focus_audit_refined.json",
+    "path": "source/A1__kanpi_local_six_step_focus_audit_refined.json",
+    "size": 138541
+  },
+  {
+    "source": "A1",
+    "display_name": "kanpi_local_six_step_focus_audit.json",
+    "path": "source/A1__kanpi_local_six_step_focus_audit.json",
+    "size": 221777
+  },
+  {
+    "source": "A1",
+    "display_name": "kanpi_published_focus_audit_final.json",
+    "path": "source/A1__kanpi_published_focus_audit_final.json",
+    "size": 37445
+  },
+  {
+    "source": "A1",
+    "display_name": "kanpi_published_focus_audit_retry.json",
+    "path": "source/A1__kanpi_published_focus_audit_retry.json",
+    "size": 37997
+  },
+  {
+    "source": "A1",
+    "display_name": "kanpi_published_focus_audit.json",
+    "path": "source/A1__kanpi_published_focus_audit.json",
+    "size": 37997
+  },
+  {
+    "source": "A1",
+    "display_name": "kanpi_local_focus_audit.json",
+    "path": "source/A1__kanpi_local_focus_audit.json",
+    "size": 36833
+  },
+  {
+    "source": "A1",
+    "display_name": "routeTitles.test.ts",
+    "path": "source/A1__routeTitles.test.ts",
+    "size": 995
+  },
+  {
+    "source": "A1",
+    "display_name": "routeTitles.ts",
+    "path": "source/A1__routeTitles.ts",
+    "size": 2536
+  },
+  {
+    "source": "A1",
+    "display_name": "kanpi_public_focus_audit.json",
+    "path": "source/A1__kanpi_public_focus_audit.json",
+    "size": 37997
+  },
+  {
+    "source": "A1",
+    "display_name": "audit-public-route-focus.mjs",
+    "path": "source/A1__audit-public-route-focus.mjs",
+    "size": 6784
+  },
+  {
+    "source": "A1",
+    "display_name": "package.json",
+    "path": "source/A1__package.json",
+    "size": 3984
+  },
+  {
+    "source": "A1",
+    "display_name": "operator2_handoff_request.json",
+    "path": "source/A1__operator2_handoff_request.json",
+    "size": 1735
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignalsApi.test.ts",
+    "path": "source/A1__emberSignalsApi.test.ts",
+    "size": 1740
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignalsApi.ts",
+    "path": "source/A1__emberSignalsApi.ts",
+    "size": 1050
+  },
+  {
+    "source": "A1",
+    "display_name": "index.ts",
+    "path": "source/A1__index.ts",
+    "size": 2651
+  },
+  {
+    "source": "A1",
+    "display_name": "ember-signal-evidence.json",
+    "path": "source/A1__ember-signal-evidence.json",
+    "size": 318
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignalEvidence.test.ts",
+    "path": "source/A1__emberSignalEvidence.test.ts",
+    "size": 2415
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignalEvidence.ts",
+    "path": "source/A1__emberSignalEvidence.ts",
+    "size": 3457
+  },
+  {
+    "source": "A1",
+    "display_name": "config.json",
+    "path": "source/A1__config.json",
+    "size": 99841
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignal.test.ts",
+    "path": "source/A1__emberSignal.test.ts",
+    "size": 2472
+  },
+  {
+    "source": "A1",
+    "display_name": "emberSignal.ts",
+    "path": "source/A1__emberSignal.ts",
+    "size": 3164
+  },
+  {
+    "source": "A1",
+    "display_name": "auth.logout.test.ts",
+    "path": "source/A1__auth.logout.test.ts",
+    "size": 1625
+  },
+  {
+    "source": "A1",
+    "display_name": "trpc.ts",
+    "path": "source/A1__trpc.ts",
+    "size": 1033
+  },
+  {
+    "source": "A1",
+    "display_name": "llm.ts",
+    "path": "source/A1__llm.ts",
+    "size": 10778
+  },
+  {
+    "source": "A1",
+    "display_name": "EmberSignal.tsx",
+    "path": "source/A1__EmberSignal.tsx",
+    "size": 30697
+  },
+  {
+    "source": "A1",
+    "display_name": "RightsAndProvenance.tsx",
+    "path": "source/A1__RightsAndProvenance.tsx",
+    "size": 4711
+  },
+  {
+    "source": "A1",
+    "display_name": "sidebar.tsx",
+    "path": "source/A1__sidebar.tsx",
+    "size": 21947
+  },
+  {
+    "source": "A1",
+    "display_name": "op_a_state_checkpoint.json",
+    "path": "source/A1__op_a_state_checkpoint.json",
+    "size": 1531
+  },
+  {
+    "source": "A1",
+    "display_name": "qc.product-integrity.test.ts",
+    "path": "source/A1__qc.product-integrity.test.ts",
+    "size": 1464
+  },
+  {
+    "source": "A1",
+    "display_name": "northline-qc.css",
+    "path": "source/A1__northline-qc.css",
+    "size": 277
+  },
+  {
+    "source": "A1",
+    "display_name": "fieldnote-qc.css",
+    "path": "source/A1__fieldnote-qc.css",
+    "size": 93
+  },
+  {
+    "source": "A1",
+    "display_name": "batch10.pages.test.ts",
+    "path": "source/A1__batch10.pages.test.ts",
+    "size": 821
+  },
+  {
+    "source": "A1",
+    "display_name": "service-batch-10.css",
+    "path": "source/A1__service-batch-10.css",
+    "size": 5406
+  },
+  {
+    "source": "A1",
+    "display_name": "ServiceBatchTen.tsx",
+    "path": "source/A1__ServiceBatchTen.tsx",
+    "size": 3277
+  },
+  {
+    "source": "A1",
+    "display_name": "batch09.pages.test.ts",
+    "path": "source/A1__batch09.pages.test.ts",
+    "size": 824
+  },
+  {
+    "source": "A1",
+    "display_name": "service-batch-09.css",
+    "path": "source/A1__service-batch-09.css",
+    "size": 5089
+  },
+  {
+    "source": "A1",
+    "display_name": "ServiceBatchNine.tsx",
+    "path": "source/A1__ServiceBatchNine.tsx",
+    "size": 3299
+  },
+  {
+    "source": "A2",
+    "display_name": "batch08.pages.test.ts",
+    "path": "source/A2__batch08.pages.test.ts",
+    "size": 811
+  },
+  {
+    "source": "A2",
+    "display_name": "commerce-batch-08.css",
+    "path": "source/A2__commerce-batch-08.css",
+    "size": 6604
+  },
+  {
+    "source": "A2",
+    "display_name": "CommerceBatchEight.tsx",
+    "path": "source/A2__CommerceBatchEight.tsx",
+    "size": 3536
+  },
+  {
+    "source": "A2",
+    "display_name": "batch07.pages.test.ts",
+    "path": "source/A2__batch07.pages.test.ts",
+    "size": 813
+  },
+  {
+    "source": "A2",
+    "display_name": "commerce-batch-07.css",
+    "path": "source/A2__commerce-batch-07.css",
+    "size": 6577
+  },
+  {
+    "source": "A2",
+    "display_name": "CommerceBatchSeven.tsx",
+    "path": "source/A2__CommerceBatchSeven.tsx",
+    "size": 3552
+  },
+  {
+    "source": "A2",
+    "display_name": "batch06.pages.test.ts",
+    "path": "source/A2__batch06.pages.test.ts",
+    "size": 997
+  },
+  {
+    "source": "A2",
+    "display_name": "spatial-batch-06.css",
+    "path": "source/A2__spatial-batch-06.css",
+    "size": 7665
+  },
+  {
+    "source": "A2",
+    "display_name": "SpatialBatchSix.tsx",
+    "path": "source/A2__SpatialBatchSix.tsx",
+    "size": 4158
+  },
+  {
+    "source": "A2",
+    "display_name": "batch05.pages.test.ts",
+    "path": "source/A2__batch05.pages.test.ts",
+    "size": 1035
+  },
+  {
+    "source": "A2",
+    "display_name": "architecture-batch-05.css",
+    "path": "source/A2__architecture-batch-05.css",
+    "size": 6985
+  },
+  {
+    "source": "A2",
+    "display_name": "ArchitectureBatchFive.tsx",
+    "path": "source/A2__ArchitectureBatchFive.tsx",
+    "size": 4248
+  },
+  {
+    "source": "A2",
+    "display_name": "batch04.pages.test.ts",
+    "path": "source/A2__batch04.pages.test.ts",
+    "size": 1320
+  },
+  {
+    "source": "A2",
+    "display_name": "luxury-batch-04.css",
+    "path": "source/A2__luxury-batch-04.css",
+    "size": 12203
+  },
+  {
+    "source": "A2",
+    "display_name": "LuxuryBatchFour.tsx",
+    "path": "source/A2__LuxuryBatchFour.tsx",
+    "size": 7307
+  },
+  {
+    "source": "A2",
+    "display_name": "luxury-batch-03-overrides.css",
+    "path": "source/A2__luxury-batch-03-overrides.css",
+    "size": 133
+  },
+  {
+    "source": "A2",
+    "display_name": "batch03.pages.test.ts",
+    "path": "source/A2__batch03.pages.test.ts",
+    "size": 1448
+  },
+  {
+    "source": "A2",
+    "display_name": "luxury-batch-03.css",
+    "path": "source/A2__luxury-batch-03.css",
+    "size": 15941
+  },
+  {
+    "source": "A2",
+    "display_name": "LuxuryBatchThree.tsx",
+    "path": "source/A2__LuxuryBatchThree.tsx",
+    "size": 8783
+  },
+  {
+    "source": "A2",
+    "display_name": "batch02.pages.test.ts",
+    "path": "source/A2__batch02.pages.test.ts",
+    "size": 1388
+  },
+  {
+    "source": "A2",
+    "display_name": "morrow-compute-overrides.css",
+    "path": "source/A2__morrow-compute-overrides.css",
+    "size": 383
+  },
+  {
+    "source": "A2",
+    "display_name": "batch-02.css",
+    "path": "source/A2__batch-02.css",
+    "size": 31667
+  },
+  {
+    "source": "A2",
+    "display_name": "FolioForms.tsx",
+    "path": "source/A2__FolioForms.tsx",
+    "size": 3529
+  },
+  {
+    "source": "A2",
+    "display_name": "HelioRelay.tsx",
+    "path": "source/A2__HelioRelay.tsx",
+    "size": 3520
+  },
+  {
+    "source": "A2",
+    "display_name": "VantaProof.tsx",
+    "path": "source/A2__VantaProof.tsx",
+    "size": 3511
+  },
+  {
+    "source": "A2",
+    "display_name": "MorrowCompute.tsx",
+    "path": "source/A2__MorrowCompute.tsx",
+    "size": 3454
+  },
+  {
+    "source": "A2",
+    "display_name": "StillaCareSystems.tsx",
+    "path": "source/A2__StillaCareSystems.tsx",
+    "size": 4144
+  },
+  {
+    "source": "A2",
+    "display_name": "drizzle.config.ts",
+    "path": "source/A2__drizzle.config.ts",
+    "size": 353
+  },
+  {
+    "source": "A2",
+    "display_name": "workspace.test.ts",
+    "path": "source/A2__workspace.test.ts",
+    "size": 1011
+  },
+  {
+    "source": "A2",
+    "display_name": "collaboration-workspace.css",
+    "path": "source/A2__collaboration-workspace.css",
+    "size": 9955
+  },
+  {
+    "source": "A2",
+    "display_name": "CollaborationWorkspace.tsx",
+    "path": "source/A2__CollaborationWorkspace.tsx",
+    "size": 15744
+  },
+  {
+    "source": "A2",
+    "display_name": "workspace.ts",
+    "path": "source/A2__workspace.ts",
+    "size": 1498
+  },
+  {
+    "source": "A2",
+    "display_name": "workspaceSchemas.ts",
+    "path": "source/A2__workspaceSchemas.ts",
+    "size": 1993
+  },
+  {
+    "source": "A2",
+    "display_name": "routers.ts",
+    "path": "source/A2__routers.ts",
+    "size": 987
+  },
+  {
+    "source": "A2",
+    "display_name": "db.ts",
+    "path": "source/A2__db.ts",
+    "size": 8475
+  },
+  {
+    "source": "A2",
+    "display_name": "schema.ts",
+    "path": "source/A2__schema.ts",
+    "size": 5773
+  },
+  {
+    "source": "A2",
+    "display_name": "DashboardLayout.tsx",
+    "path": "source/A2__DashboardLayout.tsx",
+    "size": 9022
+  },
+  {
+    "source": "A2",
+    "display_name": "validate_manifest.mjs",
+    "path": "source/A2__validate_manifest.mjs",
+    "size": 1674
+  },
+  {
+    "source": "A2",
+    "display_name": "orbital-ledger.css",
+    "path": "source/A2__orbital-ledger.css",
+    "size": 8636
+  },
+  {
+    "source": "A2",
+    "display_name": "OrbitalLedger.tsx",
+    "path": "source/A2__OrbitalLedger.tsx",
+    "size": 4303
+  },
+  {
+    "source": "A2",
+    "display_name": "lattice-labs.css",
+    "path": "source/A2__lattice-labs.css",
+    "size": 8771
+  },
+  {
+    "source": "A2",
+    "display_name": "LatticeLabs.tsx",
+    "path": "source/A2__LatticeLabs.tsx",
+    "size": 4181
+  },
+  {
+    "source": "A2",
+    "display_name": "kinetic-mesh.css",
+    "path": "source/A2__kinetic-mesh.css",
+    "size": 7098
+  },
+  {
+    "source": "A2",
+    "display_name": "KineticMesh.tsx",
+    "path": "source/A2__KineticMesh.tsx",
+    "size": 3730
+  },
+  {
+    "source": "A2",
+    "display_name": "selene-agents.css",
+    "path": "source/A2__selene-agents.css",
+    "size": 7253
+  },
+  {
+    "source": "A2",
+    "display_name": "SeleneAgents.tsx",
+    "path": "source/A2__SeleneAgents.tsx",
+    "size": 3954
+  },
+  {
+    "source": "A2",
+    "display_name": "axiom-grid.css",
+    "path": "source/A2__axiom-grid.css",
+    "size": 7001
+  },
+  {
+    "source": "A2",
+    "display_name": "AxiomGrid.tsx",
+    "path": "source/A2__AxiomGrid.tsx",
+    "size": 4449
+  },
+  {
+    "source": "A2",
+    "display_name": "useBatchReveal.ts",
+    "path": "source/A2__useBatchReveal.ts",
+    "size": 1202
+  },
+  {
+    "source": "A2",
+    "display_name": "LumaIntelligence.tsx",
+    "path": "source/A2__LumaIntelligence.tsx",
+    "size": 21562
+  },
+  {
+    "source": "A2",
+    "display_name": "fashion-portfolio.html",
+    "path": "source/A2__fashion-portfolio.html",
+    "size": 15771
+  },
+  {
+    "source": "A2",
+    "display_name": "index.css",
+    "path": "source/A2__index.css",
+    "size": 26351
+  },
+  {
+    "source": "A2",
+    "display_name": "Home.tsx",
+    "path": "source/A2__Home.tsx",
+    "size": 17563
+  },
+  {
+    "source": "A2",
+    "display_name": "index.html",
+    "path": "source/A2__index.html",
+    "size": 1669
+  },
+  {
+    "source": "A2",
+    "display_name": "App.tsx",
+    "path": "source/A2__App.tsx",
+    "size": 6476
+  },
+  {
+    "source": "B1",
+    "display_name": "opb-asset-licence-register.json",
+    "path": "source/B1__opb-asset-licence-register.json",
+    "size": 9908
+  },
+  {
+    "source": "B1",
+    "display_name": "opb-source-commit-register.json",
+    "path": "source/B1__opb-source-commit-register.json",
+    "size": 11265
+  },
+  {
+    "source": "B1",
+    "display_name": "opb-product-evidence-matrix.json",
+    "path": "source/B1__opb-product-evidence-matrix.json",
+    "size": 37495
+  },
+  {
+    "source": "B1",
+    "display_name": "Handoffs-current.json",
+    "path": "source/B1__Handoffs-current.json",
+    "size": 1633
+  },
+  {
+    "source": "B1",
+    "display_name": "Tasks-current.json",
+    "path": "source/B1__Tasks-current.json",
+    "size": 2429
+  },
+  {
+    "source": "B1",
+    "display_name": "Products-current.json",
+    "path": "source/B1__Products-current.json",
+    "size": 14562
+  },
+  {
+    "source": "B1",
+    "display_name": "config.json",
+    "path": "source/B1__config.json",
+    "size": 98322
+  },
+  {
+    "source": "B1",
+    "display_name": "handoffs_sync_readback_2026-09-19.json",
+    "path": "source/B1__handoffs_sync_readback_2026-09-19.json",
+    "size": 9031
+  },
+  {
+    "source": "B1",
+    "display_name": "shared_records_read.json",
+    "path": "source/B1__shared_records_read.json",
+    "size": 97853
+  },
+  {
+    "source": "B1",
+    "display_name": "shared_records_read.json",
+    "path": "source/B1__shared_records_read.json",
+    "size": 97853
+  },
+  {
+    "source": "B1",
+    "display_name": "op_b_state_checkpoint.json",
+    "path": "source/B1__op_b_state_checkpoint.json",
+    "size": 4553
+  },
+  {
+    "source": "B1",
+    "display_name": "tmp-luma-index-format.json",
+    "path": "source/B1__tmp-luma-index-format.json",
+    "size": 1011
+  },
+  {
+    "source": "B1",
+    "display_name": "tmp-luma-drive-index-values.json",
+    "path": "source/B1__tmp-luma-drive-index-values.json",
+    "size": 4154
+  },
+  {
+    "source": "B1",
+    "display_name": "tmp-gws-b-e006-evidence.json",
+    "path": "source/B1__tmp-gws-b-e006-evidence.json",
+    "size": 176
+  },
+  {
+    "source": "B1",
+    "display_name": "EASY-TASK-REGISTER-LUMA.json",
+    "path": "source/B1__EASY-TASK-REGISTER-LUMA.json",
+    "size": 13286
+  },
+  {
+    "source": "B1",
+    "display_name": "tmp-gws-b-e009-next.json",
+    "path": "source/B1__tmp-gws-b-e009-next.json",
+    "size": 92
+  },
+  {
+    "source": "B1",
+    "display_name": "tmp-gws-b-e009-evidence.json",
+    "path": "source/B1__tmp-gws-b-e009-evidence.json",
+    "size": 143
+  },
+  {
+    "source": "B1",
+    "display_name": "build-easy-task-sheet-payload.mjs",
+    "path": "source/B1__build-easy-task-sheet-payload.mjs",
+    "size": 1322
+  },
+  {
+    "source": "B1",
+    "display_name": "operator-a-evidence-matrix.json",
+    "path": "source/B1__operator-a-evidence-matrix.json",
+    "size": 56063
+  },
+  {
+    "source": "B1",
+    "display_name": "tmp-gws-asset-format.json",
+    "path": "source/B1__tmp-gws-asset-format.json",
+    "size": 2974
+  },
+  {
+    "source": "B1",
+    "display_name": "tmp-gws-source-format.json",
+    "path": "source/B1__tmp-gws-source-format.json",
+    "size": 2965
+  },
+  {
+    "source": "B1",
+    "display_name": "build-operator-a-evidence-kit.mjs",
+    "path": "source/B1__build-operator-a-evidence-kit.mjs",
+    "size": 3724
+  },
+  {
+    "source": "B1",
+    "display_name": "research_france_germany_premium_websites.json",
+    "path": "source/B1__research_france_germany_premium_websites.json",
+    "size": 43348
+  },
+  {
+    "source": "B1",
+    "display_name": "operator-a-evidence.test.mjs",
+    "path": "source/B1__operator-a-evidence.test.mjs",
+    "size": 907
+  },
+  {
+    "source": "B1",
+    "display_name": "build-operator-a-evidence-matrix.mjs",
+    "path": "source/B1__build-operator-a-evidence-matrix.mjs",
+    "size": 4745
+  },
+  {
+    "source": "B1",
+    "display_name": "audit-ip-compliance.mjs",
+    "path": "source/B1__audit-ip-compliance.mjs",
+    "size": 5240
+  },
+  {
+    "source": "B1",
+    "display_name": "ip-compliance-audit.json",
+    "path": "source/B1__ip-compliance-audit.json",
+    "size": 2211
+  },
+  {
+    "source": "B1",
+    "display_name": "ip-provenance.test.mjs",
+    "path": "source/B1__ip-provenance.test.mjs",
+    "size": 1928
+  },
+  {
+    "source": "B1",
+    "display_name": "verify-live-demos.mjs",
+    "path": "source/B1__verify-live-demos.mjs",
+    "size": 1489
+  },
+  {
+    "source": "B1",
+    "display_name": "generate-catalogue-snapshot.mjs",
+    "path": "source/B1__generate-catalogue-snapshot.mjs",
+    "size": 5759
+  },
+  {
+    "source": "B1",
+    "display_name": "products-current.json",
+    "path": "source/B1__products-current.json",
+    "size": 14562
+  },
+  {
+    "source": "B1",
+    "display_name": "reinforcement.test.mjs",
+    "path": "source/B1__reinforcement.test.mjs",
+    "size": 1424
+  },
+  {
+    "source": "B1",
+    "display_name": "website.mdx",
+    "path": "source/B1__website.mdx",
+    "size": 7541
+  },
+  {
+    "source": "B1",
+    "display_name": "webhooks-overview.mdx",
+    "path": "source/B1__webhooks-overview.mdx",
+    "size": 7474
+  },
+  {
+    "source": "B1",
+    "display_name": "similarweb-benchmarks-2026-05-to-2026-07.json",
+    "path": "source/B1__similarweb-benchmarks-2026-05-to-2026-07.json",
+    "size": 2665
+  },
+  {
+    "source": "B1",
+    "display_name": "template.js",
+    "path": "source/B1__template.js",
+    "size": 3743
+  },
+  {
+    "source": "B1",
+    "display_name": "template.html",
+    "path": "source/B1__template.html",
+    "size": 1849
+  },
+  {
+    "source": "B1",
+    "display_name": "shop.js",
+    "path": "source/B1__shop.js",
+    "size": 2470
+  },
+  {
+    "source": "B1",
+    "display_name": "shop.html",
+    "path": "source/B1__shop.html",
+    "size": 4220
+  },
+  {
+    "source": "B1",
+    "display_name": "styles.css",
+    "path": "source/B1__styles.css",
+    "size": 33096
+  },
+  {
+    "source": "B1",
+    "display_name": "catalogue.test.mjs",
+    "path": "source/B1__catalogue.test.mjs",
+    "size": 1647
+  },
+  {
+    "source": "B1",
+    "display_name": "app.js",
+    "path": "source/B1__app.js",
+    "size": 4156
+  },
+  {
+    "source": "B1",
+    "display_name": "index.html",
+    "path": "source/B1__index.html",
+    "size": 16428
+  },
+  {
+    "source": "B1",
+    "display_name": "catalogue.js",
+    "path": "source/B1__catalogue.js",
+    "size": 2702
+  },
+  {
+    "source": "B1",
+    "display_name": "build.mjs",
+    "path": "source/B1__build.mjs",
+    "size": 712
+  },
+  {
+    "source": "B1",
+    "display_name": "server.mjs",
+    "path": "source/B1__server.mjs",
+    "size": 1091
+  },
+  {
+    "source": "B1",
+    "display_name": "package.json",
+    "path": "source/B1__package.json",
+    "size": 359
+  },
+  {
+    "source": "B1",
+    "display_name": "generate-storefront-catalogue.mjs",
+    "path": "source/B1__generate-storefront-catalogue.mjs",
+    "size": 1269
+  },
+  {
+    "source": "B1",
+    "display_name": "validate-batch-01.mjs",
+    "path": "source/B1__validate-batch-01.mjs",
+    "size": 797
+  },
+  {
+    "source": "B1",
+    "display_name": "catalogue.batch-01.json",
+    "path": "source/B1__catalogue.batch-01.json",
+    "size": 6096
+  },
+  {
+    "source": "B1",
+    "display_name": "catalogue.test.mjs",
+    "path": "source/B1__catalogue.test.mjs",
+    "size": 2357
+  },
+  {
+    "source": "B1",
+    "display_name": "server.mjs",
+    "path": "source/B1__server.mjs",
+    "size": 5529
+  },
+  {
+    "source": "B1",
+    "display_name": "webhook.test.mjs",
+    "path": "source/B1__webhook.test.mjs",
+    "size": 2500
+  },
+  {
+    "source": "B1",
+    "display_name": "database.mjs",
+    "path": "source/B1__database.mjs",
+    "size": 4339
+  },
+  {
+    "source": "B1",
+    "display_name": "email.mjs",
+    "path": "source/B1__email.mjs",
+    "size": 4829
+  },
+  {
+    "source": "B1",
+    "display_name": "order.mjs",
+    "path": "source/B1__order.mjs",
+    "size": 2090
+  },
+  {
+    "source": "B1",
+    "display_name": "security.mjs",
+    "path": "source/B1__security.mjs",
+    "size": 860
+  },
+  {
+    "source": "B1",
+    "display_name": "catalogue.mjs",
+    "path": "source/B1__catalogue.mjs",
+    "size": 6001
+  },
+  {
+    "source": "B1",
+    "display_name": "config.mjs",
+    "path": "source/B1__config.mjs",
+    "size": 884
+  },
+  {
+    "source": "B1",
+    "display_name": "package.json",
+    "path": "source/B1__package.json",
+    "size": 613
+  },
+  {
+    "source": "B1",
+    "display_name": "app.js",
+    "path": "source/B1__app.js",
+    "size": 693
+  },
+  {
+    "source": "B1",
+    "display_name": "styles.css",
+    "path": "source/B1__styles.css",
+    "size": 10431
+  },
+  {
+    "source": "B1",
+    "display_name": "index.html",
+    "path": "source/B1__index.html",
+    "size": 10534
+  },
+  {
+    "source": "B1",
+    "display_name": "server.mjs",
+    "path": "source/B1__server.mjs",
+    "size": 1190
+  },
+  {
+    "source": "B1",
+    "display_name": "package.json",
+    "path": "source/B1__package.json",
+    "size": 205
+  },
+  {
+    "source": "B1",
+    "display_name": "Home.tsx",
+    "path": "source/B1__Home.tsx",
+    "size": 8859
+  },
+  {
+    "source": "B1",
+    "display_name": "App.tsx",
+    "path": "source/B1__App.tsx",
+    "size": 916
+  },
+  {
+    "source": "B1",
+    "display_name": "index.css",
+    "path": "source/B1__index.css",
+    "size": 12699
+  },
+  {
+    "source": "B1",
+    "display_name": "index.html",
+    "path": "source/B1__index.html",
+    "size": 981
+  }
+]

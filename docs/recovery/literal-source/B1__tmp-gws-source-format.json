@@ -1,0 +1,59 @@
+{
+  "requests": [
+    {
+      "mergeCells": {
+        "range": { "sheetId": 411729848, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex": 15 },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 411729848, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex": 15 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.06, "green": 0.06, "blue": 0.06 }, "textFormat": { "foregroundColor": { "red": 0.97, "green": 0.96, "blue": 0.94 }, "fontSize": 15, "bold": true }, "verticalAlignment": "MIDDLE" } },
+        "fields": "userEnteredFormat(backgroundColor,textFormat,verticalAlignment)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 411729848, "startRowIndex": 1, "endRowIndex": 2, "startColumnIndex": 0, "endColumnIndex": 15 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.93, "green": 0.92, "blue": 0.89 }, "textFormat": { "bold": true }, "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP" } },
+        "fields": "userEnteredFormat(backgroundColor,textFormat,verticalAlignment,wrapStrategy)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 411729848, "startRowIndex": 3, "endRowIndex": 4, "startColumnIndex": 0, "endColumnIndex": 15 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.10, "green": 0.10, "blue": 0.10 }, "textFormat": { "foregroundColor": { "red": 0.97, "green": 0.96, "blue": 0.94 }, "bold": true }, "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP" } },
+        "fields": "userEnteredFormat(backgroundColor,textFormat,verticalAlignment,wrapStrategy)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 411729848, "startRowIndex": 4, "endRowIndex": 120, "startColumnIndex": 0, "endColumnIndex": 15 },
+        "cell": { "userEnteredFormat": { "verticalAlignment": "TOP", "wrapStrategy": "WRAP" } },
+        "fields": "userEnteredFormat(verticalAlignment,wrapStrategy)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 411729848, "startRowIndex": 4, "endRowIndex": 54, "startColumnIndex": 13, "endColumnIndex": 14 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 1, "green": 0.91, "blue": 0.66 }, "textFormat": { "foregroundColor": { "red": 0.24, "green": 0.14, "blue": 0.02 }, "bold": true } } },
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": { "sheetId": 411729848, "dimension": "COLUMNS", "startIndex": 0, "endIndex": 3 },
+        "properties": { "pixelSize": 180 },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": { "sheetId": 411729848, "dimension": "COLUMNS", "startIndex": 3, "endIndex": 15 },
+        "properties": { "pixelSize": 230 },
+        "fields": "pixelSize"
+      }
+    }
+  ]
+}

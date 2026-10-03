@@ -1,0 +1,61 @@
+{
+  "auditVersion": 1,
+  "auditedAtUtc": "2026-08-27T03:17:51.663Z",
+  "scope": {
+    "storefrontRuntimeFiles": [
+      "index.html",
+      "shop.html",
+      "template.html",
+      "app.js",
+      "shop.js",
+      "template.js",
+      "catalogue.js",
+      "styles.css"
+    ],
+    "activeProductRecords": 50,
+    "method": "Static master-storefront source provenance scan, shared-catalogue row scan, and bounded HTTP link-audit result review"
+  },
+  "masterStorefront": {
+    "benchmarkTermsOrDomainsObserved": {},
+    "runtimeOrigins": [
+      "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com",
+      "https://lumafoundry-jx4veohg.manus.space",
+      "http://www.w3.org"
+    ],
+    "unapprovedRuntimeOrigins": [],
+    "approvedFontOrigins": [
+      "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com"
+    ],
+    "lumaOwnedPreviewOrAssetOrigins": [
+      "https://lumafoundry-jx4veohg.manus.space"
+    ],
+    "productImages": {
+      "total": 5,
+      "allHostedOnLuma": true
+    }
+  },
+  "operatorAActiveDemoSurface": {
+    "totalProductRows": 50,
+    "productRowsWithBenchmarkTerms": [],
+    "productRowsWithBenchmarkAssetOrigins": [],
+    "previewUrlsAllLumaHosted": true,
+    "lastBoundedHttpLinkAudit": {
+      "checkedAtUtc": "2026-08-27T02:50:53.759Z",
+      "passing": 50,
+      "total": 50
+    },
+    "sourceRepositoryAudit": "not accessible in this workspace; require Operator A repository provenance review before commercial release"
+  },
+  "conclusion": {
+    "observedDirectBenchmarkBrandAssetsInAuditedMasterRuntime": true,
+    "observedDirectBenchmarkBrandReferencesInMasterRuntime": true,
+    "status": "technical storefront and catalogue scan passed with stated limitations",
+    "limitations": [
+      "This is not legal advice and cannot guarantee worldwide IP compliance or non-infringement.",
+      "This audit cannot establish copyright ownership, licences, source-code provenance, trade-dress risk, patent clearance, or the contents of inaccessible Operator A build repositories and third-party assets.",
+      "Require owner-provided asset licences, creator records, code provenance, and qualified counsel review before commercial publication."
+    ]
+  }
+}

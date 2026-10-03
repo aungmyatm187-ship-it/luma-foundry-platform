@@ -1,0 +1,304 @@
+{
+  "generatedAt": "2026-10-02T16:39:00Z",
+  "source": "lumafoundry.live",
+  "count": 30,
+  "records": [
+    {
+      "reference": "/manus-storage/aster-alder-hero_6150ee6b.png",
+      "file": "aster-alder-hero_6150ee6b.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 146512,
+      "sha256": "2af6f4346ec4e7c00dd7eb91076df164562809f6e39728f4d9803231fdece85e",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/aster-alder-hero_6150ee6b.png?Expires=1790962760&Signature=gIzpWzveWXE1XxYbD~mx7tLq-7Mb1vctZi5xMprN7zCY6YmxIimcJdCGXS5K3nnqXnMjqixiJvHtwkLkfmSJXNorqtbdb~cCXOLSkTg86xnc8I3mzduXiwpVx1J7y~AK2mYbO-~zzuB8Ntmn~H3aZqklxHJbyVQBiVijm65kbWOSwrV91EJ6x~nkd8HD7swBmydyHfVWD3jsWOEwjD8kIDntYuqMSeaehdtXZhUnPVzg~6EayA3IDfFXMxKGDzZL10DtA31E9i9uiDEKCMkbHFshj4Ytf4RILmx00j8mff9V0CoVJ2CSRIQ0ZMii-YOfyHZpRR06c5va0PtbXHIt3g__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/axiom-grid-hero_46c3b0f8.png",
+      "file": "axiom-grid-hero_46c3b0f8.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 282974,
+      "sha256": "838841c0dd6adda8ba117cec85d2eac63d45771ca16da121a9749490ffcbeaa1",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/axiom-grid-hero_46c3b0f8.png?Expires=1790962763&Signature=KR6gkj6jLNhXjXlF~SouewHTLafAOX2NAt8LCKvbpcT3vMir1OZLBUYWkky2MmUS8~3s6OxV6rkxuVchyIHFariRO2sp~O8iz1YgoUL6aTv7CCw2Ybq4AgTJecwnSLashpLnH0gwcLbQ~XAbjEhz6f63CeZEYPZacnjSc6d4zXjSt4epoRM8pDdUuh4ikwIja0b2xIeFOl3WLpj5vwvTYmrAUFYDQYzFKANM5aAleLFdAZzPFAtNjvlhkbb7gAx9ydax8o2ZIYH0aUbuSTwmmPMCOkChOP8J8XifE9pHgrzbKjJxR5BZPuPpdjm~bm4Ywfgs7EacXOMberSDSC7oqw__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/caldera-optical-hero_71ee1be6.png",
+      "file": "caldera-optical-hero_71ee1be6.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 176820,
+      "sha256": "b2a6b410cb66f5c8b6737b851200c787e1ecbfe39a59cd588e0056ccf4204d2e",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/caldera-optical-hero_71ee1be6.png?Expires=1790962766&Signature=R0p7wPueKFypE70EuMWA8jTdx1pAUDgVctTrfCn7bBczxqG5SGMKrmVvC-PwzgiBN3quYmC0hQ9kLevXpVqkB4FYKXEh4zbkVSzadnvEVbjUBMTE-uxkOQ1sdSPH4YuLFm2~YlM0f4gKdr3F6VijUnlmoxifhk0Yzz4Qr0HqBisyKFm-0~YuXnlerJ0H36feDanJGEH64E70NdKAvS5cuUBDYdkXu2JJis2WPY1kSYZESRAKopMhzHq8kTpVLFyWlsdYEV5RumRyp~a4jixYEj3jWbIe2VBVCGAS7chr~d5x-LSbSNrH3k9upSiI0qxTvg~MmlsP0lZs42evUj-k5g__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/elan-method-hero_3f354c21.png",
+      "file": "elan-method-hero_3f354c21.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 151020,
+      "sha256": "08b172b59c4098ec72406c1a9380f01d7ab162092eb9c52fc794da4af35c5de2",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/elan-method-hero_3f354c21.png?Expires=1790962768&Signature=e6DSwxGjzawtajzrkLfempknl5mEgv9loN4VslNFRC9u6bpUnJTnxIqrpp-GO9fn23-bY2Dl1WMo3p7R3xiFIvm9vj0SE4MVr8zX9JVNWcXraSjNmkqL9rIVWrIv2zWRfq8OkpEmLRaNIzV2kX5ZyWvENyVRmwax3cxbdVsPtW-JX2w0NqQ1veD4koHAtMHTXWtO4aOvIXKnYkSzDrf5omNsr1GRkeF~-xoDvmXTZMPKq2MG8ZS0W0Zj8xfonc7hoTjnIIZ8fshSQXhWeVqYq0jKCdVCctdsTXmnVRbo6-ClYXt8Ng71raXcJ3l848slwAo3Ny0TnzDXyqZ7T~iiBw__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/ember-signal-hero_00d7a28a.png",
+      "file": "ember-signal-hero_00d7a28a.png",
+      "status": "unavailable",
+      "http": 403,
+      "content_type": "application/xml"
+    },
+    {
+      "reference": "/manus-storage/folio-forms-hero_80ca4506.png",
+      "file": "folio-forms-hero_80ca4506.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 720440,
+      "sha256": "4ddcf739ddb5ff4f56e0145b105f50add4c7c5e81f1bc545d2ab0ab252d4a5ba",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/folio-forms-hero_80ca4506.png?Expires=1790962775&Signature=jHEkkSJBC9bI1KOdDGsuAgxDx699jX6NDO8CJeOo6AohpRYGA9u2PSsG-RJX~NgeG~n-Mz0rTnVjCxzy3Xx48sewGOEHQPLI-MfXfZJ1I4tbv2OFW5VrkEc7I0gTZMcuWtDYsrfs2KDCpEUsIpnEGfG0VVZp1B1o3~v~p-PELdS2KongyAgEsmH4Q9VuxFYUQXoVMAR8LzZle3Bh7LG5yc9N9-T~JxlzqUKs4n3WeUXk6M6E3VXE7h7GLcspFtFjpviAPzQCfYKIC0BRfFauTARVyoLgBlnYIfaeQeMvgXBsPMqdV7A79eYz9pG1obNoBPfoi4~CmPYQTpoYjyBN-w__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/helio-relay-hero_9fba7064.png",
+      "file": "helio-relay-hero_9fba7064.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 124934,
+      "sha256": "f61809aafee222c5651f56f9cb289442661cfc947b7e8e7065ed409b41c98200",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/helio-relay-hero_9fba7064.png?Expires=1790962778&Signature=FynEguGDyYsTnXkX-5-0Ol-WNfGjHiXmWsr4B0A~85pSWoHcRlhc-yAYQj801tmMPUaE3I1HCjNPl7FvEkVqzxMsbZu8lSftTlx0PO-wArs2GMmvkZCEYD0V0bINtkgmTiA5UnUnI9KyZUz5KBaNQ0EN37Ji~NXvLUXdldJwnJ-aUzqM3FPsqrsWgtuqtMBkQcY6hyoeqPVTImmMf7kMTreehQYHeKtiwQMakWQhXkM6dKrUNeErjCFyQmmFuiFyg6lJhdtFZeB9u0XeRKfxzbKPCZg~jG5qw-mELRf~WRCrVzXEzOFFRpk7V02nw490dboP5PvIMADMDprDeRJmjw__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/kinetic-mesh-hero_682e14df.png",
+      "file": "kinetic-mesh-hero_682e14df.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 321082,
+      "sha256": "83bafce0ea4bb923d98c0c0ea8df9843cd1f2a6bc9e193a644581dd20e2406ac",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/kinetic-mesh-hero_682e14df.png?Expires=1790962781&Signature=bNMBbBhNLLXVzon1WOmUwCJj016WgVJad3J5Z3wLByNXE~SN9Zkr6QZaia4qBtEVR3dAsfBVuK4KRE-KvcM7AB5uNQRky006gHFppFd~ldl6kWMzKvQw75BOXVSK-nPq1zRt4ZoPtHx4iJ84wxF-uHGM-3ebslxZInvmJKYdIaxCdIpkNzrp1ieWC~29zKs9NLOglqOqdYDEa583t8yat2boYSHQM03kFwzcOmrqhj1Ka-bPRwaZTjrY9xDr9D-R6P6C2YoZV3OVK2lYoe2Vv95rNuYDkpXxe3cfuHz0uYwmUVeKY2LGTNqrCym13Lfi4mlO-CVSpWTX~PPpuum1yw__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/lattice-labs-hero_587c9d31.png",
+      "file": "lattice-labs-hero_587c9d31.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 206048,
+      "sha256": "772d71f5ec00fe0ad529705dcb64bbd02cf01d255c76b0d31fa1dad211579ea2",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/lattice-labs-hero_587c9d31.png?Expires=1790962785&Signature=TRYMKoSHh-PR75nzRm5v~rZzaOQMKwlLWlSqRkhUKmJ5s9BInjQwMq1MBHp4ghVrljBP-7tV3BFFdEXBQ0EvJqethQTP6LRSj6B0-mKjRGp26J9F7uRB7stTmCbc8T6oDPZLn7WhWFyVvYtpTxe7iixBjQqpmkiOMTJQYMiCkab1PUwhdVD4IRbKAbGo5UXgrFhnfepmA-KafNXzWfaN4pZfxInqqTQJvUnUwmiGCMKPNvLUUWq8Lr9sV8GxvG5yWwNZAjC6UpUXzXyyqlnIUl5MDNlkCvfOvwxNF4rSc6F5ARZ6qOGg5kEijeaJfYKBRWSZJRhDjR3lzVRbwSu2Iw__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/luma-foundry-mark_e8a0bb3e.png",
+      "file": "luma-foundry-mark_e8a0bb3e.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 713006,
+      "sha256": "8a587f48b741c974462eeaab83e59d5a604e6f21687643fdb05522949bea5296",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/luma-foundry-mark_e8a0bb3e.png?Expires=1790962787&Signature=tTQ9wzpnZp8ZDZvtgpP95yeXPTgCykKnWEJmz6jLQVQmhHoMGSNah9dK6Vx5epIkl7jTDLuufnYR3LM1mhg~Yt7HEXSFCI6pXFDIVg~x1vET6P0QAqAJUxUaLnljxWvYORiszkyfy0nXAM4npYEdL-iDGDz1m1-vJPabNIuSBlO6phQ8FG~ZbPr9N93t2gSXHKlbcG3OJUa2CSFaYFwz40UyNx9eib6-iZ0smr7KB0uxV5u2Y9GqJNlqVfNwam-ZSzfSYrZ6Zf1O8K0oGfVNHo5rqEjJzLTCQlF0t9wnEBLGYBPi8FKXCEMCI0SvjePrcGUu6sU8DadiL6ZJKEmysA__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/luma-intelligence-agents_352e3e15.png",
+      "file": "luma-intelligence-agents_352e3e15.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 106596,
+      "sha256": "fae793df01e8481c6c3a2a05dab1a09bc78a69f78b1fcc8b9467a725b9de8b3b",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/luma-intelligence-agents_352e3e15.png?Expires=1790962790&Signature=caiNFjaQxZoluDGhMF2UVpqKA0niCsvK4rrQMfLIyiAX6DSRX3R8dJ3BT4fiGIpIBEtB90xkUHUZiyqd7ZI~nrX3TIBF9Ieb639BipixaZxNl1hzmYKWf2Q5LTSHNHi0usD0OLqTzXk84j7AXR83fjoRRXeoc3CpBjdwd9zX-poqN3K9188BV97A-HntRbZiVAZ7CHY0~veK8zYEJjBsUxxDDDWrRawOD6hlkL7ldog39wYFrqvBCWi14VzlfHa-lj6Pefygv9~GfPFq57RcJQ7YprL4pKuah28fORswh9DItedcpmN6bRS012kbuM8qOaGMGuQq15sScmGbq2GVfw__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/luma-intelligence-hero_82135acf.png",
+      "file": "luma-intelligence-hero_82135acf.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 227590,
+      "sha256": "b42d5544afeb42f2b160698971b56917108f5701e2babb9ddab9748f97c6c3a7",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/luma-intelligence-hero_82135acf.png?Expires=1790962792&Signature=KyhxLErt6HmQs3UU9mRvRZejuCARW13Y7AJmmLFZp1YYDvMa6mli65gDos~BWqSLKIm4hbwEHaSX8vYe9Akc0ynJYyCrF9Z4I0o4GDWqfjT9K3jgneRn41UrSNrPZGTvMJhl1464O-AuVUQlpUbA5b5EfHptoWQvwohI5l4QWjwYk5f1nP9viQkdj1M0HUzkGVUA~GgpY-BEYUEwztFhBrIRUD0QWK~t2M4w57eCDpzlNl0eHAKBCh54L5Y6-Vivxk4qS4eg6SPpLThGcvM40-luK8Sfq89mNx29T17WPKBmqod3klUkdW5lwY0RdCQUFbVgt~vogjmRcJsBDOnkCQ__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/luma-intelligence-memory_62a5a77a.png",
+      "file": "luma-intelligence-memory_62a5a77a.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 157748,
+      "sha256": "da16391ed7da4066b8313861f4eb623990936d2e43d1eadc12d8d894c8f13198",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/luma-intelligence-memory_62a5a77a.png?Expires=1790962796&Signature=Iz-3xCv25rj8EzDZ75S5gWa~UZbDPTfxlNAZM4Xh82bTWLRer3B-3pnIyIOqoUSp1cW78rj4vkt4p-7ePE9BFaeWedX3iihf3DcL7zNiwDY3D8v9mrMBmneHEozLeK5uw~8sDNf47eYrgQLlMrtvhQqcsmdYxW41pEJrxMzQ66GkZfyDamxapMXfhhZpJNpket5KF0cixgllIFuIuCgEqLtMbxFxcEKMHkyIGYWbQFQZ5S1wtuAItABWDslXX4E-HzotBr3s1ZZF0PF30t2GZdJqIy8McSV6NYsvxp-GJUhwYyugH1s~BmSpE-E7sbPQSDgqKaFHK09mGkyoVc7YNQ__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/luma-intelligence-synthesis_4cb322c5.png",
+      "file": "luma-intelligence-synthesis_4cb322c5.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 325608,
+      "sha256": "92109b813d9d996c1094b7744187eae40b512d1d0ad0878adf1fa974fbc65659",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/luma-intelligence-synthesis_4cb322c5.png?Expires=1790962798&Signature=otbHlbRlPlFvdag16set~ifMEaPCa6tk5t-0tYGLHv5ZOEmcei8Z0vFVLR1ocemGVBSRKUs~qBPpJUZwVsmLlYcn3XsGmfUIYqX08xiYda4jamMaVoE4~OIKGAeXvnpsZM4fjPftwPq984SmZFGzQIyPUCKNqaFYyfaNIj8CAicDL9FF4mpdhTKDwOXYwZZ-GOoTQ99KiU42I9RtSJdqJd0ARsQ8cPEmrl7HxNbPYUM89YYVeEPRmbK2JCglCcpEyli78KyjjQS6SboNJf8u7TYaolk3AU60cKSq43X1pfe6SmNgin4meKck1hH9zhNW8PIYAm7CLQ0xXUsLN38smw__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/mare-house-hero_63a2703a.png",
+      "file": "mare-house-hero_63a2703a.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 220372,
+      "sha256": "3025aa8a54af16717df14bc767fa40808cdacd0870cb56b64728348546a94457",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/mare-house-hero_63a2703a.png?Expires=1790962800&Signature=oCqdqA74dqY2siMwI26lfqEyYM-fUHTT9u4~z2viDoq~Ixw8dtidwAzO7yKu7KENvsIWrCVw9hzzAKb3IrEkQBkjrtVDe2fvP4-UwnkvdVP-JTfJtJP5N4ulbK-AYStyDGFmNb2siDFc5Q6OUzFpnivX5sd~Sy2V-WNbs9tipkAbycLv3p8FopILTTtvS47eW84FbxD61p79EeeeYwekG3rTP-VbBUPithjVM8dCa1kJaXBqJwbSciwYxhXXdQV5uKod-lr2Blpt~BeIya85wNTUIy4hE6iflubNDZ-JlSgr9IsW5MFWx0T28XV8sevqizLSYfc4D9SOf6stOLEeGQ__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/morrow-compute-hero_c6e8b9b7.png",
+      "file": "morrow-compute-hero_c6e8b9b7.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 144310,
+      "sha256": "099ea5b420db2b0800fcd292cf9a48fe08e5cefb0bf37455cbf20b65122209ba",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/morrow-compute-hero_c6e8b9b7.png?Expires=1790962803&Signature=W-noMtbur-BhMRsGNGXbajMGFR0OqpWTtRLDV7TEilkVTVhwpu7ntAhawNmSHjhZBgqx3TnMiPl7g58JXsTMz8CKJYXjEMoU6BxsymNClkyN94sRpZbJtt-0MHszYIu1eCeoRdlVfNS4WDLoQqtyA1fKITlsZITxITmEmyD1zgM4iAYsFd--6ygozbgRj0WUP-sQtAnfpUGtragaRjut0Cz9-LRcNt87uKsUDP-78EqC2lUPT7hIh1Lmi4QntEt0M~SgOTdacPPoXb-cvKNCqJG4mMxQCe5hPeRPWJVRvvV9XFNm~MDatOop2vWuWRkD-5arJFPMjsabFaLOtfVt2g__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/noor-fashion-01_1f15528a.png",
+      "file": "noor-fashion-01_1f15528a.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 203402,
+      "sha256": "371fa6c0c5bf43051341e89d3ec64145fd7e34e36f8584c959f0750f4145bf7f",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/noor-fashion-01_1f15528a.png?Expires=1790962806&Signature=E77rJnGfyrKLnBHPKlBQ6PGkEv40auVh9MgX1eJgvbTC2wDI87dFz4VMrMmYGhAtIwwQ2HCPgAxSuuPbdVWQLV-3qj~iSq4YNJduURsrVrCVUs7QWAqumq8cpN9pxGFSrMpHMzyIwLfXN5~xPPpnhxka8ydc09wt1AtbRGiCSEbnXvhH~x4NxRsZRC-WvV0PouljolqoEbWQzK6joCEaKDDUHmlEICMFHbI0t6tfshCQSxIihqiBCNClncz-HMgkM3XpMr4Pok6NMmsh2b7DwPgP7lha9CsoeJHMSzpnI05gDcdGdv2Et6ZzkT-3Kq6-26L8m-R-klXjRlGoqn-H0A__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/noor-fashion-02_a6180f40.png",
+      "file": "noor-fashion-02_a6180f40.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 292762,
+      "sha256": "dd54b0738e5daf93dac03631d8a57d64e4f54bbb09d856f1dfb42f31516aede0",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/noor-fashion-02_a6180f40.png?Expires=1790962808&Signature=gckbZZWxz8LjIP1nZmQooYiaBVI~qwMMgg3ydAUg1A6ZppNd2a5KtlqHpIYeP7xJUgtN~zcqtNQgMHncJSrDgx0RJLAfvnC5ssyYsPK5A3Npb7K~SVUM1ujCtO~knEmWURzKMjwoShv-LjWMP~77KXmev6i8jlLQh8hv7NkL6sgCb1z58G46gbVdhw-NSEwcX4lxjJ0Oo0cBk7v1l7lobRbCr0eDe10f9HNDvWxdKRYv938LBylRULTaLyI~yz4VFZjriYy6Piwy6tM06X-0bTkI6ya71RwuljrW1PhbAIkdN2CS-DEMc-hdnaPwhpD8eZunefD89mDtl3MQqS3WAA__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/noor-fashion-03_6d4b96c1.png",
+      "file": "noor-fashion-03_6d4b96c1.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 305158,
+      "sha256": "e0b4a16d1e1ca30e72aaea46ffb8e955ef2470de9f724b782242d58602b64299",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/noor-fashion-03_6d4b96c1.png?Expires=1790962811&Signature=r5MSfBsNHxGOVNdOSpVRbzO0j2s3DVss9dbepEWegYgDW~MWhGyz9x3GY2VqDJQRXMPeQRA3G8XobnXTSNTnYrcmnbZ2pi5lhBZlfeO9FBoKWXK8r-ne8a6UMVP8CWyRaXHRi-t6VDeW5lTChtMuTMiSz4WZN3CtL9GId1LiYjClkm1Cahnj9HUnCVs1HM0~EH08gayHxGzBIJ49zszLoKoAJvL9jjaRP95XoIs5WTiEVsuN8wrKUBpvFhFtckUZpDFNmWJWUQTLct~BJ1a0E-jI8VWOKiuNDQ055r1XlE~NDBkAI~~KltrFrPfOJuspvr7d0DCvIng7I213qQBHAA__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/noor-fashion-04_04d35e08.png",
+      "file": "noor-fashion-04_04d35e08.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 295246,
+      "sha256": "09c69032c65dfdccbd5b0ee6a145c4aaf68cbd06e5dfd7f2859ac26067ef0735",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/noor-fashion-04_04d35e08.png?Expires=1790962813&Signature=r7QX87P0ctUKXq8XntmYBVI1b3h2TEqjplu8AjlbyiaVDmpyBCNVcc0kfZg7saRoxFSozFYMKKRsvgXeQS6Y0sCKaVvPOJYYz3TTR4~ARAspizROxPkoj02TUHmR6Jy~-TLQ2eQgsrgfuMs2EaZ1p1uoLzzF7sTvqKUdF~YMs~ZXhQqoVhxz4fpfhuZ5R83DNkpe~7SxqaAzkNp1PmyzwRjILP9UDN~o-upqyuFwuxGojEXodTAnU7WP7vemwdfhvxjpQo62KFIET-trBFz9ecWy-K7WZrtzRe0hDYaPJ5EJ0RJTNiv6oVu4dUzalw0Cz9O1ikykb~CsXCYKMhIT8A__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/noor-fashion-hero_f40d2c42.png",
+      "file": "noor-fashion-hero_f40d2c42.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 217828,
+      "sha256": "2e448ef8a0a0971e13af0f13fa7ee27738217b0428ed9b1f9cef739161176c36",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/noor-fashion-hero_f40d2c42.png?Expires=1790962815&Signature=O3H9nbkYwe~CONyxZjI82toy3wbaWy0xF2WUv93dP4eSFJHHQE0NjUpsK4b1ZdFw9Ym-RHv2w1-AAYGA-hMRqwUoXZiQMMf0Z70pgpod0diEcBwfcu1jFhJvO6j9v0vrR8scmYUYKL-LFZIxwFYkV6WajRGcxwlmqnHFXvrJkIxTaX3hRsuPee-uGb8xYVePWalca9o2gG74nlkhVaglecq6UEhThjWykMVDUGmEGQZN6NEAEjHT1YKKM-2Zg~ujtG~pV5d19NBnlfOLGTmxcpbBmXJMKfFSfQF600n3o9Iq2ZuK9vX0hld-kwsoBKghLxg9q5oz-V~YJMFJfvfiPw__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/orbital-ledger-hero_d99df92d.png",
+      "file": "orbital-ledger-hero_d99df92d.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 269486,
+      "sha256": "e40e2dee1078a9be40688b60aa2d8d2fbc10054fd84faf0ab2e62d5aae4fec67",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/orbital-ledger-hero_d99df92d.png?Expires=1790962820&Signature=XBRqTWNTYRa7DoMJSqpTQGXq0PvqrkYLQDqkvyshv7tjw3vfEzbbUX4epVDSojgsFGK9NXh23pLSl0a1dUMGBFxOdZB50pkwg5aEcukfzctIXvaJCBmVOJxZWG8cyjRw8HVaNB3QFacoDwKI7ONcPwUvw31BhXN3coGNQHr5d3N3doy5k4VvvsRwNOVJ9gZpnxV7gX3mxX8KWfwfYr7YnnBwb1NPMYWXjq3EGhfTmN9XJJMhgEWqVVdZ0gM8Curs~fX5hCFWfZGKaKoIQwPb8JO2qWXON06e7WHPNO4q3tN6ia3InyiEnpUgvBTpe3yonWiQB9iMAbp5zNvTyixaOA__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/peregrine-editions-hero_1d238e82.png",
+      "file": "peregrine-editions-hero_1d238e82.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 119762,
+      "sha256": "2698c8a549ada113e7c1cf8c1ae9312c11becb028cb0731fae292233414febb6",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/peregrine-editions-hero_1d238e82.png?Expires=1790962822&Signature=h-pqOA7C~RmR1QH5t~8JkBD5qE0ZwgTNvltoUbyKcunhEqbeECZ-Cz0Hb0IOxXvnFHH7WRGfmVOfwmzpxBjeQvOqyUHBMz3ZW5ycBwnu-fUxGDGB0xxs6PMopI9DtaaLwfec2X9ED1EJF5-ALHH8Jsk4xYVf6Pp-u5sV4Fks8rwz3KJbEBOGaQOvzuXbOqfx2FnOCIKTlplnyeEL36K5BqH5JkxMRBPHclswmKk1QoZ4kjlYkrVWvBbHntdq5Ekh7Dm0E0-R9j~qqJc6Aa0ox~9SzLkNAwLOHMkGguUsZ7ZscZ3Mi327kRYXAOQGTBD0E1u5LJjWn3LNbvG8TgKX2A__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/ruth-ibarra-hero_f96d0ab9.png",
+      "file": "ruth-ibarra-hero_f96d0ab9.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 472210,
+      "sha256": "6b20b2c0d94f8a2fcfd12cae19b3db4769d900092bf502ec1a21b43e471a92cb",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/ruth-ibarra-hero_f96d0ab9.png?Expires=1790962825&Signature=pQz9oBSv0PCnqWgLbdMGcYUcdTNLo5m17mGXVfdIE8msGh0bOsrwwG0OTgFzO3ZPYcuAYd7pNahOVbE69dozplmLn8a0p703Yv~MKmvwcPzDc3fMI7m8UUddtKI0mpxKp5Y6nsTJvDNJ27MysIrxPJ84oZVuTcjL1wJazdp8FQj40DQ7QwVoAAY1jsU5nwhlsCjIz3Dnq8iEzdq6tDIbMkP-TUHIfkFowc37qilA-8sfyjuQyfi6MyvOqXGlw8Cm4BC~wqsq7JEWBwry7aisYiPhvTwMXEpUqNOxxQV7DNLaFctUXZFTwcTh8xXC4e3ilIWTo2qivcAF0iaLQG3Pkw__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/sardis-parfums-hero_fb56c403.png",
+      "file": "sardis-parfums-hero_fb56c403.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 146914,
+      "sha256": "700151186b3ace322f50b156bc9ac24d60ba762f0f665b7fcfea0bfe138c47a9",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/sardis-parfums-hero_fb56c403.png?Expires=1790962828&Signature=kDZeulkZDaidJz4za-MVRwWAVs8uSUCRvIG0hcXzEik0CrnZoBOjv-FGdX2~-vTfWCMuX4uBi7Bk0ayt~9tTZqx73Ry7LOiXtfGO5NKFctc9PqLCEzHpDSS-zjHZ3ioAj1hshte0ywbI8KrQG8St3hweDS33RRCWqNfGFfgZqZ1uen7KQo5PoA2lq81sC-iyPx6aUpw7tPjnDsNp8iAf6V4m34FQiD3zUoWrJd~BjXK~qKDcH8m435buy2erlZ0okV2CKdGE6zD0HxLAxEtS0X1PBX5pPtCbLJIZ9~5x3PF9J22Uo-E1JcsJ9JTzKU7Q7DHLAYGvz5EY6HNDELSbHQ__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/selene-agents-hero_9dd8b039.png",
+      "file": "selene-agents-hero_9dd8b039.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 105350,
+      "sha256": "236b291710f25c68b74ddfa1bbad952c11a5dc6543491458553cd622e83d0901",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/selene-agents-hero_9dd8b039.png?Expires=1790962831&Signature=BClgz~l-1Q1l9W4ILK7shcbWdxkcxpn1wayCA-WEHsdpRr8GnXfpsZgBwhPtdl-FgAnbHFw2Rx8zfV2b2-2yGT4gzloIUhOca6aKxY6Qg8UZRyN2~grmt~HLIF09EstECI16k-ZozLL8Ks4kkg0ppkVMpD~vR5E5iXb52G5KrxN43wEBZK41XXDZCJDD-EU13NqAtCdyVog5-O0LsEWzj7SnF~A3R7FKZFJh3OZ264A6EoNARZA5XFBPEjvkmPW-bN5JyPnILfauBNuyVjMifsk-w9FkbkwlBT5U5sufXkPDGgznd1LxfErFRMDXQmfIRKO0totIkpqlleZlX0XFmQ__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/stilla-care-hero_1ac443b2.png",
+      "file": "stilla-care-hero_1ac443b2.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 160324,
+      "sha256": "53c0b41f2999e5e77aed87b627b602a9874a930eab2095f52083b421cd3a2c4a",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/stilla-care-hero_1ac443b2.png?Expires=1790962833&Signature=XI~u6KrhRci0NR6EQDhu2V6rjKnoqsrvLmG-GwbfnRb~PtzOQvrHUJASpI0M98NYlPK1E~5Y7H2ERF20XgJiYNm~E4gRiiYHZBoexWnfQ0K2VGqfAdo1vBb69o9dMx7GKQY1yW3aDOeQiliikExQCl9O9gIvjR7DWV1Gf7becUIRYRgEd3j4yy3evyL9YBn9UHQUVYOrydpWngoceyFNB-msCGh940MZnppmrxuxbNGE0jIA9eaJ08H5syzm5WLeKLq665WB6YWWL9enf6e8hv7O7JbRQ0agRhb3glQLAcI7xCsD1P5-WnAxzouSn26IBXwBLEdp0pEtCTUL2KLXfQ__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/tempo-atelier-hero_1f98ce9e.png",
+      "file": "tempo-atelier-hero_1f98ce9e.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 473542,
+      "sha256": "053e89eb63f4a9649caa441db65ad0ebb5c6e1aa6cc19a089d468912bc3e1f15",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/tempo-atelier-hero_1f98ce9e.png?Expires=1790962836&Signature=BtKiFBCCmODhNnJazpkjphxn6rn9a2vRtxEe5ISNRhT-xh1IJ711hAY3zfkt5GelzKrQzFR1CgKg4z-FPg1mf-33DZYKGgdNwFAMxIUZ1lLGReTjHwbTgJSEbESLvYTB9tlCahTR-VKuKn28PVvWFtwqR2aS4zMP7i-EXQaadMtxot0FEJvJnfdoc2LDJc4~LkX0i2vQiN8kAqplbRLLd1sg67lIVf8vOLWKnlhGeURfTrdiq-zRTK7lXYdp2ow3RIUxeb1uPAhmYY8wYNR-xPHyAYPcpl-Pl2Y6Hrfv~j3D4cqLeh2wa-vVaxrXAB-eOxjeDLxobM7bl2APBV7QMA__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/vanta-proof-hero_9690cc5e.png",
+      "file": "vanta-proof-hero_9690cc5e.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 172274,
+      "sha256": "e2983d82164b8249fe9112c4af0aecdfe6e05d07d159140f6a68f788b749186b",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/vanta-proof-hero_9690cc5e.png?Expires=1790962838&Signature=uEf5RHx5zeSVNgyAnD3c-oAvZD1X8JeUyYu4cd5xf7WC2u66guKV2sdYVgela05Dh7RUJG0KvsMqmwyafxWvbFmm5S4WqowNNExuE1kcPpCx9QdWAxbSQb9sFnH7s1Kpa-hqG-v5OgsDZp59zyoI42lNynj~qEQGCrE7QOIM43DgicHi~2oueLbpDpk0HlZbG5XZd6ZR3hts853F89hIsF0Spz4RG4S8~Q8I77qQLYkP6BMSXJJ2wRzYB2XuDuwW2~de9ZZltjASNf9DVSge8z8zq6iEjdr5gDjyokjyr-HmZWi-o9Rs31tbMu10bJ9IUQpO-URRGp1Gd4yIIuou9w__&Key-Pair-Id=K1MP89RTKNH4J"
+    },
+    {
+      "reference": "/manus-storage/vela-maison-hero_742c864d.png",
+      "file": "vela-maison-hero_742c864d.png",
+      "status": "archived",
+      "http": 200,
+      "content_type": "image/webp",
+      "bytes": 130672,
+      "sha256": "97593ac4635272c75472c5dcf192b542c4cdfabcca13b9edecd4a169f501e8d4",
+      "final_url": "https://d36hbw14aib5lz.cloudfront.net/310519663909230850/Jx4vEohgXwp36BXoGegYMH/vela-maison-hero_742c864d.png?Expires=1790962842&Signature=rskMqvyXpSDaImVcAWIbknlDKWwh9xpSQE6B0C4TA80fXeVPVidgKvsW5mj6N8bkg0AQQrrCOihROWmok9uQAz~qPMDlC-R81OS7eDBkYLq~rlHtPxBpJGPinOEOUunr43syZZJxwxqhNjaKdVdaX9odHwoZh3Qw4RIOdJc8y9MEOizuIRZ06kP6RDYahHMZyh7Mf~tFxr6nqwsUFgkcYuC-WOVPT2n8Ssg3I2Ca-CHy2HL3RLZ5xirntl3ZX5HMkCsuanUfCtzrU1zH7rYBrxWtsT4WwNR7NU5TqZa7y52b47Zz1HtSG-I9RfwYRDCjOtRtNLterTAWScrHudLdwg__&Key-Pair-Id=K1MP89RTKNH4J"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "majorDimension": "ROWS",
+  "range": "Handoffs!A1:Z120",
+  "values": [
+    [
+      "handoff_id",
+      "goal_id",
+      "product_id",
+      "from_operator",
+      "to_operator",
+      "status",
+      "title",
+      "summary",
+      "asks",
+      "recorded_at_utc"
+    ],
+    [
+      "handoff-0001",
+      "goal-batch-01",
+      "",
+      "Operator A",
+      "Operator B",
+      "acknowledged",
+      "Shared sync is ready",
+      "The approved Google Sheet contains the Batch 01 launch goal and five verified product preview routes. The Luma workspace remains private; use this sheet for cross-chat coordination.",
+      "Confirm sheet access and post the next recommended Batch 02 planning task.",
+      "2026-08-27T01:52:06Z"
+    ],
+    [
+      "handoff-0002",
+      "goal-factory-50",
+      "prd-axiom-grid",
+      "Operator A",
+      "Operator B",
+      "acknowledged",
+      "Axiom Grid evidence handoff reviewed",
+      "Operator A supplied repository origin, checkpoint-4bf92357, immutable commit 4bf92357a9a47653af1331e63bc1befcd4f7bcd8, a partial dependency/hash note, hero asset reference, runtime evidence, keyboard matrix, copy/CTA differentiation ledger, and motion inventory. Operator B verified the handoff location and recorded the exact-release review. Commercial clearance remains blocked pending original design history, asset licence proof, contributor rights, formal SPDX/CycloneDX SBOM and notices, qualified counsel review, and archive checksum if used.",
+      "Operator A to supply remaining evidence; owner/counsel review required before commercial activation",
+      "2026-09-18T08:16:00Z"
+    ]
+  ]
+}

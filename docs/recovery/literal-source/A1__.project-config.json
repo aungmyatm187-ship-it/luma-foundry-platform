@@ -1,0 +1,44 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [
+    "db",
+    "server",
+    "user"
+  ],
+  "dev_command": "pnpm run dev",
+  "env_vars": {
+    "DATABASE_URL": "mysql://wsZdd4EYHq3eQDG.b40e7a50b1f1:SAIo11F10RicKHW7ekQ0@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/Jx4vEohgXwp36BXoGegYMH?ssl={\"rejectUnauthorized\":true}",
+    "DRIZZLE_DATABASE_URL": "mysql://wsZdd4EYHq3eQDG.b40e7a50b1f1:SAIo11F10RicKHW7ekQ0@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/Jx4vEohgXwp36BXoGegYMH?ssl={\"rejectUnauthorized\":true}",
+    "MANUS_WEBDEV_PROJECT_ID": "Jx4vEohgXwp36BXoGegYMH"
+  },
+  "experiments": [
+    "no_db_push"
+  ],
+  "git_remote": {
+    "repo_url": "https://7f0548f6b28a1758d9bf7be630d36cb4.artifacts.cloudflare.net/git/prod/Jx4vEohgXwp36BXoGegYMH.git",
+    "expiration": "2026-09-16T11:27:35.630Z",
+    "token": "art_v2_x_acc4dd949b5008981eb4cbad4b2ced3f35b1b5fe?expires=1789558055",
+    "backend": "GIT_BACKEND_ARTIFACTS"
+  },
+  "name": "luma-foundry",
+  "path": "/home/ubuntu/luma-foundry",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "Q9xviVJ93jd8gGPMPSfJp6",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "Bn9NffpWkQU3d3emRJitom",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "Myat Min Kan Paing Soe",
+    "OWNER_OPEN_ID": "JQMmoScNCDXxpC2d6Uo2Wc",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "addcc390-d706-4a01-b489-fd7eba68f0e1",
+    "VITE_APP_ID": "Jx4vEohgXwp36BXoGegYMH",
+    "VITE_APP_LOGO": "https://files.manuscdn.com/user_upload_by_module/web_dev_logo/310519663909230850/UyaZRJBqLCmmDFfR.png",
+    "VITE_APP_TITLE": "KanPi Foundry - All in one AI Workshop",
+    "VITE_FRONTEND_FORGE_API_KEY": "fyZfPgrcCqukeJhCVMjAwq",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-db-user",
+  "test_command": "pnpm test"
+}

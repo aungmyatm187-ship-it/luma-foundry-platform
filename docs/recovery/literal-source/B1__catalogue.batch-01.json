@@ -1,0 +1,151 @@
+{
+  "batch": "01",
+  "currency": "USD",
+  "products": [
+    {
+      "index": 1,
+      "sku": "LF-B01-01",
+      "slug": "[template-01-slug]",
+      "name": "[TEMPLATE 01 NAME]",
+      "category": "[CATEGORY]",
+      "platform": "[PLATFORM]",
+      "previewImageUrl": "https://example.com/template-01-preview.jpg",
+      "livePreviewUrl": "https://example.com/template-01-live-preview",
+      "setupGuideUrl": "https://example.com/template-01-setup-guide",
+      "variants": [
+        {
+          "licenceCode": "standard",
+          "licenceName": "Single-Use Standard Licence",
+          "priceUsd": 79,
+          "lemonSqueezyProductId": "REPLACE_B01_01_PRODUCT_ID",
+          "lemonSqueezyVariantId": "REPLACE_B01_01_STANDARD_VARIANT_ID",
+          "checkoutUrl": "https://your-storefront.lemonsqueezy.com/buy/REPLACE_B01_01_STANDARD_CHECKOUT_ID"
+        },
+        {
+          "licenceCode": "agency",
+          "licenceName": "Multi-Use Commercial Agency Licence",
+          "priceUsd": 249,
+          "lemonSqueezyProductId": "REPLACE_B01_01_PRODUCT_ID",
+          "lemonSqueezyVariantId": "REPLACE_B01_01_AGENCY_VARIANT_ID",
+          "checkoutUrl": "https://your-storefront.lemonsqueezy.com/buy/REPLACE_B01_01_AGENCY_CHECKOUT_ID"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "sku": "LF-B01-02",
+      "slug": "[template-02-slug]",
+      "name": "[TEMPLATE 02 NAME]",
+      "category": "[CATEGORY]",
+      "platform": "[PLATFORM]",
+      "previewImageUrl": "https://example.com/template-02-preview.jpg",
+      "livePreviewUrl": "https://example.com/template-02-live-preview",
+      "setupGuideUrl": "https://example.com/template-02-setup-guide",
+      "variants": [
+        {
+          "licenceCode": "standard",
+          "licenceName": "Single-Use Standard Licence",
+          "priceUsd": 79,
+          "lemonSqueezyProductId": "REPLACE_B01_02_PRODUCT_ID",
+          "lemonSqueezyVariantId": "REPLACE_B01_02_STANDARD_VARIANT_ID",
+          "checkoutUrl": "https://your-storefront.lemonsqueezy.com/buy/REPLACE_B01_02_STANDARD_CHECKOUT_ID"
+        },
+        {
+          "licenceCode": "agency",
+          "licenceName": "Multi-Use Commercial Agency Licence",
+          "priceUsd": 249,
+          "lemonSqueezyProductId": "REPLACE_B01_02_PRODUCT_ID",
+          "lemonSqueezyVariantId": "REPLACE_B01_02_AGENCY_VARIANT_ID",
+          "checkoutUrl": "https://your-storefront.lemonsqueezy.com/buy/REPLACE_B01_02_AGENCY_CHECKOUT_ID"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "sku": "LF-B01-03",
+      "slug": "[template-03-slug]",
+      "name": "[TEMPLATE 03 NAME]",
+      "category": "[CATEGORY]",
+      "platform": "[PLATFORM]",
+      "previewImageUrl": "https://example.com/template-03-preview.jpg",
+      "livePreviewUrl": "https://example.com/template-03-live-preview",
+      "setupGuideUrl": "https://example.com/template-03-setup-guide",
+      "variants": [
+        {
+          "licenceCode": "standard",
+          "licenceName": "Single-Use Standard Licence",
+          "priceUsd": 79,
+          "lemonSqueezyProductId": "REPLACE_B01_03_PRODUCT_ID",
+          "lemonSqueezyVariantId": "REPLACE_B01_03_STANDARD_VARIANT_ID",
+          "checkoutUrl": "https://your-storefront.lemonsqueezy.com/buy/REPLACE_B01_03_STANDARD_CHECKOUT_ID"
+        },
+        {
+          "licenceCode": "agency",
+          "licenceName": "Multi-Use Commercial Agency Licence",
+          "priceUsd": 249,
+          "lemonSqueezyProductId": "REPLACE_B01_03_PRODUCT_ID",
+          "lemonSqueezyVariantId": "REPLACE_B01_03_AGENCY_VARIANT_ID",
+          "checkoutUrl": "https://your-storefront.lemonsqueezy.com/buy/REPLACE_B01_03_AGENCY_CHECKOUT_ID"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "sku": "LF-B01-04",
+      "slug": "[template-04-slug]",
+      "name": "[TEMPLATE 04 NAME]",
+      "category": "[CATEGORY]",
+      "platform": "[PLATFORM]",
+      "previewImageUrl": "https://example.com/template-04-preview.jpg",
+      "livePreviewUrl": "https://example.com/template-04-live-preview",
+      "setupGuideUrl": "https://example.com/template-04-setup-guide",
+      "variants": [
+        {
+          "licenceCode": "standard",
+          "licenceName": "Single-Use Standard Licence",
+          "priceUsd": 79,
+          "lemonSqueezyProductId": "REPLACE_B01_04_PRODUCT_ID",
+          "lemonSqueezyVariantId": "REPLACE_B01_04_STANDARD_VARIANT_ID",
+          "checkoutUrl": "https://your-storefront.lemonsqueezy.com/buy/REPLACE_B01_04_STANDARD_CHECKOUT_ID"
+        },
+        {
+          "licenceCode": "agency",
+          "licenceName": "Multi-Use Commercial Agency Licence",
+          "priceUsd": 249,
+          "lemonSqueezyProductId": "REPLACE_B01_04_PRODUCT_ID",
+          "lemonSqueezyVariantId": "REPLACE_B01_04_AGENCY_VARIANT_ID",
+          "checkoutUrl": "https://your-storefront.lemonsqueezy.com/buy/REPLACE_B01_04_AGENCY_CHECKOUT_ID"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "sku": "LF-B01-05",
+      "slug": "[template-05-slug]",
+      "name": "[TEMPLATE 05 NAME]",
+      "category": "[CATEGORY]",
+      "platform": "[PLATFORM]",
+      "previewImageUrl": "https://example.com/template-05-preview.jpg",
+      "livePreviewUrl": "https://example.com/template-05-live-preview",
+      "setupGuideUrl": "https://example.com/template-05-setup-guide",
+      "variants": [
+        {
+          "licenceCode": "standard",
+          "licenceName": "Single-Use Standard Licence",
+          "priceUsd": 79,
+          "lemonSqueezyProductId": "REPLACE_B01_05_PRODUCT_ID",
+          "lemonSqueezyVariantId": "REPLACE_B01_05_STANDARD_VARIANT_ID",
+          "checkoutUrl": "https://your-storefront.lemonsqueezy.com/buy/REPLACE_B01_05_STANDARD_CHECKOUT_ID"
+        },
+        {
+          "licenceCode": "agency",
+          "licenceName": "Multi-Use Commercial Agency Licence",
+          "priceUsd": 249,
+          "lemonSqueezyProductId": "REPLACE_B01_05_PRODUCT_ID",
+          "lemonSqueezyVariantId": "REPLACE_B01_05_AGENCY_VARIANT_ID",
+          "checkoutUrl": "https://your-storefront.lemonsqueezy.com/buy/REPLACE_B01_05_AGENCY_CHECKOUT_ID"
+        }
+      ]
+    }
+  ]
+}

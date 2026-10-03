@@ -1,0 +1,55 @@
+# Save this as: .github/workflows/lumafoundry-update.yml in your lumafoundry repo
+#
+# Three ways to run it:
+#  1. schedule    — runs on its own, no one has to trigger anything
+#  2. workflow_dispatch — a manual "Run workflow" button in the GitHub UI
+#  3. repository_dispatch — Manus (or anything) can start a run with ONE
+#     lightweight API call, instead of Manus browsing/operating the site:
+#
+#     POST https://api.github.com/repos/<owner>/<repo>/dispatches
+#     Headers: Authorization: Bearer <a GitHub token>, Accept: application/vnd.github+json
+#     Body:    {"event_type": "manus-trigger"}
+#
+#     That single POST is the entire "cost" to Manus — no browser session,
+#     no per-page credit burn.
+
+name: LumaFoundry Content Update
+
+on:
+  schedule:
+    - cron: "0 3 * * *"   # daily 03:00 UTC — change or delete as needed
+  workflow_dispatch: {}
+  repository_dispatch:
+    types: [manus-trigger]
+
+jobs:
+  update-content:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run content update (stdlib only — no pip installs needed)
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          # Add any other free LLM API keys here as additional repo secrets,
+          # e.g. CLOUDFLARE_API_TOKEN, OPENROUTER_API_KEY, etc.
+        run: python3 scripts/update_content.py
+
+      - name: Commit and push only if something actually changed
+        run: |
+          git config user.name "lumafoundry-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "auto: content update $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push
+
+# If lumafoundry.live is on GitHub Pages, nothing else is needed — pushing to
+# main triggers Pages' own deploy automatically.
+# If it's on Vercel/Netlify/Cloudflare Pages connected to this repo, same
+# thing — they auto-deploy on push, no extra step here.
+# If it's on a plain VPS/cPanel host, add one more step here using an SSH
+# deploy key (scp/rsync) — ask and I'll add it once you confirm the host.

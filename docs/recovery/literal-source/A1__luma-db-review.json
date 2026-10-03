@@ -1,0 +1,73 @@
+--- collaborationGoals ---
+[
+  {
+    "id": 1,
+    "ownerId": 1,
+    "title": "Launch Batch 01 on the Luma Foundry storefront",
+    "outcome": "Present and package Axiom Grid, Selene Agents, Kinetic Mesh, Lattice Labs, and Orbital Ledger as a verified first product collection with live previews.",
+    "priority": "focus",
+    "goalStatus": "active",
+    "targetDate": null,
+    "createdAt": "2026-08-27T01:37:38.000Z",
+    "updatedAt": "2026-08-27T01:37:38.000Z"
+  }
+]
+--- collaborationProducts ---
+[
+  {
+    "id": 2,
+    "goalId": 1,
+    "name": "Selene Agents",
+    "category": "Enterprise Agent Orchestration",
+    "route": "https://lumafoundry-jx4veohg.manus.space/selene-agents",
+    "productStatus": "live",
+    "createdAt": "2026-08-27T01:37:38.000Z",
+    "updatedAt": "2026-08-27T01:37:38.000Z"
+  },
+  {
+    "id": 3,
+    "goalId": 1,
+    "name": "Kinetic Mesh",
+    "category": "No-Code Automation",
+    "route": "https://lumafoundry-jx4veohg.manus.space/kinetic-mesh",
+    "productStatus": "live",
+    "createdAt": "2026-08-27T01:37:38.000Z",
+    "updatedAt": "2026-08-27T01:37:38.000Z"
+  },
+  {
+    "id": 4,
+    "goalId": 1,
+    "name": "Lattice Labs",
+    "category": "Research Intelligence",
+    "route": "https://lumafoundry-jx4veohg.manus.space/lattice-labs",
+    "productStatus": "live",
+    "createdAt": "2026-08-27T01:37:38.000Z",
+    "updatedAt": "2026-08-27T01:37:38.000Z"
+  },
+  {
+    "id": 5,
+    "goalId": 1,
+    "name": "Orbital Ledger",
+    "category": "CFO Intelligence",
+    "route": "https://lumafoundry-jx4veohg.manus.space/orbital-ledger",
+    "productStatus": "live",
+    "createdAt": "2026-08-27T01:37:38.000Z",
+    "updatedAt": "2026-08-27T01:37:38.000Z"
+  },
+  {
+    "id": 1,
+    "goalId": 1,
+    "name": "Axiom Grid",
+    "category": "AI Infrastructure",
+    "route": "https://lumafoundry-jx4veohg.manus.space/axiom-grid",
+    "productStatus": "live",
+    "createdAt": "2026-08-27T01:37:38.000Z",
+    "updatedAt": "2026-08-27T01:37:38.000Z"
+  }
+]
+--- collaborationHandoffs ---
+[]
+--- collaborationWorkItems ---
+[]
+--- collaborationDecisions ERROR ---
+Unknown column 'updatedAt' in 'order clause'

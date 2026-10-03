@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "snapshot_type": "operator_b_storefront_state",
+  "captured_at_utc": "2026-08-28T05:05:00Z",
+  "project": {
+    "name": "Luma Foundry master shop",
+    "current_preview_url": "https://4177-ir778hqiy4esfpc66tja2-c6be5502.us3.manus.computer",
+    "permanent_manus_space_deployment": "pending managed project provisioning or shared project access"
+  },
+  "drive_handoff": {
+    "folder_id": "1NVDo6CyIfqdvyjgDYpkLFhK2p2aYx_SV",
+    "folder_name": "Marketing Automation",
+    "master_shop_bundle_file_id": "1TmOfY5axa9LuMdV0guawbip9IMvZY9iw",
+    "operations_skill_bundle_file_id": "1zBtOLv7N7dRJ2A37vA4Z2BSJWtLmGzCF",
+    "ip_compliance_benchmark_skill_bundle_file_id": "1F27br5YU854GXiMdqzcKHSC1y6x5f_Xz",
+    "ip_compliance_benchmark_skill_local_path": "/home/ubuntu/skills/luma-ip-compliance-brand-benchmark/SKILL.md",
+    "ip_compliance_register_spreadsheet_id": "1lAGdfAjOfR618fBV7myEvv8a30o8nLb5jknSM8ndroU",
+    "ip_compliance_register_url": "https://docs.google.com/spreadsheets/d/1lAGdfAjOfR618fBV7myEvv8a30o8nLb5jknSM8ndroU/edit",
+    "sync_log_id": "sync-0017",
+    "latest_project_log_id": "sync-0021"
+  },
+  "source_of_truth": {
+    "provider": "Google Sheets",
+    "spreadsheet_id": "1mM6HtzS14FRygndjIDYfzl8LGxF7jq0-ISfpniijaTU",
+    "products_tab": "Products",
+    "active_batch": "Complete current 50-product collection",
+    "mapped_product_count": 50,
+    "sync_mode": "manual read-only snapshot; real-time listener not configured"
+  },
+  "storefront": {
+    "routes": ["/", "/shop.html", "/template.html?id=<product_id>"],
+    "filters": ["systems", "insight", "luxury", "spatial", "objects", "practice"],
+    "legal_surfaces": ["standard licence", "agency licence", "refund policy", "working independent-studio IP declaration"],
+    "payment_state": "disconnected",
+    "hero_hook_live": "Digital systems built to be unmistakable."
+  },
+  "verified": {
+    "mapped_template_cards": 50,
+    "live_demo_destinations": 50,
+    "checkout_anchors": 0,
+    "unit_tests": "9 passed",
+    "product_detail_routes": 50
+  },
+  "ip_compliance_audit": {
+    "audit_document": "IP-COMPLIANCE-AUDIT.md",
+    "machine_readable_record": "data/ip-compliance-audit.json",
+    "technical_master_storefront_and_catalogue_result": "0 benchmark-brand terms/domains, 0 direct benchmark asset origins, and 50/50 prior bounded link-audit responses",
+    "status": "technical scan passed with legal and provenance limitations documented",
+    "operator_a_source_repository_review": "not accessible in this workspace; required before commercial release",
+    "operator_a_evidence_review_document": "OPERATOR-A-EVIDENCE-REVIEW.md",
+    "product_evidence_matrix_spreadsheet_tab": "Product Evidence Matrix",
+    "product_evidence_matrix_result": "50/50 Luma-hosted public URLs; 0/50 source history, asset licence, contributor, dependency, or counsel records accessible; 0/50 commercially cleared",
+    "shared_operator_a_evidence_task": "task-operator-a-ip-evidence-001"
+  },
+  "operator_a_assistance": {
+    "guide": "OPERATOR-A-EVIDENCE-KIT.md",
+    "source_commit_register_tab": "Source Commit Register",
+    "asset_licence_register_tab": "Asset Licence Register",
+    "prefilled_products": 50,
+    "status": "starter registers delivered; Operator A evidence remains pending and no product is commercially cleared"
+  },
+  "benchmark_research": {
+    "document": "FRANCE-GERMANY-PREMIUM-WEB-RESEARCH.md",
+    "brands_reviewed": 12,
+    "country_split": "6 France / 6 Germany",
+    "confidence_distribution": "7 high / 1 medium / 4 low",
+    "implementation_boundary": "structural learning only; no brand assets, marks, source code, slogans, signature patterns, or exact layouts may be copied",
+    "similarweb_state": "no usable data in this run; no traffic or ranking claims"
+  },
+  "guardrails": {
+    "no_fake_reviews_or_ratings": true,
+    "no_right_click_or_copy_blocking": true,
+    "no_live_payment_or_webhook": true,
+    "no_auto_publish_after_sheet_change": true
+  },
+  "next_owner_approval": [
+    "Choose manual owner-reviewed sync or event-driven Drive-change sync.",
+    "Provide/share a dedicated managed Luma Foundry web project for permanent manus.space deployment.",
+    "Confirm Drive destination folder and authorise write access for state backups.",
+    "Confirm legal entity and final commercial fields before payment activation.",
+    "Provide Operator A source-code provenance, asset licences, dependency notices, contributor records, and original design history for per-template commercial release review."
+  ]
+}

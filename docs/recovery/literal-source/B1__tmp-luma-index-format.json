@@ -1,0 +1,31 @@
+{
+  "requests": [
+    {
+      "updateSheetProperties": {
+        "properties": {
+          "sheetId": 0,
+          "title": "Drive Index",
+          "gridProperties": {"frozenRowCount": 1}
+        },
+        "fields": "title,gridProperties.frozenRowCount"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {"sheetId": 0, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 0, "endColumnIndex": 14},
+        "cell": {"userEnteredFormat": {"backgroundColor": {"red": 0.08, "green": 0.08, "blue": 0.08}, "textFormat": {"bold": true, "foregroundColor": {"red": 1, "green": 1, "blue": 1}}}},
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "setBasicFilter": {
+        "filter": {"range": {"sheetId": 0, "startRowIndex": 0, "endRowIndex": 11, "startColumnIndex": 0, "endColumnIndex": 14}}
+      }
+    },
+    {
+      "autoResizeDimensions": {
+        "dimensions": {"sheetId": 0, "dimension": "COLUMNS", "startIndex": 0, "endIndex": 14}
+      }
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "majorDimension": "ROWS",
+  "range": "Tasks!A1:Z120",
+  "values": [
+    [
+      "task_id",
+      "goal_id",
+      "product_id",
+      "assigned_to",
+      "priority",
+      "status",
+      "title",
+      "detail",
+      "created_by",
+      "updated_at_utc"
+    ],
+    [
+      "task-onboard-operator-b",
+      "goal-batch-01",
+      "",
+      "Operator B",
+      "high",
+      "ready",
+      "Establish shared sync baseline",
+      "Open the sync workbook; confirm that Goals and Products match Batch 01; use the Tasks and Handoffs tabs for all cross-operator updates.",
+      "Operator A",
+      "2026-08-27T01:52:06Z"
+    ],
+    [
+      "task-plan-batch-02",
+      "goal-batch-01",
+      "",
+      "Operator B",
+      "medium",
+      "ready",
+      "Prepare Batch 02 portfolio architecture",
+      "Prepare a non-overlapping five-product Batch 02 concept brief after Batch 01 product mapping, factual detail pages, and purchase-delivery tests are verified. Record selected concepts and build boundaries in Handoffs before production begins.",
+      "Operator B",
+      "2026-08-27T01:57:00Z"
+    ],
+    [
+      "task-build-master-shop",
+      "goal-batch-01",
+      "",
+      "Operator B",
+      "high",
+      "review",
+      "Build preview-ready Luma Foundry master shop",
+      "Build complete for preview. Dedicated public preview is available at https://4177-ir778hqiy4esfpc66tja2-c6be5502.us3.manus.computer with five Batch 01 cards, five verified Luma Live Demo links, standalone detail routes, legal archive dialogs, and no live payment links.",
+      "Operator B",
+      "2026-08-27T02:16:00Z"
+    ],
+    [
+      "task-operator-a-ip-evidence-001",
+      "goal-factory-50",
+      "",
+      "Operator A",
+      "high",
+      "ready",
+      "Provide counsel-ready source and asset provenance for all 50 templates",
+      "For each active product, record: (1) source repository URL and immutable commit/hash; (2) original design-history/source-file record; (3) every image/icon/video/audio/texture/font asset with creator, source, licence/permission, and commercial-use scope; (4) contributor assignment/work-for-hire record; (5) dependency licence inventory and required notices; and (6) counsel-review status. Attach evidence in the shared workspace or provide secure access. Do not mark a template commercially cleared until all six fields are verified.",
+      "Operator B",
+      "2026-08-27T03:38:30Z"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "perceived_at": "2026-09-18T10:56:23.267528Z",
+  "chain": {
+    "signed": true,
+    "verified": true
+  },
+  "perception": {
+    "observations": {
+      "backend": {
+        "status": "healthy",
+        "data": "status_code=200; evidence=41"
+      },
+      "repo": {
+        "status": "healthy",
+        "data": "release identity observed"
+      }
+    }
+  }
+}

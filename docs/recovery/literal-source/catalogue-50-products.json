@@ -1,0 +1,352 @@
+[
+  {
+    "product_id": "prd-axiom-grid",
+    "product_name": "Axiom Grid",
+    "category": "AI Infrastructure",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/axiom-grid",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-selene-agents",
+    "product_name": "Selene Agents",
+    "category": "Enterprise Agent Orchestration",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/selene-agents",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-kinetic-mesh",
+    "product_name": "Kinetic Mesh",
+    "category": "No-Code Automation",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/kinetic-mesh",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-lattice-labs",
+    "product_name": "Lattice Labs",
+    "category": "Research Intelligence",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/lattice-labs",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-orbital-ledger",
+    "product_name": "Orbital Ledger",
+    "category": "CFO Intelligence",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/orbital-ledger",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-stilla-care-systems",
+    "product_name": "Stilla Care Systems",
+    "category": "Care-Operations AI",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/stilla-care-systems",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-morrow-compute",
+    "product_name": "Morrow Compute",
+    "category": "Edge AI Hardware",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/morrow-compute",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-vanta-proof",
+    "product_name": "Vanta Proof",
+    "category": "AI Governance and Compliance",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/vanta-proof",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-helio-relay",
+    "product_name": "Helio Relay",
+    "category": "Conversational AI for Service Teams",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/helio-relay",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-folio-forms",
+    "product_name": "Folio Forms",
+    "category": "Generative Brand Platform",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/folio-forms",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-noor-vale",
+    "product_name": "Noor Vale",
+    "category": "Editorial Fashion Portfolio",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/noor-vale",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-aster-alder",
+    "product_name": "Aster & Alder",
+    "category": "Fine Jewellery House",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/aster-alder",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-elan-method",
+    "product_name": "Élan Method",
+    "category": "Premium Skin Studio",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/elan-method",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-vela-maison",
+    "product_name": "Vela Maison",
+    "category": "Couture Bridal Atelier",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/vela-maison",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-sardis-parfums",
+    "product_name": "Sardis Parfums",
+    "category": "Niche Fragrance Brand",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/sardis-parfums",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-ruth-ibarra-botanics",
+    "product_name": "Ruth Ibarra Botanics",
+    "category": "Floral Studio",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/ruth-ibarra-botanics",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-tempo-atelier",
+    "product_name": "Tempo Atelier",
+    "category": "Independent Watchmaker",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/tempo-atelier",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-peregrine-editions",
+    "product_name": "Peregrine Editions",
+    "category": "Art and Object Gallery",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/peregrine-editions",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-caldera-optical",
+    "product_name": "Caldera Optical",
+    "category": "Design-Led Eyewear",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/caldera-optical",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-mare-house",
+    "product_name": "Maré House",
+    "category": "Coastal Wellness Retreat",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/mare-house",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-monolith-works",
+    "product_name": "Monolith Works",
+    "category": "Contemporary Architecture Practice",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/monolith-works",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-nocturne-estates",
+    "product_name": "Nocturne Estates",
+    "category": "Luxury Property Brokerage",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/nocturne-estates",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-alder-house",
+    "product_name": "Alder House",
+    "category": "Boutique Hotel",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/alder-house",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-formwell-interiors",
+    "product_name": "Formwell Interiors",
+    "category": "High-End Residential Interiors",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/formwell-interiors",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-studio-lumen",
+    "product_name": "Studio Lumen",
+    "category": "Architectural Lighting",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/studio-lumen",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-maison-rook",
+    "product_name": "Maison Rook",
+    "category": "Private Event Venue",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/maison-rook",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-terra-forma",
+    "product_name": "Terra Forma",
+    "category": "Landscape Architecture Studio",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/terra-forma",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-veloce-district",
+    "product_name": "Veloce District",
+    "category": "Urban Mixed-Use Development",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/veloce-district",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-hinge-hearth",
+    "product_name": "Hinge & Hearth",
+    "category": "Premium Home Furnishings",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/hinge-hearth",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-fieldnote-cabins",
+    "product_name": "Fieldnote Cabins",
+    "category": "Design Cabins and Escapes",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/fieldnote-cabins",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-kansa-objects",
+    "product_name": "Kansa Objects",
+    "category": "Artful Homewares",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/kansa-objects",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-ora-roasters",
+    "product_name": "Ora Roasters",
+    "category": "Specialty Coffee Subscription",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/ora-roasters",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-corella-run",
+    "product_name": "Corella Run",
+    "category": "Premium Running Apparel",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/corella-run",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-solace-audio",
+    "product_name": "Solace Audio",
+    "category": "High-Fidelity Speakers",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/solace-audio",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-basil-bone",
+    "product_name": "Basil & Bone",
+    "category": "Elevated Pet Goods",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/basil-bone",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-vesper-pantry",
+    "product_name": "Vesper Pantry",
+    "category": "Fine Food and Table Goods",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/vesper-pantry",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-arq-supply",
+    "product_name": "Arq Supply",
+    "category": "Design Tools for Architects",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/arq-supply",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-perrin-carry",
+    "product_name": "Perrin Carry",
+    "category": "Travel Accessories",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/perrin-carry",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-wildercare",
+    "product_name": "Wildercare",
+    "category": "Botanical Personal Care",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/wildercare",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-havenlark",
+    "product_name": "Havenlark",
+    "category": "Considered Children’s Design",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/havenlark",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-sable-type",
+    "product_name": "Sable & Type",
+    "category": "Brand and Digital Agency",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/sable-type",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-civic-assembly",
+    "product_name": "Civic Assembly",
+    "category": "Urban Strategy and Place Branding",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/civic-assembly",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-masonry-films",
+    "product_name": "Masonry Films",
+    "category": "Commercial Production Studio",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/masonry-films",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-northline-counsel",
+    "product_name": "Northline Counsel",
+    "category": "Modern Legal Advisory",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/northline-counsel",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-pattern-school",
+    "product_name": "Pattern School",
+    "category": "Premium Creative Education",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/pattern-school",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-oriel-advisory",
+    "product_name": "Oriel Advisory",
+    "category": "Strategy and Transformation Consultancy",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/oriel-advisory",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-hinterland-sound",
+    "product_name": "Hinterland Sound",
+    "category": "Sonic Identity Studio",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/hinterland-sound",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-quorum-house",
+    "product_name": "Quorum House",
+    "category": "Culture and Event Experience Studio",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/quorum-house",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-adjacent-talent",
+    "product_name": "Adjacent Talent",
+    "category": "Executive Creative Search",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/adjacent-talent",
+    "status": "live"
+  },
+  {
+    "product_id": "prd-lumen-co",
+    "product_name": "Lumen & Co.",
+    "category": "Destination Wedding Planning",
+    "hosted_preview_url": "https://lumafoundry-jx4veohg.manus.space/lumen-co",
+    "status": "live"
+  }
+]

@@ -1,0 +1,140 @@
+=== HANDOFFS ===
+{
+  "majorDimension": "ROWS",
+  "range": "Handoffs!A1:J10",
+  "values": [
+    [
+      "handoff_id",
+      "goal_id",
+      "product_id",
+      "from_operator",
+      "to_operator",
+      "status",
+      "title",
+      "summary",
+      "asks",
+      "recorded_at_utc"
+    ],
+    [
+      "handoff-0001",
+      "goal-batch-01",
+      "",
+      "Operator A",
+      "Operator B",
+      "acknowledged",
+      "Shared sync is ready",
+      "The approved Google Sheet contains the Batch 01 launch goal and five verified product preview routes. The Luma workspace remains private; use this sheet for cross-chat coordination.",
+      "Confirm sheet access and post the next recommended Batch 02 planning task.",
+      "2026-08-27T01:52:06Z"
+    ],
+    [
+      "handoff-0002",
+      "goal-factory-50",
+      "prd-axiom-grid",
+      "Operator A",
+      "Operator B",
+      "acknowledged",
+      "Axiom Grid evidence handoff reviewed",
+      "Operator A supplied repository origin, checkpoint-4bf92357, immutable commit 4bf92357a9a47653af1331e63bc1befcd4f7bcd8, a partial dependency/hash note, hero asset reference, runtime evidence, keyboard matrix, copy/CTA differentiation ledger, and motion inventory. Operator B verified the handoff location and recorded the exact-release review. Commercial clearance remains blocked pending original design history, asset licence proof, contributor rights, formal SPDX/CycloneDX SBOM and notices, qualified counsel review, and archive checksum if used.",
+      "Operator A to supply remaining evidence; owner/counsel review required before commercial activation",
+      "2026-09-18T08:16:00Z"
+    ]
+  ]
+}
+=== SYNC LOG LATEST ===
+{
+  "majorDimension": "ROWS",
+  "range": "'Sync Log'!A26:H36",
+  "values": [
+    [
+      "sync-0022",
+      "2026-09-16T12:43:30Z",
+      "Operator B",
+      "easy_task_register_created",
+      "Marketing Automation / IP Compliance Register",
+      "1lAGdfAjOfR618fBV7myEvv8a30o8nLb5jknSM8ndroU; Easy Task Register",
+      "Created and populated the owner-approved Easy Task Register with 18 evidence-based Manus 1.6 Live tasks split between Operator A and Operator B. Recorded done, pending, partial, and in-progress states; preserved Operator A production, hosted demos, Goals, and Decisions.",
+      "no"
+    ],
+    [
+      "sync-0023",
+      "2026-09-17T06:58:00Z",
+      "Operator A",
+      "axiom_grid_source_evidence_partial",
+      "Marketing Automation / IP Compliance Register + Source Commit Register + Product Evidence Matrix + Easy Task Register",
+      "prd-axiom-grid; A-E-002",
+      "Verified Axiom Grid repository origin, checkpoint-4bf92357 release label, and immutable commit 4bf92357a9a47653af1331e63bc1befcd4f7bcd8 against the current local project state. Updated the Source Commit Register and Product Evidence Matrix; A-E-002 is now 1/50 Partial. Design history, asset licences, contributor rights, SBOM/notices, counsel review, and commercial clearance remain pending. No production source, hosted demo, payment, goal, decision, or other product record was changed.",
+      "no"
+    ],
+    [
+      "sync-0024",
+      "2026-09-17T07:02:00Z",
+      "Operator B",
+      "luma_drive_reorganization_phase_2",
+      "Marketing Automation / 01-06 + 99",
+      "Luma Drive Index 1l9ttLad3ScJL-MaKRL8gNN2UNn7Eens2OIzH1q-y53Y; folders 1drEPXhLfWMARfDaONxds8NpWFmSuBifM, 1T_24n_t3XXTDiQF7u9LIRWnD9LCS3M4j; moved files 1TmOfY5axa9LuMdV0guawbip9IMvZY9iw, 1zBtOLv7N7dRJ2A37vA4Z2BSJWtLmGzCF, 1F27br5YU854GXiMdqzcKHSC1y6x5f_Xz, 1lAGdfAjOfR618fBV7myEvv8a30o8nLb5jknSM8ndroU",
+      "Created canonical 05-Source & Releases and 06-Skills roots with Luma Foundry subfolders; added Luma subfolders under 01, 03, and 04; moved the verified master-shop handoff ZIP, storefront-operations skill ZIP, IP-compliance skill ZIP, and IP Compliance Register without deleting or renaming records; created and populated the Drive Index as a database-like map; verified parents and links. Operator A production assets, hosted demos, Goals, and Decisions were not changed. Remaining: continue Axiom Grid evidence clearance when Operator A supplies missing design-history, licence, contributor, SBOM, and counsel evidence.",
+      "no"
+    ],
+    [
+      "sync-0024",
+      "2026-09-17T07:01:00Z",
+      "Operator A",
+      "axiom_grid_asset_and_packet_partial",
+      "Marketing Automation / IP Compliance Register + Asset Licence Register + Product Evidence Matrix + Easy Task Register",
+      "prd-axiom-grid; A-E-004; A-E-009",
+      "Logged the Axiom Grid hero asset row at the exact release commit with explicit unknown/pending licence fields; replaced generic matrix gaps with per-field pending notes; updated A-E-004 and A-E-009 to Partial. No rights, licence, SBOM, buyer-field, or commercial-clearance claims were invented; no production, payment, goal, or decision state changed.",
+      "no"
+    ],
+    [
+      "sync-0025",
+      "2026-09-18T08:16:00Z",
+      "Operator B",
+      "axiom_grid_evidence_handoff_reviewed",
+      "Marketing Automation / IP Compliance Register + Drive Index + Reports",
+      "prd-axiom-grid; 1V5yno97WeW2G4dHXJMfHQLz5uGhJW_GH; 1l4F_DNaAp754Lwdt04h6xRM0at5yFU1C",
+      "Reviewed Operator A evidence handoff and verified the exact release references recorded for Axiom Grid: repository origin, checkpoint-4bf92357, immutable commit 4bf92357a9a47653af1331e63bc1befcd4f7bcd8, hero asset reference, and partial dependency/hash note. Added a secret-free review note to the canonical Reports folder and indexed it. Axiom Grid remains Preview-ready / Conditional — blocked pending design history, asset licences, contributor rights, formal SBOM/notices, and qualified counsel review. No production asset, hosted demo, payment, webhook, Goal priority, Decision state, or commercial-clearance status was activated.",
+      "yes"
+    ],
+    [
+      "sync-0026",
+      "2026-09-18T08:25:00Z",
+      "Operator B",
+      "axiom_grid_exact_release_links_updated",
+      "Marketing Automation / IP Compliance Register + Drive Index + Reports",
+      "prd-axiom-grid; checkpoint-4bf92357; 4bf92357a9a47653af1331e63bc1befcd4f7bcd8; 1vYGGajheH--iNWZGR0dt6S1lYy7_DbIg",
+      "Linked the exact-release evidence packet and partial dependency/hash note in the Source Commit Register and Product Evidence Matrix, with the handoff, packet, dependency note, and pending checksum manifest recorded in reviewer notes. Created a checksum manifest with hashes for supporting documents only; the actual release archive checksum remains Pending because no owner-approved release archive was supplied. Design-history link remains Pending. No commercial clearance, payment, demo, Goal, Decision, or production asset state changed.",
+      "no"
+    ],
+    [
+      "sync-0027",
+      "2026-09-18T08:29:00Z",
+      "Operator B",
+      "axiom_grid_missing_evidence_draft_created",
+      "Marketing Automation / IP Compliance Register + Drive Index + Reports",
+      "prd-axiom-grid; A-E-003; A-E-004; A-E-005; A-E-006; A-E-009; 1tsgVz37fImOEi-ODRs5GUndd66EgqvF7",
+      "Created a row-ready Easy-task draft for the exact release checkpoint-4bf92357 / commit 4bf92357a9a47653af1331e63bc1befcd4f7bcd8. It specifies the missing design-history, asset-rights, contributor-rights, formal SBOM/notices, counsel-review, and archive-checksum records. All unresolved statuses remain Pending evidence; no evidence was invented and no production, demo, payment, Goal, Decision, or commercial-clearance state changed.",
+      "no"
+    ],
+    [
+      "sync-0028",
+      "2026-09-18T08:30:00Z",
+      "Operator B",
+      "axiom_grid_hero_asset_exact_commit_linked",
+      "Marketing Automation / IP Compliance Register",
+      "prd-axiom-grid; asset-row-5; 4bf92357a9a47653af1331e63bc1befcd4f7bcd8",
+      "Re-checked the Axiom Grid hero asset row against the exact release checkpoint-4bf92357 / commit 4bf92357a9a47653af1331e63bc1befcd4f7bcd8. Linked the source path client/src/pages/AxiomGrid.tsx, supporting evidence packet, and asset path /manus-storage/axiom-grid-hero_46c3b0f8.png in the Asset Licence Register and Product Evidence Matrix. Licence proof, creator/rightsholder, complete asset inventory, commercial scope, attribution, and restrictions remain Pending evidence; no asset status was marked Verified and no production/demo/payment state changed.",
+      "no"
+    ],
+    [
+      "sync-0029",
+      "2026-09-19T08:31:00Z",
+      "Operator B",
+      "axiom_grid_asset_task_evidence_refreshed",
+      "Marketing Automation / IP Compliance Register / Easy Task Register",
+      "A-E-004; prd-axiom-grid; asset-row-5; checkpoint-4bf92357; 4bf92357a9a47653af1331e63bc1befcd4f7bcd8",
+      "Refreshed the A-E-004 evidence field with the exact hero asset path, source path, release label, immutable commit, and supporting evidence-packet link. Kept the task Partial and all unresolved asset-rights fields Pending evidence; no asset was marked Verified and no production, demo, payment, Goal, Decision, or commercial-clearance state changed.",
+      "no"
+    ]
+  ]
+}

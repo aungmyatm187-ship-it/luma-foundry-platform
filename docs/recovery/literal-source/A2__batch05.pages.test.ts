@@ -1,0 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { describe, expect, it } from "vitest";
+const root=resolve(import.meta.dirname,".."); const app=readFileSync(resolve(root,"client/src/App.tsx"),"utf8"); const pages=readFileSync(resolve(root,"client/src/pages/ArchitectureBatchFive.tsx"),"utf8"); const css=readFileSync(resolve(root,"client/src/pages/architecture-batch-05.css"),"utf8");
+describe("Batch 05 architecture and property collection",()=>{it("registers five independent routes",()=>[["/monolith-works","MonolithWorks"],["/nocturne-estates","NocturneEstates"],["/alder-house","AlderHouse"],["/formwell-interiors","FormwellInteriors"],["/studio-lumen","StudioLumen"]].forEach(([route,component])=>{expect(app).toContain(`path={"${route}"} component={${component}}`);expect(pages).toContain(`export function ${component}`)}));it("includes accessibility-aware reveal fallbacks",()=>{expect(pages).toContain("useBatchReveal()");expect(css).toContain("@media(prefers-reduced-motion:reduce)")})});

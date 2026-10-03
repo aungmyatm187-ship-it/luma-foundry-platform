@@ -1,0 +1,79 @@
+{
+  "retrieved_at_utc": "2026-08-27T02:26:53.725251+00:00",
+  "scope": "Comparable brand and template-platform traffic signals for research only; not revenue or conversion data.",
+  "period": {
+    "start": "2026-05",
+    "end": "2026-07"
+  },
+  "domains": {
+    "porsche.com": {
+      "visits_total": {
+        "ok": true,
+        "data": {
+          "code": "failed_precondition",
+          "message": "Credit check passed but current user has insufficient Manus credits. Request was stooped before API call."
+        }
+      },
+      "traffic_sources_desktop": {
+        "ok": true,
+        "data": {
+          "code": "failed_precondition",
+          "message": "Credit check passed but current user has insufficient Manus credits. Request was stooped before API call."
+        }
+      },
+      "traffic_sources_mobile": {
+        "ok": true,
+        "data": {
+          "code": "failed_precondition",
+          "message": "Credit check passed but current user has insufficient Manus credits. Request was stooped before API call."
+        }
+      }
+    },
+    "webflow.com": {
+      "visits_total": {
+        "ok": true,
+        "data": {
+          "code": "failed_precondition",
+          "message": "Credit check passed but current user has insufficient Manus credits. Request was stooped before API call."
+        }
+      },
+      "traffic_sources_desktop": {
+        "ok": true,
+        "data": {
+          "code": "failed_precondition",
+          "message": "Credit check passed but current user has insufficient Manus credits. Request was stooped before API call."
+        }
+      },
+      "traffic_sources_mobile": {
+        "ok": true,
+        "data": {
+          "code": "failed_precondition",
+          "message": "Credit check passed but current user has insufficient Manus credits. Request was stooped before API call."
+        }
+      }
+    },
+    "framer.com": {
+      "visits_total": {
+        "ok": true,
+        "data": {
+          "code": "failed_precondition",
+          "message": "Credit check passed but current user has insufficient Manus credits. Request was stooped before API call."
+        }
+      },
+      "traffic_sources_desktop": {
+        "ok": true,
+        "data": {
+          "code": "failed_precondition",
+          "message": "Credit check passed but current user has insufficient Manus credits. Request was stooped before API call."
+        }
+      },
+      "traffic_sources_mobile": {
+        "ok": true,
+        "data": {
+          "code": "failed_precondition",
+          "message": "Credit check passed but current user has insufficient Manus credits. Request was stooped before API call."
+        }
+      }
+    }
+  }
+}
