@@ -88,6 +88,45 @@ Unit tests import the module directly and would pass even if the server could no
 could not negotiate a protocol version, or exited on a bad stdio read. The probe catches the
 class of failure that only appears when the process is actually run.
 
+## D10 Ñ DNS: keep Manus authoritative, do not cut over to Cloudflare yet
+
+**Chosen:** leave `lumafoundry.live` resolving via the registrar's existing
+`ns1/ns2.globaldomaingroup.com` (which points at `104.18.26.246`), and repair the
+Cloudflare zone's placeholder records in place.
+**Rejected:** changing the registrar nameservers to Cloudflare now.
+
+The live site already resolves and serves HTTP 200 on both `lumafoundry.live`
+and `www` via the current authoritative NS. The Cloudflare zone is `pending`
+and contained documentation-only placeholders (apex `A 192.0.2.1`, `AAAA
+2001:db8::1`). A nameserver cutover would be a destructive change for zero live
+benefit. Fixed the placeholders instead: apex `A` now `104.18.26.246`, RFC3849
+`AAAA` removed. The cutover remains a deliberate, reversible follow-up once the
+Cloudflare zone is confirmed ready end-to-end.
+
+## D11 Ñ CTA: replace toast stubs with a real enquiry intake, not fake checkout
+
+**Chosen:** a self-contained `POST /api/enquiry` lead endpoint (append-only
+`enquiries.jsonl` ledger) plus a `/licence.html` buyer-terms surface.
+**Rejected:** wiring a live payment path with no merchant-of-record configured.
+
+No live Stripe/Lemon Squeezy/Resend key exists yet, and a fake "checkout" would
+be dishonest. The enquiry flow is real (validates `product_id` + email, persists
+to disk) and is exactly the lead-capture half that the future merchant-of-record
+checkout builds on.
+
+## D12 Ñ Evidence: generate what is genuinely generatable, never fabricate counsel review
+
+**Chosen:** generate `source_commit`, `dependency_sbom`, `third_party_notices`,
+and `buyer_terms` from the recovered source and the real `@luma/core` audit
+functions, and report `counsel_review` (and owner-signed `contributor_rights` /
+`design_history`) as missing.
+**Rejected:** marking any product `cleared` by synthesising a counsel review.
+
+A product cannot be `cleared` without a qualified human IP counsel review; that
+is the whole point of the gate. `scripts/generate-evidence.mjs` emits an honest
+report showing 0/50 clearable and listing what is still missing, so an agent can
+ask "what is missing?" and a human can close the remaining rights evidence.
+
 ## Open questions
 
 - **Persistence target.** Postgres via Drizzle matches the shipped schema; confirm before

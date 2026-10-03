@@ -1,0 +1,12 @@
+{
+  "name": "@luma/storefront",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Luma Foundry deployable storefront — the recovered literal source, made runnable with a real enquiry endpoint.",
+  "scripts": {
+    "start": "node server.mjs",
+    "generate": "node scripts/generate-catalogue.mjs",
+    "test": "node --check server.mjs && node --check shop.js && node --check template.js && node --check catalogue.js && node --check app.js && node scripts/smoke-test.mjs"
+  }
+}
