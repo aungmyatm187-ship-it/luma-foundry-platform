@@ -1,0 +1,276 @@
+{
+  "source": "lumafoundry.live/assets/index-CKuzowX7.js",
+  "recovered_at": "2026-10-03",
+  "products": [
+    {
+      "slug": "axiom-grid",
+      "route": "/axiom-grid",
+      "title": "Axiom Grid"
+    },
+    {
+      "slug": "selene-agents",
+      "route": "/selene-agents",
+      "title": "Selene Agents"
+    },
+    {
+      "slug": "kinetic-mesh",
+      "route": "/kinetic-mesh",
+      "title": "Kinetic Mesh"
+    },
+    {
+      "slug": "lattice-labs",
+      "route": "/lattice-labs",
+      "title": "Lattice Labs"
+    },
+    {
+      "slug": "orbital-ledger",
+      "route": "/orbital-ledger",
+      "title": "Orbital Ledger"
+    },
+    {
+      "slug": "stilla-care-systems",
+      "route": "/stilla-care-systems",
+      "title": "Stilla Care Systems"
+    },
+    {
+      "slug": "morrow-compute",
+      "route": "/morrow-compute",
+      "title": "Morrow Compute"
+    },
+    {
+      "slug": "vanta-proof",
+      "route": "/vanta-proof",
+      "title": "Vanta Proof"
+    },
+    {
+      "slug": "helio-relay",
+      "route": "/helio-relay",
+      "title": "Helio Relay"
+    },
+    {
+      "slug": "folio-forms",
+      "route": "/folio-forms",
+      "title": "Folio Forms"
+    },
+    {
+      "slug": "noor-vale",
+      "route": "/noor-vale",
+      "title": "Noor Vale"
+    },
+    {
+      "slug": "aster-alder",
+      "route": "/aster-alder",
+      "title": "Aster & Alder"
+    },
+    {
+      "slug": "elan-method",
+      "route": "/elan-method",
+      "title": "Elan Method"
+    },
+    {
+      "slug": "vela-maison",
+      "route": "/vela-maison",
+      "title": "Vela Maison"
+    },
+    {
+      "slug": "sardis-parfums",
+      "route": "/sardis-parfums",
+      "title": "Sardis Parfums"
+    },
+    {
+      "slug": "ruth-ibarra-botanics",
+      "route": "/ruth-ibarra-botanics",
+      "title": "Ruth Ibarra Botanics"
+    },
+    {
+      "slug": "tempo-atelier",
+      "route": "/tempo-atelier",
+      "title": "Tempo Atelier"
+    },
+    {
+      "slug": "peregrine-editions",
+      "route": "/peregrine-editions",
+      "title": "Peregrine Editions"
+    },
+    {
+      "slug": "caldera-optical",
+      "route": "/caldera-optical",
+      "title": "Caldera Optical"
+    },
+    {
+      "slug": "mare-house",
+      "route": "/mare-house",
+      "title": "Mare House"
+    },
+    {
+      "slug": "monolith-works",
+      "route": "/monolith-works",
+      "title": "Monolith Works"
+    },
+    {
+      "slug": "nocturne-estates",
+      "route": "/nocturne-estates",
+      "title": "Nocturne Estates"
+    },
+    {
+      "slug": "alder-house",
+      "route": "/alder-house",
+      "title": "Alder House"
+    },
+    {
+      "slug": "formwell-interiors",
+      "route": "/formwell-interiors",
+      "title": "Formwell Interiors"
+    },
+    {
+      "slug": "studio-lumen",
+      "route": "/studio-lumen",
+      "title": "Studio Lumen"
+    },
+    {
+      "slug": "maison-rook",
+      "route": "/maison-rook",
+      "title": "Maison Rook"
+    },
+    {
+      "slug": "terra-forma",
+      "route": "/terra-forma",
+      "title": "Terra Forma"
+    },
+    {
+      "slug": "veloce-district",
+      "route": "/veloce-district",
+      "title": "Veloce District"
+    },
+    {
+      "slug": "hinge-hearth",
+      "route": "/hinge-hearth",
+      "title": "Hinge & Hearth"
+    },
+    {
+      "slug": "fieldnote-cabins",
+      "route": "/fieldnote-cabins",
+      "title": "Fieldnote Cabins"
+    },
+    {
+      "slug": "kansa-objects",
+      "route": "/kansa-objects",
+      "title": "Kansa Objects"
+    },
+    {
+      "slug": "ora-roasters",
+      "route": "/ora-roasters",
+      "title": "Ora Roasters"
+    },
+    {
+      "slug": "corella-run",
+      "route": "/corella-run",
+      "title": "Corella Run"
+    },
+    {
+      "slug": "solace-audio",
+      "route": "/solace-audio",
+      "title": "Solace Audio"
+    },
+    {
+      "slug": "basil-bone",
+      "route": "/basil-bone",
+      "title": "Basil & Bone"
+    },
+    {
+      "slug": "vesper-pantry",
+      "route": "/vesper-pantry",
+      "title": "Vesper Pantry"
+    },
+    {
+      "slug": "arq-supply",
+      "route": "/arq-supply",
+      "title": "Arq Supply"
+    },
+    {
+      "slug": "perrin-carry",
+      "route": "/perrin-carry",
+      "title": "Perrin Carry"
+    },
+    {
+      "slug": "wildercare",
+      "route": "/wildercare",
+      "title": "Wildercare"
+    },
+    {
+      "slug": "havenlark",
+      "route": "/havenlark",
+      "title": "Havenlark"
+    },
+    {
+      "slug": "sable-type",
+      "route": "/sable-type",
+      "title": "Sable Type"
+    },
+    {
+      "slug": "civic-assembly",
+      "route": "/civic-assembly",
+      "title": "Civic Assembly"
+    },
+    {
+      "slug": "masonry-films",
+      "route": "/masonry-films",
+      "title": "Masonry Films"
+    },
+    {
+      "slug": "northline-counsel",
+      "route": "/northline-counsel",
+      "title": "Northline Counsel"
+    },
+    {
+      "slug": "pattern-school",
+      "route": "/pattern-school",
+      "title": "Pattern School"
+    },
+    {
+      "slug": "oriel-advisory",
+      "route": "/oriel-advisory",
+      "title": "Oriel Advisory"
+    },
+    {
+      "slug": "hinterland-sound",
+      "route": "/hinterland-sound",
+      "title": "Hinterland Sound"
+    },
+    {
+      "slug": "quorum-house",
+      "route": "/quorum-house",
+      "title": "Quorum House"
+    },
+    {
+      "slug": "adjacent-talent",
+      "route": "/adjacent-talent",
+      "title": "Adjacent Talent"
+    },
+    {
+      "slug": "lumen-co",
+      "route": "/lumen-co",
+      "title": "Lumen & Co"
+    },
+    {
+      "slug": "ember-signal",
+      "route": "/ember-signal",
+      "title": "Ember Signal \u2014 AI Marketing Intelligence"
+    },
+    {
+      "slug": "luma-intelligence",
+      "route": "/luma-intelligence",
+      "title": "Luma Intelligence \u2014 Luma Foundry"
+    },
+    {
+      "slug": "workspace",
+      "route": "/workspace",
+      "title": "Luma Foundry Workspace"
+    },
+    {
+      "slug": "404",
+      "route": "/404",
+      "title": "Page Not Found \u2014 Luma Foundry"
+    }
+  ]
+}
