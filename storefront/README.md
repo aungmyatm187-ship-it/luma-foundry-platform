@@ -23,7 +23,7 @@ npm test               # syntax checks + smoke test (health, enquiry, licence, 5
 
 | Route | Purpose |
 |---|---|
-| `/` | Foundry index |
+| `/` | Redirects to `/shop.html` (the old Vite shell was removed) |
 | `/shop.html` | 50-product catalogue (filters by buyer intent) |
 | `/template.html?id=<product_id>` | Product direction page + enquiry form |
 | `/licence.html` | Buyer terms & licence (single-use $79 / agency $249) |

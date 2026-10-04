@@ -46,3 +46,6 @@ jobs:
           {"jsonrpc":"2.0","id":2,"method":"tools/list"}
           EOF
           node packages/mcp-server/dist/index.js < /tmp/probe.jsonl 2>/dev/null | grep -q '"name":"luma-foundry"' && echo "MCP server handshake OK"
+
+      - name: Verify storefront (syntax + smoke test)
+        run: npm test -w @luma/storefront

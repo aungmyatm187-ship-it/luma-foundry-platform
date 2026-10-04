@@ -1,0 +1,22 @@
+# Automatic PR labels based on changed paths (used by .github/workflows/labeler.yml).
+core:
+  - changed-files:
+      - any-glob-to-any-file: 'packages/core/**'
+mcp:
+  - changed-files:
+      - any-glob-to-any-file: 'packages/mcp-server/**'
+api:
+  - changed-files:
+      - any-glob-to-any-file: 'apps/api/**'
+gateway:
+  - changed-files:
+      - any-glob-to-any-file: 'packages/gateway/**'
+storefront:
+  - changed-files:
+      - any-glob-to-any-file: 'storefront/**'
+docs:
+  - changed-files:
+      - any-glob-to-any-file: 'docs/**'
+ci:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'

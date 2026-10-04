@@ -12,13 +12,20 @@ An AI workshop/automation platform. Products move through
 ```bash
 npm install
 npm run typecheck     # tsc -b — must pass
-npm test              # vitest across all workspaces — must pass
+npm test              # vitest across all workspaces + storefront smoke test — must pass
 npm run build         # must pass
 npm run dev:mcp       # MCP server on stdio
 npm run dev:api       # tRPC on http://localhost:3000/api/trpc
+cd storefront && npm start   # static storefront on http://localhost:4178
 ```
 
-Run typecheck, test, and build before considering any change done. CI runs all three.
+Run typecheck, test, and build before considering any change done. CI runs all of them,
+plus the MCP handshake probe and the storefront smoke test.
+
+CLIs (after `npm install` + `npm run build`):
+- `luma-mcp` — MCP server on stdio (`packages/mcp-server`).
+- `luma-bot` — gateway bot launcher; `--check` verifies the Telegram token, `--runs`
+  prints open runs, `--demo` runs a CLI exercise of the `help` command. See `docs/BOTS.md`.
 
 ## Non-negotiable rules
 
