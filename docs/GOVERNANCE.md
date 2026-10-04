@@ -35,6 +35,32 @@ If only traceability evidence is present, `evaluateClearance` says so directly:
 > Only traceability evidence supplied (source commit / SBOM). Traceability never proves
 > ownership, licence, or commercial permission.
 
+## Two axes: legal nature vs. producer
+
+The table above classifies evidence by its **legal nature** (traceability / rights /
+commercial). There is a second, orthogonal axis — **who produces it** — encoded in
+`packages/core/src/evidence.ts`:
+
+| Evidence | Producer |
+|---|---|
+| `source_commit` | machine |
+| `dependency_sbom` | machine |
+| `third_party_notices` | machine |
+| `buyer_terms` | machine |
+| `design_history` | human (owner) |
+| `asset_licence` | human (owner / licensor) |
+| `contributor_rights` | human (owner / contributor) |
+| `counsel_review` | human (qualified IP counsel) |
+
+The four **machine** kinds are what `scripts/generate-evidence.mjs` emits
+(`npm run evidence`). They are necessary but never sufficient: a machine can prove an
+artefact exists and that its code dependencies are resale-safe, but it cannot prove
+ownership, licence, or permission to sell — those are exactly the four **human** kinds.
+
+The invariant is asserted in tests (`assertEvidencePartition`): the machine and human sets
+must exactly partition `REQUIRED_EVIDENCE`. A new evidence kind cannot be added without
+deciding who produces it.
+
 ## Required evidence
 
 All eight must be present before clearance:
