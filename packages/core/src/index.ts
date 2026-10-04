@@ -1,5 +1,6 @@
 export * from './types.js';
 export * from './governance.js';
+export * from './evidence.js';
 export * from './workspace.js';
 export * from './workflow.js';
 export * from './workflows.js';

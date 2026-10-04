@@ -11,6 +11,7 @@
     "typecheck": "tsc -b --pretty",
     "clean": "tsc -b --clean && rm -rf packages/*/dist apps/*/dist",
     "test": "npm run test --workspaces --if-present",
+    "evidence": "node scripts/generate-evidence.mjs",
     "dev:mcp": "npm run dev -w @luma/mcp-server",
     "dev:api": "npm run dev -w @luma/api"
   },
