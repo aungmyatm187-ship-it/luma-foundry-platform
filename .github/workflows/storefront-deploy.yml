@@ -1,0 +1,47 @@
+name: Storefront deploy (Cloudflare Pages)
+
+# Publishes the static storefront (shop/template/licence + catalogue) to Cloudflare
+# Pages on push to main. Requires CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID.
+# Skips gracefully if the secrets are not set, so the workflow is safe to commit first.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'storefront/**'
+      - '.github/workflows/storefront-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Publish storefront
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HAS_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Rebuild catalogue from source of truth
+        run: |
+          cd storefront
+          npm run generate
+
+      - name: Publish to Cloudflare Pages
+        if: env.HAS_TOKEN == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy storefront --project-name=lumafoundry
+
+      - name: Report skip (no Cloudflare token)
+        if: env.HAS_TOKEN != 'true'
+        run: echo "CLOUDFLARE_API_TOKEN not set - skipping deploy."

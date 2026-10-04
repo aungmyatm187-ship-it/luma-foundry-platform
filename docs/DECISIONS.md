@@ -88,7 +88,7 @@ Unit tests import the module directly and would pass even if the server could no
 could not negotiate a protocol version, or exited on a bad stdio read. The probe catches the
 class of failure that only appears when the process is actually run.
 
-## D10 � DNS: keep Manus authoritative, do not cut over to Cloudflare yet
+## D10 — DNS: keep Manus authoritative, do not cut over to Cloudflare yet
 
 **Chosen:** leave `lumafoundry.live` resolving via the registrar's existing
 `ns1/ns2.globaldomaingroup.com` (which points at `104.18.26.246`), and repair the
@@ -103,7 +103,7 @@ benefit. Fixed the placeholders instead: apex `A` now `104.18.26.246`, RFC3849
 `AAAA` removed. The cutover remains a deliberate, reversible follow-up once the
 Cloudflare zone is confirmed ready end-to-end.
 
-## D11 � CTA: replace toast stubs with a real enquiry intake, not fake checkout
+## D11 — CTA: replace toast stubs with a real enquiry intake, not fake checkout
 
 **Chosen:** a self-contained `POST /api/enquiry` lead endpoint (append-only
 `enquiries.jsonl` ledger) plus a `/licence.html` buyer-terms surface.
@@ -114,7 +114,7 @@ be dishonest. The enquiry flow is real (validates `product_id` + email, persists
 to disk) and is exactly the lead-capture half that the future merchant-of-record
 checkout builds on.
 
-## D12 � Evidence: generate what is genuinely generatable, never fabricate counsel review
+## D12 — Evidence: generate what is genuinely generatable, never fabricate counsel review
 
 **Chosen:** generate `source_commit`, `dependency_sbom`, `third_party_notices`,
 and `buyer_terms` from the recovered source and the real `@luma/core` audit
@@ -126,6 +126,40 @@ A product cannot be `cleared` without a qualified human IP counsel review; that
 is the whole point of the gate. `scripts/generate-evidence.mjs` emits an honest
 report showing 0/50 clearable and listing what is still missing, so an agent can
 ask "what is missing?" and a human can close the remaining rights evidence.
+
+## D13 — Storefront is the deployable entry point, not the recovered Vite shell
+
+**Chosen:** `storefront/` serves `shop.html` (50-product catalogue), `template.html`
+(direction page), and `licence.html` (buyer terms); `/` redirects to `/shop.html`.
+**Rejected:** keeping `storefront/index.html` and `storefront/app.js`.
+
+The recovered `index.html` was a broken Vite shell (`/src/main.tsx` does not exist in the
+recovered source, and `%VITE_ANALYTICS_ENDPOINT%` is an unresolved placeholder). `app.js`
+wired a `#viewing-dialog` that exists in no HTML. Both are dead weight: the shop is the real
+entry point. The shared `styles.css` was the jewellery-index theme (its classes were absent
+from the shop markup); it was replaced with a single dark editorial theme matching the
+shop/template/licence pages.
+
+## D14 — Storefront joins the workspace; gateway bot becomes a real CLI
+
+**Chosen:** add `storefront` to the npm workspaces so root `npm test` runs its smoke test,
+and expose the gateway bot launcher as the `luma-bot` bin.
+**Rejected:** leaving the storefront outside CI and the bot launcher unbinnable.
+
+The storefront had been built but sat outside the workspace, so CI did not exercise it and it
+could drift. The gateway already had `server-cli.ts` with a shebang and `--check`/`--runs`/
+`--demo`, but no `bin`, so it could not be invoked as `npx luma-bot`. Both changes are
+wiring, not new behaviour.
+
+## D15 — Codespaces + GitHub automation as first-class
+
+**Chosen:** ship a `.devcontainer` (Node 22 + Copilot), CI storefront step, a Cloudflare
+Pages deploy workflow, a path-based PR labeler, and Dependabot.
+**Rejected:** ad-hoc local setup and manual dependency bumps.
+
+The repo targets agent + human contributors; a reproducible Codespaces environment and
+automated labels/dependency updates remove friction without changing domain behaviour.
+The deploy workflow is safe to commit before its secrets exist (it self-skips).
 
 ## Open questions
 

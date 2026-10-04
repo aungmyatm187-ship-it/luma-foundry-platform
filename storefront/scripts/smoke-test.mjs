@@ -25,6 +25,12 @@ async function main() {
   const health = await get("/api/health").then((r) => r.json());
   assert(health.ok === true, "health ok");
 
+  const root = await get("/", { redirect: "manual" });
+  assert(root.status === 302 && root.headers.get("location") === "/shop.html", "root redirects to shop");
+
+  const shopStatus = (await get("/shop.html")).status;
+  assert(shopStatus === 200, "shop served");
+
   const valid = await get("/api/enquiry", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -46,7 +52,7 @@ async function main() {
   const count = (catalogue.match(/"id": "prd-/g) || []).length;
   assert(count === 50, `catalogue has 50 products (got ${count})`);
 
-  console.log("smoke-test: PASS (health, enquiry valid/invalid, licence, 50-product catalogue)");
+  console.log("smoke-test: PASS (health, redirect, shop, enquiry valid/invalid, licence, 50-product catalogue)");
 }
 
 function assert(cond, label) {

@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Luma Foundry — AI workshop & automation platform. Evidence-gated product pipeline with an MCP tool surface.",
   "engines": { "node": ">=20" },
-  "workspaces": ["packages/*", "apps/*"],
+  "workspaces": ["packages/*", "apps/*", "storefront"],
   "scripts": {
     "build": "tsc -b",
     "typecheck": "tsc -b --pretty",

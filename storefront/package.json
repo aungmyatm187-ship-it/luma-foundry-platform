@@ -7,6 +7,6 @@
   "scripts": {
     "start": "node server.mjs",
     "generate": "node scripts/generate-catalogue.mjs",
-    "test": "node --check server.mjs && node --check shop.js && node --check template.js && node --check catalogue.js && node --check app.js && node scripts/smoke-test.mjs"
+    "test": "node --check server.mjs && node --check shop.js && node --check template.js && node --check catalogue.js && node scripts/smoke-test.mjs"
   }
 }

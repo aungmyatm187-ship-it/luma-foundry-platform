@@ -9,3 +9,5 @@ coverage/
 
 # runtime ledgers
 storefront/enquiries.jsonl
+storefront/dist/
+.openhands/

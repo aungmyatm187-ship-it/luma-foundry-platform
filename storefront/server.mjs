@@ -70,7 +70,14 @@ http.createServer(async (req, res) => {
     return;
   }
 
-  const rel = url.pathname === "/" ? "index.html" : url.pathname.slice(1);
+  // The foundry index (index.html) was a broken Vite shell; the shop is the entry point.
+  if (req.method === "GET" && url.pathname === "/") {
+    res.writeHead(302, { Location: "/shop.html" });
+    res.end();
+    return;
+  }
+
+  const rel = url.pathname.slice(1);
   const safe = normalize(rel).replace(/^\.\.(\/|\\|$)/, "");
   try {
     const data = await readFile(join(root, safe));
