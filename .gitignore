@@ -12,3 +12,4 @@ storefront/enquiries.jsonl
 storefront/dist/
 .openhands/
 data/
+.env
