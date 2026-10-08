@@ -103,8 +103,16 @@ export function createRouter(ws: Workspace = new Workspace()) {
       .mutation(({ input }) => ws.createDecision(input)),
 
     updateDecisionStatus: procedure
-      .input(z.object({ decisionId: z.string(), status: z.enum(DECISION_STATUSES) }))
-      .mutation(({ input }) => ws.updateDecisionStatus(input.decisionId, input.status)),
+      .input(
+        z.object({
+          decisionId: z.string(),
+          status: z.enum(DECISION_STATUSES),
+          decidedBy: z.enum(ROLES),
+        }),
+      )
+      .mutation(({ input }) =>
+        ws.updateDecisionStatus(input.decisionId, input.status, input.decidedBy),
+      ),
 
     recordEvidence: procedure
       .input(

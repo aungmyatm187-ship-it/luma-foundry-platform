@@ -168,6 +168,7 @@ export class Workspace {
       decision: input.decision,
       status: 'open',
       ownerId: input.ownerId,
+      decidedBy: null,
       createdAt: now(),
       resolvedAt: null,
     };
@@ -213,10 +214,16 @@ export class Workspace {
     return item;
   }
 
-  updateDecisionStatus(decisionId: string, status: DecisionStatus): Decision {
+  updateDecisionStatus(
+    decisionId: string,
+    status: DecisionStatus,
+    decidedBy: Role | null = null,
+  ): Decision {
     const decision = this.decisions.find((d) => d.id === decisionId);
     if (!decision) throw new Error(`Unknown decision: ${decisionId}`);
     decision.status = status;
+    decision.decidedBy =
+      status === 'approved' || status === 'declined' ? decidedBy : null;
     decision.resolvedAt = status === 'open' || status === 'deferred' ? null : now();
     return decision;
   }

@@ -122,6 +122,7 @@ export interface Decision {
   decision: string;
   status: DecisionStatus;
   ownerId: string;
+  decidedBy: Role | null;
   createdAt: string;
   resolvedAt: string | null;
 }

@@ -81,8 +81,10 @@ describe('workspace router', () => {
     const approved = await caller.updateDecisionStatus({
       decisionId: decision.id,
       status: 'approved',
+      decidedBy: 'owner',
     });
     expect(approved.status).toBe('approved');
+    expect(approved.decidedBy).toBe('owner');
     expect(approved.resolvedAt).not.toBeNull();
   });
 
