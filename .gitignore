@@ -13,3 +13,5 @@ storefront/dist/
 .openhands/
 data/
 .env
+.wrangler/
+worker-configuration.d.ts
