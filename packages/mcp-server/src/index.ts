@@ -29,6 +29,7 @@ import {
   options,
   startRun,
   type Capability,
+  type Role,
   type RunContext,
   type WorkflowRun,
 } from '@luma/core';
@@ -50,10 +51,18 @@ function contextFor(ws: Workspace, productId: string): RunContext {
   const evidence = ws.evidenceFor(productId).map((e) => e.kind);
   const decisions = ws
     .snapshot()
-    .decisions.filter((d) => d.productId === productId && d.status === 'approved');
+    .decisions.filter(
+      (d) => d.productId === productId && d.status === 'approved' && d.decidedBy,
+    );
   return {
     evidence,
-    approvals: decisions.length > 0 ? ['owner'] : [],
+    approvals: [
+      ...new Set(
+        decisions
+          .map((d) => d.decidedBy)
+          .filter((role): role is Role => role !== null),
+      ),
+    ],
     artifacts: product && product.status !== 'concept' ? ['build'] : [],
   };
 }
@@ -238,11 +247,12 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
       inputSchema: {
         decisionId: z.string(),
         status: z.enum(DECISION_STATUSES),
+        decidedBy: z.enum(ROLES).describe('The role resolving this decision'),
       },
     },
-    async ({ decisionId, status }) => {
+    async ({ decisionId, status, decidedBy }) => {
       try {
-        return ok(ws.updateDecisionStatus(decisionId, status));
+        return ok(ws.updateDecisionStatus(decisionId, status, decidedBy));
       } catch (e) {
         return fail(e);
       }
