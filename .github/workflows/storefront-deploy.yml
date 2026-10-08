@@ -10,7 +10,6 @@ on:
     paths:
       - 'storefront/**'
       - 'wrangler.toml'
-      - '.github/workflows/storefront-deploy.yml'
   workflow_dispatch:
 
 permissions:
@@ -30,14 +29,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Rebuild catalogue from source of truth
+      - name: Verify storefront assets present
         run: |
-          cd storefront
-          npm run generate
+          test -f storefront/catalogue.js
+          test -f storefront/data/products-current.json
+          test -f wrangler.toml
+          echo "All required files present."
 
       - name: Deploy Worker
         if: env.HAS_TOKEN == 'true'
@@ -47,6 +44,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
 
-      - name: Report skip (no Cloudflare token)
+      - name: Skip deploy (no Cloudflare token)
         if: env.HAS_TOKEN != 'true'
         run: echo "CLOUDFLARE_API_TOKEN not set - skipping deploy."
