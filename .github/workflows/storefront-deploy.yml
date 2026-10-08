@@ -1,23 +1,28 @@
-name: Storefront deploy (Cloudflare Pages)
+name: Storefront deploy (Cloudflare Workers)
 
-# Publishes the static storefront (shop/template/licence + catalogue) to Cloudflare
-# Pages on push to main. Requires CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID.
-# Skips gracefully if the secrets are not set, so the workflow is safe to commit first.
+# Publishes the storefront as a Cloudflare Worker with static assets.
+# Requires CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets.
+# Skips gracefully if the token is not set.
 
 on:
   push:
     branches: [main]
     paths:
       - 'storefront/**'
+      - 'wrangler.toml'
       - '.github/workflows/storefront-deploy.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: storefront-deploy
+  cancel-in-progress: true
+
 jobs:
   deploy:
-    name: Publish storefront
+    name: Deploy Worker
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -34,13 +39,13 @@ jobs:
           cd storefront
           npm run generate
 
-      - name: Publish to Cloudflare Pages
+      - name: Deploy Worker
         if: env.HAS_TOKEN == 'true'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy storefront --project-name=lumafoundry
+          command: deploy
 
       - name: Report skip (no Cloudflare token)
         if: env.HAS_TOKEN != 'true'
