@@ -118,7 +118,7 @@ export class AsyncWorkspace {
   async updateDecisionStatus(
     decisionId: string,
     status: DecisionStatus,
-    decidedBy: Role | null = null,
+    decidedBy: Role | null,
   ): Promise<Decision> {
     return this.repo.updateDecisionStatus(decisionId, status, decidedBy);
   }
