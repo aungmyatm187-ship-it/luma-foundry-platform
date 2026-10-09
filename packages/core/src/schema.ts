@@ -9,12 +9,14 @@
  */
 import { relations, sql } from 'drizzle-orm';
 import {
+  foreignKey,
   index,
   pgEnum,
   pgPolicy,
   pgTable,
   text,
   timestamp,
+  unique,
   uuid,
 } from 'drizzle-orm/pg-core';
 import { authUid } from 'drizzle-orm/supabase';
@@ -49,9 +51,9 @@ export const users = pgTable('users', {
 }, (t) => [
   pgPolicy('users_own_rows', {
     as: 'permissive',
-    for: 'all',
+    for: 'select',
+    to: 'public',
     using: sql`${authUid} = ${t.authUserId}`,
-    withCheck: sql`${authUid} = ${t.authUserId}`,
   }),
 ]).enableRLS();
 
@@ -70,6 +72,7 @@ export const goals = pgTable('goals', {
   pgPolicy('goals_own_rows', {
     as: 'permissive',
     for: 'all',
+    to: 'public',
     using: sql`exists (select 1 from users where users.id = ${t.ownerId} and ${authUid} = users.auth_user_id)`,
     withCheck: sql`exists (select 1 from users where users.id = ${t.ownerId} and ${authUid} = users.auth_user_id)`,
   }),
@@ -87,9 +90,11 @@ export const products = pgTable('products', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (t) => [
   index('products_goal_idx').on(t.goalId),
+  unique('products_id_goal_id_unique').on(t.id, t.goalId),
   pgPolicy('products_own_rows', {
     as: 'permissive',
     for: 'all',
+    to: 'public',
     using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
     withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
   }),
@@ -99,7 +104,7 @@ export const products = pgTable('products', {
 export const workItems = pgTable('work_items', {
   id: uuid('id').primaryKey().defaultRandom(),
   goalId: uuid('goal_id').notNull().references(() => goals.id, { onDelete: 'cascade' }),
-  productId: uuid('product_id').references(() => products.id, { onDelete: 'cascade' }),
+  productId: uuid('product_id'),
   type: text('type').notNull(),
   assignedTo: roleEnum('assigned_to').notNull(),
   title: text('title').notNull(),
@@ -110,11 +115,18 @@ export const workItems = pgTable('work_items', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (t) => [
   index('work_items_goal_idx').on(t.goalId),
+  index('work_items_product_goal_idx').on(t.productId, t.goalId),
+  foreignKey({
+    name: 'work_items_product_goal_fk',
+    columns: [t.productId, t.goalId],
+    foreignColumns: [products.id, products.goalId],
+  }).onDelete('cascade'),
   pgPolicy('work_items_own_rows', {
     as: 'permissive',
     for: 'all',
-    using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
-    withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
+    to: 'public',
+    using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
+    withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
   }),
 ]).enableRLS();
 
@@ -122,7 +134,7 @@ export const workItems = pgTable('work_items', {
 export const handoffs = pgTable('handoffs', {
   id: uuid('id').primaryKey().defaultRandom(),
   goalId: uuid('goal_id').notNull().references(() => goals.id, { onDelete: 'cascade' }),
-  productId: uuid('product_id').references(() => products.id, { onDelete: 'cascade' }),
+  productId: uuid('product_id'),
   fromRole: roleEnum('from_role').notNull(),
   toRole: roleEnum('to_role').notNull(),
   title: text('title').notNull(),
@@ -133,11 +145,18 @@ export const handoffs = pgTable('handoffs', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (t) => [
   index('handoffs_goal_idx').on(t.goalId),
+  index('handoffs_product_goal_idx').on(t.productId, t.goalId),
+  foreignKey({
+    name: 'handoffs_product_goal_fk',
+    columns: [t.productId, t.goalId],
+    foreignColumns: [products.id, products.goalId],
+  }).onDelete('cascade'),
   pgPolicy('handoffs_own_rows', {
     as: 'permissive',
     for: 'all',
-    using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
-    withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
+    to: 'public',
+    using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
+    withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
   }),
 ]).enableRLS();
 
@@ -145,7 +164,7 @@ export const handoffs = pgTable('handoffs', {
 export const decisions = pgTable('decisions', {
   id: uuid('id').primaryKey().defaultRandom(),
   goalId: uuid('goal_id').notNull().references(() => goals.id, { onDelete: 'cascade' }),
-  productId: uuid('product_id').references(() => products.id, { onDelete: 'cascade' }),
+  productId: uuid('product_id'),
   title: text('title').notNull(),
   context: text('context').notNull(),
   decision: text('decision').notNull(),
@@ -156,11 +175,18 @@ export const decisions = pgTable('decisions', {
   resolvedAt: timestamp('resolved_at', { withTimezone: true }),
 }, (t) => [
   index('decisions_goal_idx').on(t.goalId),
+  index('decisions_product_goal_idx').on(t.productId, t.goalId),
+  foreignKey({
+    name: 'decisions_product_goal_fk',
+    columns: [t.productId, t.goalId],
+    foreignColumns: [products.id, products.goalId],
+  }).onDelete('cascade'),
   pgPolicy('decisions_own_rows', {
     as: 'permissive',
     for: 'all',
-    using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
-    withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
+    to: 'public',
+    using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
+    withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
   }),
 ]).enableRLS();
 
@@ -180,6 +206,7 @@ export const evidence = pgTable('evidence', {
   pgPolicy('evidence_own_rows', {
     as: 'permissive',
     for: 'all',
+    to: 'public',
     using: sql`exists (select 1 from products join goals on goals.id = products.goal_id join users on users.id = goals.owner_id where products.id = ${t.productId} and ${authUid} = users.auth_user_id)`,
     withCheck: sql`exists (select 1 from products join goals on goals.id = products.goal_id join users on users.id = goals.owner_id where products.id = ${t.productId} and ${authUid} = users.auth_user_id)`,
   }),
