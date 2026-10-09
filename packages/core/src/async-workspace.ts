@@ -17,6 +17,7 @@ import type {
 } from './types.js';
 import type { WorkspaceRepository } from './repository.js';
 import { InMemoryRepository } from './inmemory-repository.js';
+import { DrizzleRepository } from './drizzle-repository.js';
 
 /**
  * AsyncWorkspace delegates persistence to a WorkspaceRepository but retains
@@ -27,6 +28,10 @@ export class AsyncWorkspace {
 
   static fromInMemory(): AsyncWorkspace {
     return new AsyncWorkspace(new InMemoryRepository());
+  }
+
+  static fromDrizzle(authUserId: string): AsyncWorkspace {
+    return new AsyncWorkspace(new DrizzleRepository(authUserId));
   }
 
   // Users

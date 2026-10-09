@@ -5,6 +5,8 @@ export * from './workspace.js';
 export * from './repository.js';
 export * from './inmemory-repository.js';
 export * from './async-workspace.js';
+export * from './db.js';
+export * from './drizzle-repository.js';
 export * from './workflow.js';
 export * from './workflows.js';
 export * from './licensing.js';
