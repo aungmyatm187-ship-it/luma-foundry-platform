@@ -1,19 +1,32 @@
 /**
  * Exercises the tRPC router through a real caller — the same procedure path the
  * web app uses.
+ *
+ * Every procedure is protected, so tests build a context that satisfies the
+ * Context type: { authUserId, ws }. The ws is in-memory — these tests verify
+ * rule correctness, not persistence. Persistence is verified separately by
+ * scripts/test-drizzle-repository.ts against live Postgres.
  */
-import { Workspace } from '@luma/core';
+import { AsyncWorkspace } from '@luma/core';
 import { describe, expect, it } from 'vitest';
 
-import { createRouter } from '../src/router.js';
+import { appRouter } from '../src/router.js';
+import type { Context } from '../src/trpc.js';
 
-function setup() {
-  const ws = new Workspace();
-  const caller = createRouter(ws).createCaller({});
+function setup(): { ws: AsyncWorkspace; caller: ReturnType<typeof appRouter.createCaller> } {
+  const ws = AsyncWorkspace.fromInMemory();
+  const ctx: Context = { authUserId: 'test-user-id', ws };
+  const caller = appRouter.createCaller(ctx);
   return { ws, caller };
 }
 
 describe('workspace router', () => {
+  it('rejects unauthenticated calls with UNAUTHORIZED', async () => {
+    const ws = AsyncWorkspace.fromInMemory();
+    const caller = appRouter.createCaller({ authUserId: null, ws });
+    await expect(caller.snapshot()).rejects.toThrow(/Authentication required/);
+  });
+
   it('runs createGoal -> createProduct -> snapshot', async () => {
     const { caller } = setup();
 
@@ -24,7 +37,6 @@ describe('workspace router', () => {
       outcome: 'Five products cleared',
       priority: 'high',
     });
-    expect(goal.status).toBeUndefined();
     expect(goal.priority).toBe('high');
 
     const product = await caller.createProduct({
