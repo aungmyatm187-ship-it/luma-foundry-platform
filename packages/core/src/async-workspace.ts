@@ -34,6 +34,16 @@ export class AsyncWorkspace {
     return new AsyncWorkspace(new DrizzleRepository(authUserId));
   }
 
+  private async assertProductBelongsToGoal(
+    goalId: string,
+    productId: string | null | undefined,
+  ): Promise<void> {
+    if (!productId) return;
+    if (!(await this.repo.hasProductForGoal(goalId, productId))) {
+      throw new Error('That product does not belong to the selected goal.');
+    }
+  }
+
   // Users
   async createUser(name: string, role: Role): Promise<User> {
     return this.repo.createUser(name, role);
@@ -65,6 +75,7 @@ export class AsyncWorkspace {
     detail: string;
     priority?: Priority;
   }): Promise<WorkItem> {
+    await this.assertProductBelongsToGoal(input.goalId, input.productId);
     return this.repo.createWorkItem(input);
   }
 
@@ -78,6 +89,7 @@ export class AsyncWorkspace {
     summary: string;
     asks: string;
   }): Promise<Handoff> {
+    await this.assertProductBelongsToGoal(input.goalId, input.productId);
     return this.repo.createHandoff(input);
   }
 
@@ -90,6 +102,7 @@ export class AsyncWorkspace {
     decision: string;
     ownerId: string;
   }): Promise<Decision> {
+    await this.assertProductBelongsToGoal(input.goalId, input.productId);
     return this.repo.createDecision(input);
   }
 

@@ -46,6 +46,12 @@ export class InMemoryRepository implements WorkspaceRepository {
     return Promise.resolve(this.ws.createProduct(input));
   }
 
+  hasProductForGoal(goalId: string, productId: string): Promise<boolean> {
+    return Promise.resolve(
+      this.ws.snapshot().products.some((product) => product.id === productId && product.goalId === goalId),
+    );
+  }
+
   createWorkItem(input: {
     goalId: string;
     productId?: string | null;

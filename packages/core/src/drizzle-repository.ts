@@ -91,6 +91,17 @@ export class DrizzleRepository implements WorkspaceRepository {
     });
   }
 
+  async hasProductForGoal(goalId: string, productId: string): Promise<boolean> {
+    return this.run(async (tx) => {
+      const [row] = await tx
+        .select({ id: schema.products.id })
+        .from(schema.products)
+        .where(and(eq(schema.products.id, productId), eq(schema.products.goalId, goalId)))
+        .limit(1);
+      return Boolean(row);
+    });
+  }
+
   async createWorkItem(input: {
     goalId: string;
     productId?: string | null;
