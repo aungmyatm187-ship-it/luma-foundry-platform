@@ -1,19 +1,34 @@
 version: 2
+
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: npm
+    directory: /
     schedule:
-      interval: "weekly"
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Asia/Yangon"
     open-pull-requests-limit: 5
     versioning-strategy: increase
     labels:
-      - "ci"
-      - "dependencies"
+      - ci
+      - dependencies
+    groups:
+      dev-patches:
+        dependency-type: development
+        update-types: [minor, patch]
+      prod-patches:
+        dependency-type: production
+        update-types: [patch]
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "weekly"
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Asia/Yangon"
+    open-pull-requests-limit: 3
     labels:
-      - "ci"
-      - "dependencies"
+      - ci
+      - dependencies
