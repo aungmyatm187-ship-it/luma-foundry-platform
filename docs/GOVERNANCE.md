@@ -78,7 +78,7 @@ const report = evaluateClearance(product, ws.evidenceFor(product.id));
 
 | Field | Meaning |
 |---|---|
-| `clearable` | `true` only when nothing is missing |
+| `clearable` | `true` only when every required evidence kind has a record; this does not assess evidence contents, legal sufficiency, or owner approval |
 | `present` | evidence kinds recorded |
 | `missing` | required kinds not yet recorded |
 | `traceabilityOnly` | traceability kinds that were supplied |
@@ -86,6 +86,19 @@ const report = evaluateClearance(product, ws.evidenceFor(product.id));
 
 `check_clearance` on the MCP server and `checkClearance` on the API return this same shape,
 so an agent can ask "what is missing?" and act on the answer.
+
+For a human handoff, `evidence_review_packet` (MCP) and `evidenceReviewPacket` (API) provide
+an immutable point-in-time view of the records currently returned by the repository, one row
+per required evidence kind, the expected producer class, an unambiguous latest record when
+timestamps permit, blockers, and kind-level coverage. Equal newest timestamps are marked
+ambiguous rather than ordered by UUID. Stored `recordedBy` values are not independently
+authenticated. The packet reports `requiredRecordsComplete`, not clearance authorization;
+owner approval is not checked and legal sufficiency is not assessed. Reviewers must inspect the
+underlying references and obtain the appropriate authorization separately.
+
+The `clearance` workflow has an owner-approval gate. The direct `set_product_status` guard
+currently checks required evidence kinds only, so it must not be treated as enforcing that
+separate workflow approval.
 
 ## Statuses
 
@@ -95,7 +108,7 @@ so an agent can ask "what is missing?" and act on the answer.
 | `in_build` | Operator A is building |
 | `in_review` | Operator B is reviewing |
 | `conditional` | released only under stated conditions |
-| `cleared` | **gated** — every evidence kind present |
+| `cleared` | Intended to follow all required evidence and clearance-workflow owner approval; the direct status setter currently checks evidence-kind presence only |
 | `blocked` | cannot proceed |
 
 Only `cleared` is gated. `conditional` is deliberately not — it is the honest state for a

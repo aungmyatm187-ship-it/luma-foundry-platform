@@ -38,6 +38,7 @@ describe('MCP server surface', () => {
     expect(names).toContain('create_product');
     expect(names).toContain('record_evidence');
     expect(names).toContain('check_clearance');
+    expect(names).toContain('evidence_review_packet');
     expect(names).toContain('set_product_status');
     expect(names).toEqual([
       'advance_workflow',
@@ -47,6 +48,7 @@ describe('MCP server surface', () => {
       'create_handoff',
       'create_product',
       'create_work_item',
+      'evidence_review_packet',
       'list_workflows',
       'record_evidence',
       'set_product_status',
@@ -92,6 +94,15 @@ describe('MCP governance enforcement', () => {
     expect(report.clearable).toBe(false);
     expect((report.missing as string[]).length).toBe(8);
 
+    const evidenceBeforePacket = ws.evidenceFor(product.id);
+    const initialPacket = await call('evidence_review_packet', { productId: product.id });
+    expect(initialPacket.requiredRecordsComplete).toBe(false);
+    expect(initialPacket.ownerApproval).toBe('not_checked');
+    expect(initialPacket.legalSufficiency).toBe('not_assessed');
+    expect((initialPacket.items as unknown[]).length).toBe(8);
+    expect((initialPacket.coverage as Record<string, unknown>).percent).toBe(0);
+    expect(ws.evidenceFor(product.id)).toEqual(evidenceBeforePacket);
+
     // attempting clearance is rejected
     const blocked = await call('set_product_status', {
       productId: product.id,
@@ -130,6 +141,20 @@ describe('MCP governance enforcement', () => {
     const cleared = await call('check_clearance', { productId: product.id });
     expect(cleared.clearable).toBe(true);
 
+    const packet = await call('evidence_review_packet', { productId: product.id });
+    expect(packet.requiredRecordsComplete).toBe(true);
+    expect(packet.ownerApproval).toBe('not_checked');
+    expect(packet.legalSufficiency).toBe('not_assessed');
+    expect((packet.coverage as Record<string, unknown>).percent).toBe(100);
+    const counsel = (packet.items as Array<Record<string, unknown>>).find(
+      (item) => item.kind === 'counsel_review',
+    );
+    expect(counsel?.state).toBe('recorded');
+    expect(counsel?.expectedProducer).toBe('human');
+    expect((counsel?.latest as Record<string, unknown>).recordedBy).toBe('operator_b');
+
+    // The existing direct setter checks evidence-kind presence only; workflow owner approval
+    // is a separate gate and is intentionally reported as not checked by this packet.
     const final = await call('set_product_status', {
       productId: product.id,
       status: 'cleared',
