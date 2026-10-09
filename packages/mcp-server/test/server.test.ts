@@ -4,7 +4,7 @@
  */
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
-import { Workspace } from '@luma/core';
+import { Workspace, AsyncWorkspace, InMemoryRepository } from '@luma/core';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { SERVER_NAME, createServer } from '../src/index.js';
@@ -223,5 +223,47 @@ describe('MCP workflow surface', () => {
   it('returns a structured error for an unknown run', async () => {
     const r = await call('workflow_gates', { runId: 'run-9999' });
     expect(r.error).toMatch(/Unknown run/);
+  });
+});
+
+describe('MCP async handler safety', () => {
+  it('returns real content from create_product, not a wrapped Promise', async () => {
+    // Construct the server with a real AsyncWorkspace — this exercises the
+    // async code path. If any handler forgets `await`, JSON.stringify(Promise)
+    // yields "{}" and this test fails.
+    const repo = new InMemoryRepository();
+    const asyncWs = new AsyncWorkspace(repo);
+    const server = createServer(asyncWs);
+    const [ct, st] = InMemoryTransport.createLinkedPair();
+    const c = new Client({ name: 'async-safety-test', version: '1.0.0' });
+    await Promise.all([c.connect(ct), server.connect(st)]);
+
+    const user = await asyncWs.createUser('Owner', 'owner');
+    const goal = await asyncWs.createGoal({
+      ownerId: user.id,
+      title: 'Async safety',
+      outcome: 'verify content',
+    });
+
+    const res = await c.callTool({
+      name: 'create_product',
+      arguments: {
+        goalId: goal.id,
+        name: 'Axiom Grid',
+        category: 'AI infrastructure',
+        route: '/axiom-grid',
+      },
+    });
+
+    const text = (res.content as Array<{ type: string; text: string }>)[0]?.text ?? '';
+    const parsed = JSON.parse(text) as Record<string, unknown>;
+
+    expect(typeof parsed.id).toBe('string');
+    expect(parsed.status).toBe('concept');
+    expect(parsed.name).toBe('Axiom Grid');
+    expect(parsed.route).toBe('/axiom-grid');
+
+    await c.close();
+    await server.close();
   });
 });
