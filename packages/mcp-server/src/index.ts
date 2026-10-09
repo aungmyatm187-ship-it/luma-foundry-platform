@@ -21,7 +21,7 @@ import {
   ROLES,
   WORKFLOWS,
   WORK_ITEM_STATUSES,
-  Workspace,
+AsyncWorkspace,
   advance,
   evaluateClearance,
   evaluateExit,
@@ -46,14 +46,13 @@ export const SERVER_VERSION = '0.1.0';
 const workflowRuns = new Map<string, WorkflowRun>();
 
 /** Evidence recorded for a product, as the workflow engine expects it. */
-function contextFor(ws: Workspace, productId: string): RunContext {
-  const product = ws.snapshot().products.find((p) => p.id === productId);
-  const evidence = ws.evidenceFor(productId).map((e) => e.kind);
-  const decisions = ws
-    .snapshot()
-    .decisions.filter(
-      (d) => d.productId === productId && d.status === 'approved' && d.decidedBy,
-    );
+async function contextFor(ws: AsyncWorkspace, productId: string): Promise<RunContext> {
+  const snap = await ws.snapshot();
+  const product = snap.products.find((p) => p.id === productId);
+  const evidence = (await ws.evidenceFor(productId)).map((e) => e.kind);
+  const decisions = snap.decisions.filter(
+    (d) => d.productId === productId && d.status === 'approved' && d.decidedBy,
+  );
   return {
     evidence,
     approvals: [
@@ -84,7 +83,9 @@ function fail(error: unknown) {
  * Build the server around a workspace instance. Kept as a factory so tests can
  * construct an isolated server per case.
  */
-export function createServer(ws: Workspace = new Workspace()): McpServer {
+export function createServer(
+  ws: AsyncWorkspace = AsyncWorkspace.fromInMemory(),
+): McpServer {
   const server = new McpServer(
     { name: SERVER_NAME, version: SERVER_VERSION },
     {
@@ -103,7 +104,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
       description: 'Return the full workspace state: goals, products, work items, handoffs, decisions, evidence.',
       inputSchema: {},
     },
-    async () => ok(ws.snapshot()),
+    async () => ok(await ws.snapshot()),
   );
 
   server.registerTool(
@@ -121,7 +122,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     },
     async (args) => {
       try {
-        return ok(ws.createGoal(args));
+        return ok(await ws.createGoal(args));
       } catch (e) {
         return fail(e);
       }
@@ -142,7 +143,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     },
     async (args) => {
       try {
-        return ok(ws.createProduct(args));
+        return ok(await ws.createProduct(args));
       } catch (e) {
         return fail(e);
       }
@@ -166,7 +167,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     },
     async (args) => {
       try {
-        return ok(ws.createWorkItem(args));
+        return ok(await ws.createWorkItem(args));
       } catch (e) {
         return fail(e);
       }
@@ -184,7 +185,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     },
     async ({ workItemId, status }) => {
       try {
-        return ok(ws.updateWorkItemStatus(workItemId, status));
+        return ok(await ws.updateWorkItemStatus(workItemId, status));
       } catch (e) {
         return fail(e);
       }
@@ -210,7 +211,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     },
     async (args) => {
       try {
-        return ok(ws.createHandoff(args));
+        return ok(await ws.createHandoff(args));
       } catch (e) {
         return fail(e);
       }
@@ -233,7 +234,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     },
     async (args) => {
       try {
-        return ok(ws.createDecision(args));
+        return ok(await ws.createDecision(args));
       } catch (e) {
         return fail(e);
       }
@@ -252,7 +253,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     },
     async ({ decisionId, status, decidedBy }) => {
       try {
-        return ok(ws.updateDecisionStatus(decisionId, status, decidedBy));
+        return ok(await ws.updateDecisionStatus(decisionId, status, decidedBy));
       } catch (e) {
         return fail(e);
       }
@@ -276,7 +277,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     },
     async (args) => {
       try {
-        return ok(ws.recordEvidence(args));
+        return ok(await ws.recordEvidence(args));
       } catch (e) {
         return fail(e);
       }
@@ -294,10 +295,11 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     },
     async ({ productId }) => {
       try {
-        const snap = ws.snapshot();
+        const snap = await ws.snapshot();
         const product = snap.products.find((p) => p.id === productId);
         if (!product) return fail(new Error(`Unknown product: ${productId}`));
-        return ok(evaluateClearance(product, ws.evidenceFor(productId)));
+        const evidence = await ws.evidenceFor(productId);
+        return ok(evaluateClearance(product, evidence));
       } catch (e) {
         return fail(e);
       }
@@ -318,7 +320,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
     },
     async ({ productId, status }) => {
       try {
-        return ok(ws.updateProductStatus(productId, status));
+        return ok(await ws.updateProductStatus(productId, status));
       } catch (e) {
         return fail(e);
       }
@@ -380,7 +382,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
           runId: run.id,
           workflow: wf.id,
           stage: run.currentStageId,
-          next: options(wf, run, capabilities as Capability[], contextFor(ws, productId)),
+          next: options(wf, run, capabilities as Capability[], await contextFor(ws, productId)),
         });
       } catch (e) {
         return fail(e);
@@ -412,14 +414,14 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
           to,
           actor,
           capabilities: capabilities as Capability[],
-          context: contextFor(ws, productId),
+          context: await contextFor(ws, productId),
         });
         workflowRuns.set(moved.id, moved);
         return ok({
           runId: moved.id,
           stage: moved.currentStageId,
           history: moved.history.map((h) => ({ stage: h.stageId, by: h.enteredBy })),
-          next: options(wf, moved, capabilities as Capability[], contextFor(ws, productId)),
+          next: options(wf, moved, capabilities as Capability[], await contextFor(ws, productId)),
         });
       } catch (e) {
         return fail(e);
@@ -442,7 +444,7 @@ export function createServer(ws: Workspace = new Workspace()): McpServer {
         const wf = findWorkflow(run.workflowId);
         const stage = wf.stages.find((s) => s.id === run.currentStageId);
         if (!stage) return fail(new Error(`Unknown stage: ${run.currentStageId}`));
-        return ok(evaluateExit(stage, contextFor(ws, run.productId ?? run.goalId)));
+        return ok(evaluateExit(stage, await contextFor(ws, run.productId ?? run.goalId)));
       } catch (e) {
         return fail(e);
       }
