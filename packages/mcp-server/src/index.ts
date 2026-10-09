@@ -455,10 +455,18 @@ export function createServer(
 }
 
 async function main(): Promise<void> {
-  const server = createServer();
+  // stdio carries no HTTP headers, so the process environment is the only
+  // channel for identity. Each MCP client runs its own server bound to one
+  // user via LUMA_AUTH_USER_ID. When unset, fall back to in-memory for dev.
+  const authUserId = process.env.LUMA_AUTH_USER_ID?.trim();
+  const ws = authUserId
+    ? AsyncWorkspace.fromDrizzle(authUserId)
+    : AsyncWorkspace.fromInMemory();
+  const server = createServer(ws);
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error(`${SERVER_NAME} MCP server v${SERVER_VERSION} running on stdio`);
+  const mode = authUserId ? `drizzle:${authUserId}` : 'in-memory';
+  console.error(`${SERVER_NAME} MCP server v${SERVER_VERSION} running on stdio [${mode}]`);
 }
 
 // Only start stdio when executed directly, not when imported by tests.
