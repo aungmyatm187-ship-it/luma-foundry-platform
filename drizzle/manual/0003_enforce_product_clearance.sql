@@ -1,10 +1,15 @@
--- drizzle/manual/0003_enforce_product_clearance.sql
 -- Enforce product clearance at the DB level: a product cannot be set to
 -- status = 'cleared' unless every REQUIRED_EVIDENCE kind is present.
+--
+-- SECURITY DEFINER is required so the function reads evidence as the table
+-- owner (postgres), bypassing RLS. Without it, app_user sees zero evidence
+-- rows and the trigger blocks every legitimate clearance.
 
 CREATE OR REPLACE FUNCTION public.enforce_product_clearance()
 RETURNS trigger
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, extensions
 AS $$
 DECLARE
   required_kinds text[] := ARRAY[
