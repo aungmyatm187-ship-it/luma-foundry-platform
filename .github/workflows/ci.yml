@@ -49,3 +49,37 @@ jobs:
 
       - name: Verify storefront (syntax + smoke test)
         run: npm test -w @luma/storefront
+
+  database-rls:
+    name: Migration replay and RLS regression tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: luma_rls_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d luma_rls_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install
+        run: npm install --no-audit --no-fund
+
+      - name: Replay migrations and test RLS against disposable PostgreSQL
+        run: npm run test:db
+        env:
+          RLS_TEST_DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/luma_rls_test

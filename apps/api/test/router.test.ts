@@ -100,6 +100,53 @@ describe('workspace router', () => {
     expect(approved.resolvedAt).not.toBeNull();
   });
 
+  it('rejects products that belong to a different goal', async () => {
+    const { caller } = setup();
+    const user = await caller.createUser({ name: 'Owner', role: 'owner' });
+    const goalA = await caller.createGoal({ ownerId: user.id, title: 'Goal A', outcome: 'A' });
+    const goalB = await caller.createGoal({ ownerId: user.id, title: 'Goal B', outcome: 'B' });
+    const productB = await caller.createProduct({
+      goalId: goalB.id,
+      name: 'Product B',
+      category: 'Test',
+      route: '/product-b',
+    });
+
+    await expect(
+      caller.createWorkItem({
+        goalId: goalA.id,
+        productId: productB.id,
+        type: 'build',
+        assignedTo: 'operator_a',
+        title: 'Cross-goal work item',
+        detail: 'Must be rejected',
+      }),
+    ).rejects.toThrow(/does not belong to the selected goal/);
+
+    await expect(
+      caller.createHandoff({
+        goalId: goalA.id,
+        productId: productB.id,
+        fromRole: 'operator_a',
+        toRole: 'operator_b',
+        title: 'Cross-goal handoff',
+        summary: 'Must be rejected',
+        asks: 'None',
+      }),
+    ).rejects.toThrow(/does not belong to the selected goal/);
+
+    await expect(
+      caller.createDecision({
+        goalId: goalA.id,
+        productId: productB.id,
+        title: 'Cross-goal decision',
+        context: 'Must be rejected',
+        decision: 'Reject',
+        ownerId: user.id,
+      }),
+    ).rejects.toThrow(/does not belong to the selected goal/);
+  });
+
   it('rejects invalid input via schema validation', async () => {
     const { caller } = setup();
     await expect(
