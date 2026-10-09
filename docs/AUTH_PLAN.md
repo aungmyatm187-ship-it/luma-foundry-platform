@@ -158,3 +158,20 @@ If anything goes wrong after merge:
 - MCP server auth (later)
 - Issue #9 (enquiry form)
 - Cross-check the storefront has nothing calling protected endpoints
+
+---
+
+## Production verification — 2026-10-09
+
+After merging to main (commit 59d5368), Render auto-deployed and the following
+were verified from Termux:
+
+- GET /health → 200 {"ok":true,"service":"luma-foundry-api"}  ✅
+- GET /api/trpc/snapshot (no auth) → 401  ✅
+- GET /api/trpc/snapshot (bad JWT) → 401  ✅
+
+The API is now authenticated at the edge. Every protected procedure requires
+a valid Supabase JWT. Unauthenticated requests fail closed in <100ms.
+
+Not yet verified: a valid Supabase JWT producing a 200. Requires a network
+that can reach *.supabase.co (blocked from Myanmar ISPs).
