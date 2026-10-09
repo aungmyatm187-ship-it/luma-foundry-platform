@@ -118,3 +118,43 @@ If anything goes wrong after merge:
 - Cross-user reads return zero rows (verified by a test that hits the live API)
 - `npm test` green on `main`
 - CI green on `main`
+
+---
+
+## Progress log — 2026-10-09
+
+### Landed on feature/repo-wiring
+
+- `apps/api/src/trpc.ts` — createContext verifies Supabase JWT locally via JWKS
+- `apps/api/src/router.ts` — every procedure is protectedProcedure; reads ctx.ws
+- `apps/api/src/server.ts` — per-request context; adds GET /health
+- `apps/api/src/index.ts` — exports updated for the singleton router
+- `apps/api/test/router.test.ts` — 5 tests, all pass, including UNAUTHORIZED
+- `scripts/test-jwt-locally.ts` — proves the jwtVerify code path works
+
+### Verified
+
+- DrizzleRepository: 6-test integration suite against live Postgres (pass)
+- RLS isolation: three separate tests (pass)
+- JWT code path: local JWKS + signed token + wrong-issuer rejection (pass)
+- All 132 unit tests (pass)
+
+### Not verified from Termux
+
+- Real Supabase JWTs cannot be fetched — Myanmar ISP blocks *.supabase.co
+- The JWKS URL used in production is identical to the one used by the local test
+- Confidence is high but the first authenticated production request is the true test
+
+### Before merging to main
+
+1. Confirm Render env has SUPABASE_URL (it does, set earlier)
+2. Merge
+3. Curl /health — expect {"ok":true}
+4. Curl /api/trpc/snapshot with no auth — expect 401
+5. If either fails, git revert on main; Render redeploys in 60s
+
+### After merging
+
+- MCP server auth (later)
+- Issue #9 (enquiry form)
+- Cross-check the storefront has nothing calling protected endpoints
