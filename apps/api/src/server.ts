@@ -8,10 +8,10 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 import { createServer } from 'node:http';
 
-import { Workspace } from '@luma/core';
+import { AsyncWorkspace } from '@luma/core';
 import { createRouter } from './router.js';
 
-const workspace = new Workspace();
+const workspace = AsyncWorkspace.fromInMemory();
 const router = createRouter(workspace);
 
 const port = Number(process.env.PORT ?? 3000);
