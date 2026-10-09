@@ -21,8 +21,9 @@ import {
   ROLES,
   WORKFLOWS,
   WORK_ITEM_STATUSES,
-AsyncWorkspace,
+  AsyncWorkspace,
   advance,
+  buildEvidenceReviewPacket,
   evaluateClearance,
   evaluateExit,
   findWorkflow,
@@ -289,8 +290,8 @@ export function createServer(
     {
       title: 'Check product clearance',
       description:
-        'Evaluate whether a product has the evidence required to be commercially cleared. ' +
-        'Returns present evidence, missing evidence, and blockers. Call this before any clearance decision.',
+        'Check whether each required evidence kind has a stored record. ' +
+        'Returns present evidence, missing evidence, and blockers; it does not assess reference validity, legal sufficiency, or owner approval.',
       inputSchema: { productId: z.string() },
     },
     async ({ productId }) => {
@@ -307,12 +308,33 @@ export function createServer(
   );
 
   server.registerTool(
+    'evidence_review_packet',
+    {
+      title: 'Evidence review packet',
+      description:
+        'Immutable point-in-time view of required evidence kinds and records currently returned by the repository. Expected producer classes and stored recorder roles are not independently authenticated; latest is unset when newest timestamps tie. ' +
+        'Reports record-kind completeness only, not owner approval, reference validity, or legal sufficiency.',
+      inputSchema: { productId: z.string() },
+    },
+    async ({ productId }) => {
+      try {
+        const snap = await ws.snapshot();
+        const product = snap.products.find((p) => p.id === productId);
+        if (!product) return fail(new Error(`Unknown product: ${productId}`));
+        return ok(buildEvidenceReviewPacket(product, await ws.evidenceFor(productId)));
+      } catch (e) {
+        return fail(e);
+      }
+    },
+  );
+
+  server.registerTool(
     'set_product_status',
     {
       title: 'Set product status',
       description:
         'Change a product status. Setting "cleared" is guarded — it throws unless every ' +
-        'required evidence kind is recorded. Run check_clearance first.',
+        'required evidence kind is recorded. This direct setter does not enforce the clearance workflow owner-approval gate; run the clearance workflow and obtain authorization separately.',
       inputSchema: {
         productId: z.string(),
         status: z.enum(PRODUCT_STATUSES),

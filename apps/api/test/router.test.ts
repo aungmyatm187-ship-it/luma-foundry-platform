@@ -25,6 +25,9 @@ describe('workspace router', () => {
     const ws = AsyncWorkspace.fromInMemory();
     const caller = appRouter.createCaller({ authUserId: null, ws });
     await expect(caller.snapshot()).rejects.toThrow(/Authentication required/);
+    await expect(caller.evidenceReviewPacket({ productId: 'missing' })).rejects.toThrow(
+      /Authentication required/,
+    );
   });
 
   it('runs createGoal -> createProduct -> snapshot', async () => {
@@ -74,6 +77,39 @@ describe('workspace router', () => {
     await expect(
       caller.setProductStatus({ productId: product.id, status: 'in_build' }),
     ).resolves.toMatchObject({ status: 'in_build' });
+  });
+
+  it('returns a reviewer packet with explicit record-completeness and provenance limits', async () => {
+    const { caller } = setup();
+    const user = await caller.createUser({ name: 'Owner', role: 'owner' });
+    const goal = await caller.createGoal({ ownerId: user.id, title: 'g', outcome: 'o' });
+    const product = await caller.createProduct({
+      goalId: goal.id,
+      name: 'Axiom Grid',
+      category: 'AI infrastructure',
+      route: '/axiom-grid',
+    });
+    await caller.recordEvidence({
+      productId: product.id,
+      kind: 'source_commit',
+      reference: 'commit:one',
+      note: 'first snapshot',
+      recordedBy: 'operator_a',
+    });
+
+    const packet = await caller.evidenceReviewPacket({ productId: product.id });
+    const sourceCommit = packet.items.find((item) => item.kind === 'source_commit');
+    const counselReview = packet.items.find((item) => item.kind === 'counsel_review');
+
+    expect(packet.requiredRecordsComplete).toBe(false);
+    expect(packet.ownerApproval).toBe('not_checked');
+    expect(packet.legalSufficiency).toBe('not_assessed');
+    expect(packet.recorderIdentity).toBe('not_verified');
+    expect(packet.coverage).toMatchObject({ recordedKinds: 1, requiredKinds: 8, percent: 13 });
+    expect(sourceCommit).toMatchObject({ state: 'recorded', expectedProducer: 'machine' });
+    expect(sourceCommit?.latest).toMatchObject({ reference: 'commit:one', recordedBy: 'operator_a' });
+    expect(counselReview).toMatchObject({ state: 'missing', expectedProducer: 'human' });
+    expect(packet.caveat).toMatch(/not independently authenticated/);
   });
 
   it('tracks a decision from open to approved', async () => {

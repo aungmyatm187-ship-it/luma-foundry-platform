@@ -3,6 +3,7 @@ import {
   GovernanceError,
   REQUIRED_EVIDENCE,
   Workspace,
+  buildEvidenceReviewPacket,
   evaluateClearance,
   type EvidenceKind,
 } from '../src/index.js';
@@ -133,6 +134,82 @@ describe('governance: clearance requires evidence', () => {
     expect([...report.present].sort()).toEqual([...partial].sort());
     expect(report.missing).not.toContain('source_commit');
     expect(report.missing).toContain('counsel_review');
+  });
+
+  it('builds an immutable reviewer packet with honest coverage semantics', () => {
+    const { ws, product } = seeded();
+    ws.recordEvidence({
+      productId: product.id,
+      kind: 'source_commit',
+      reference: 'commit:old',
+      note: 'Initial source snapshot',
+      recordedBy: 'operator_a',
+    });
+    ws.recordEvidence({
+      productId: product.id,
+      kind: 'source_commit',
+      reference: 'commit:new',
+      note: 'Updated source snapshot',
+      recordedBy: 'operator_b',
+    });
+    const records = ws.evidenceFor(product.id).map((entry, index) => ({
+      ...entry,
+      recordedAt: index === 0 ? '2026-10-08T10:00:00.000Z' : '2026-10-08T11:00:00.000Z',
+    }));
+    const packet = buildEvidenceReviewPacket(product, records);
+    const sourceCommit = packet.items.find((item) => item.kind === 'source_commit');
+    const counselReview = packet.items.find((item) => item.kind === 'counsel_review');
+
+    expect(packet.requiredRecordsComplete).toBe(false);
+    expect(packet.ownerApproval).toBe('not_checked');
+    expect(packet.legalSufficiency).toBe('not_assessed');
+    expect(packet.recorderIdentity).toBe('not_verified');
+    expect(packet.coverage).toMatchObject({
+      recordedKinds: 1,
+      requiredKinds: 8,
+      percent: 13,
+      recordedMachineKinds: 1,
+      requiredMachineKinds: 4,
+      recordedHumanKinds: 0,
+      requiredHumanKinds: 4,
+    });
+    expect(sourceCommit?.expectedProducer).toBe('machine');
+    expect(sourceCommit?.history).toHaveLength(2);
+    expect(sourceCommit?.latest?.reference).toBe('commit:new');
+    expect(sourceCommit?.latest?.recordedBy).toBe('operator_b');
+    expect(sourceCommit?.latestAmbiguous).toBe(false);
+    expect(counselReview).toMatchObject({ state: 'missing', expectedProducer: 'human', latest: null });
+    expect(packet.traceabilityOnly).toEqual(['source_commit']);
+    expect(packet.caveat).toMatch(/not independently authenticated/);
+    expect(Object.isFrozen(packet)).toBe(true);
+    expect(Object.isFrozen(sourceCommit?.history)).toBe(true);
+    expect(Object.isFrozen(sourceCommit?.latest)).toBe(true);
+    const mutableLatest = sourceCommit?.latest as { reference: string };
+    expect(() => { mutableLatest.reference = 'tampered'; }).toThrow();
+    expect(ws.evidenceFor(product.id).find((entry) => entry.reference === 'commit:new')?.reference)
+      .toBe('commit:new');
+
+    const tiedPacket = buildEvidenceReviewPacket(
+      product,
+      records.map((entry) => ({ ...entry, recordedAt: '2026-10-08T12:00:00.000Z' })),
+    );
+    const tiedSourceCommit = tiedPacket.items.find((item) => item.kind === 'source_commit');
+    expect(tiedSourceCommit?.history.map((entry) => entry.reference)).toEqual(['commit:old', 'commit:new']);
+    expect(tiedSourceCommit?.latest).toBeNull();
+    expect(tiedSourceCommit?.latestAmbiguous).toBe(true);
+  });
+
+  it('reports record completeness without claiming approval or legal sufficiency', () => {
+    const { ws, product } = seeded();
+    giveAllEvidence(ws, product.id);
+    const packet = buildEvidenceReviewPacket(product, ws.evidenceFor(product.id));
+
+    expect(packet.requiredRecordsComplete).toBe(true);
+    expect(packet.ownerApproval).toBe('not_checked');
+    expect(packet.legalSufficiency).toBe('not_assessed');
+    expect(packet.coverage.percent).toBe(100);
+    expect(packet.items.every((item) => item.state === 'recorded' && item.latest !== null)).toBe(true);
+    expect(packet.blockers).toEqual([]);
   });
 });
 

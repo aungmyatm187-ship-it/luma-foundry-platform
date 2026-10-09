@@ -21,7 +21,7 @@ when you make that move:
 
 ## Tools
 
-Eleven tools, grouped by intent.
+Sixteen tools, grouped by intent.
 
 **Read**
 
@@ -29,6 +29,7 @@ Eleven tools, grouped by intent.
 |---|---|
 | `snapshot` | Full workspace state |
 | `check_clearance` | Whether a product has earned clearance, and what is missing |
+| `evidence_review_packet` | Immutable point-in-time record checklist with expected producer class, coverage and blockers; explicitly not an approval |
 
 **Goal & product**
 
@@ -36,7 +37,7 @@ Eleven tools, grouped by intent.
 |---|---|
 | `create_goal` | Create an outcome |
 | `create_product` | Add a product to a goal (starts `concept`) |
-| `set_product_status` | Change status — **`cleared` is guarded** |
+| `set_product_status` | Change status — `cleared` checks required evidence kinds, but not workflow owner approval |
 
 **Work**
 
@@ -54,12 +55,23 @@ Eleven tools, grouped by intent.
 | `update_decision_status` | Approve, decline, or defer |
 | `record_evidence` | Attach release evidence to a product |
 
+**Workflow**
+
+| Tool | Purpose |
+|---|---|
+| `list_workflows` | Discover workflow stages and gates |
+| `start_workflow` | Start a workflow run |
+| `advance_workflow` | Move a run through enforced gates |
+| `workflow_gates` | Read current blockers and next reachable stages |
+
 ## The correct order of operations
 
-An agent must never call `set_product_status` with `cleared` blind. The intended sequence:
+Use the packet to understand which evidence record types are present, then inspect the
+references and obtain the required human decision through the clearance workflow. A complete
+packet is not clearance authorization:
 
 ```
-check_clearance  →  record_evidence (for each missing kind)  →  check_clearance  →  set_product_status
+evidence_review_packet  →  record_evidence (for missing kinds)  →  human reference review  →  clearance workflow / owner approval
 ```
 
 If clearance is attempted too early the tool returns a structured error naming the missing
@@ -69,7 +81,13 @@ kinds — not an exception across the transport:
 { "error": "Product prd-0001 cannot be marked 'cleared'. Missing required evidence: asset_licence. ..." }
 ```
 
-`check_clearance` is a pure read. Call it as often as needed; it never mutates.
+Both `check_clearance` and `evidence_review_packet` are pure reads. The packet exposes each
+required kind, the expected producer class, records currently returned by the repository, and
+an unambiguous latest record when timestamps permit. Stored recorder-role labels are not
+independently authenticated; evidence contents and legal sufficiency are not assessed. It
+reports `requiredRecordsComplete`, not readiness to clear. The clearance workflow separately
+requires owner approval; note that the direct `set_product_status` guard currently checks only
+evidence-kind presence and does not enforce that workflow approval.
 
 ## Client configuration
 

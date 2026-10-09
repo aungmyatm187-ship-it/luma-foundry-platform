@@ -22,6 +22,7 @@ import {
   PRODUCT_STATUSES,
   ROLES,
   WORK_ITEM_STATUSES,
+  buildEvidenceReviewPacket,
   evaluateClearance,
 } from '@luma/core';
 
@@ -139,6 +140,16 @@ export const appRouter = router({
       if (!product) throw new Error(`Unknown product: ${input.productId}`);
       const evidence = await ctx.ws.evidenceFor(input.productId);
       return evaluateClearance(product, evidence);
+    }),
+
+  /** Reviewer-ready record history and requirement coverage; read-only. */
+  evidenceReviewPacket: protectedProcedure
+    .input(z.object({ productId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const snap = await ctx.ws.snapshot();
+      const product = snap.products.find((p) => p.id === input.productId);
+      if (!product) throw new Error(`Unknown product: ${input.productId}`);
+      return buildEvidenceReviewPacket(product, await ctx.ws.evidenceFor(input.productId));
     }),
 
   /** Guarded: throws unless the product has earned clearance. */
