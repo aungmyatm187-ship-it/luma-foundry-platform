@@ -17,7 +17,7 @@ import {
   timestamp,
   uuid,
 } from 'drizzle-orm/pg-core';
-import { authenticatedRole, authUid } from 'drizzle-orm/supabase';
+import { authUid } from 'drizzle-orm/supabase';
 
 // ── Enums ──────────────────────────────────────────────────────
 export const roleEnum = pgEnum('role', ['owner', 'operator_a', 'operator_b']);
@@ -50,7 +50,6 @@ export const users = pgTable('users', {
   pgPolicy('users_own_rows', {
     as: 'permissive',
     for: 'all',
-    to: authenticatedRole,
     using: sql`${authUid} = ${t.authUserId}`,
     withCheck: sql`${authUid} = ${t.authUserId}`,
   }),
@@ -71,7 +70,6 @@ export const goals = pgTable('goals', {
   pgPolicy('goals_own_rows', {
     as: 'permissive',
     for: 'all',
-    to: authenticatedRole,
     using: sql`exists (select 1 from users where users.id = ${t.ownerId} and ${authUid} = users.auth_user_id)`,
     withCheck: sql`exists (select 1 from users where users.id = ${t.ownerId} and ${authUid} = users.auth_user_id)`,
   }),
@@ -92,7 +90,6 @@ export const products = pgTable('products', {
   pgPolicy('products_own_rows', {
     as: 'permissive',
     for: 'all',
-    to: authenticatedRole,
     using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
     withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
   }),
@@ -116,7 +113,6 @@ export const workItems = pgTable('work_items', {
   pgPolicy('work_items_own_rows', {
     as: 'permissive',
     for: 'all',
-    to: authenticatedRole,
     using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
     withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
   }),
@@ -140,7 +136,6 @@ export const handoffs = pgTable('handoffs', {
   pgPolicy('handoffs_own_rows', {
     as: 'permissive',
     for: 'all',
-    to: authenticatedRole,
     using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
     withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
   }),
@@ -164,7 +159,6 @@ export const decisions = pgTable('decisions', {
   pgPolicy('decisions_own_rows', {
     as: 'permissive',
     for: 'all',
-    to: authenticatedRole,
     using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
     withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
   }),
@@ -186,7 +180,6 @@ export const evidence = pgTable('evidence', {
   pgPolicy('evidence_own_rows', {
     as: 'permissive',
     for: 'all',
-    to: authenticatedRole,
     using: sql`exists (select 1 from products join goals on goals.id = products.goal_id join users on users.id = goals.owner_id where products.id = ${t.productId} and ${authUid} = users.auth_user_id)`,
     withCheck: sql`exists (select 1 from products join goals on goals.id = products.goal_id join users on users.id = goals.owner_id where products.id = ${t.productId} and ${authUid} = users.auth_user_id)`,
   }),
