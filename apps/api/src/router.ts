@@ -15,20 +15,20 @@ import {
   PRODUCT_STATUSES,
   ROLES,
   WORK_ITEM_STATUSES,
-  Workspace,
+  AsyncWorkspace,
   evaluateClearance,
 } from '@luma/core';
 
-export function createRouter(ws: Workspace = new Workspace()) {
+export function createRouter(ws: AsyncWorkspace = AsyncWorkspace.fromInMemory()) {
   const t = initTRPC.create();
   const procedure = t.procedure;
 
   return t.router({
-    snapshot: procedure.query(() => ws.snapshot()),
+    snapshot: procedure.query(async () => await ws.snapshot()),
 
     createUser: procedure
       .input(z.object({ name: z.string().min(1), role: z.enum(ROLES) }))
-      .mutation(({ input }) => ws.createUser(input.name, input.role)),
+      .mutation(async ({ input }) => await ws.createUser(input.name, input.role)),
 
     createGoal: procedure
       .input(
@@ -40,7 +40,7 @@ export function createRouter(ws: Workspace = new Workspace()) {
           targetDate: z.string().nullable().optional(),
         }),
       )
-      .mutation(({ input }) => ws.createGoal(input)),
+      .mutation(async ({ input }) => await ws.createGoal(input)),
 
     createProduct: procedure
       .input(
@@ -51,7 +51,7 @@ export function createRouter(ws: Workspace = new Workspace()) {
           route: z.string().min(1),
         }),
       )
-      .mutation(({ input }) => ws.createProduct(input)),
+      .mutation(async ({ input }) => await ws.createProduct(input)),
 
     createWorkItem: procedure
       .input(
@@ -65,11 +65,11 @@ export function createRouter(ws: Workspace = new Workspace()) {
           priority: z.enum(PRIORITIES).optional(),
         }),
       )
-      .mutation(({ input }) => ws.createWorkItem(input)),
+      .mutation(async ({ input }) => await ws.createWorkItem(input)),
 
     updateWorkItemStatus: procedure
       .input(z.object({ workItemId: z.string(), status: z.enum(WORK_ITEM_STATUSES) }))
-      .mutation(({ input }) => ws.updateWorkItemStatus(input.workItemId, input.status)),
+      .mutation(async ({ input }) => await ws.updateWorkItemStatus(input.workItemId, input.status)),
 
     createHandoff: procedure
       .input(
@@ -83,11 +83,11 @@ export function createRouter(ws: Workspace = new Workspace()) {
           asks: z.string().min(1),
         }),
       )
-      .mutation(({ input }) => ws.createHandoff(input)),
+      .mutation(async ({ input }) => await ws.createHandoff(input)),
 
     updateHandoffStatus: procedure
       .input(z.object({ handoffId: z.string(), status: z.enum(['draft', 'sent', 'accepted', 'returned']) }))
-      .mutation(({ input }) => ws.updateHandoffStatus(input.handoffId, input.status)),
+      .mutation(async ({ input }) => await ws.updateHandoffStatus(input.handoffId, input.status)),
 
     createDecision: procedure
       .input(
@@ -100,7 +100,7 @@ export function createRouter(ws: Workspace = new Workspace()) {
           ownerId: z.string(),
         }),
       )
-      .mutation(({ input }) => ws.createDecision(input)),
+      .mutation(async ({ input }) => await ws.createDecision(input)),
 
     updateDecisionStatus: procedure
       .input(
@@ -110,8 +110,8 @@ export function createRouter(ws: Workspace = new Workspace()) {
           decidedBy: z.enum(ROLES),
         }),
       )
-      .mutation(({ input }) =>
-        ws.updateDecisionStatus(input.decisionId, input.status, input.decidedBy),
+      .mutation(async ({ input }) =>
+        await ws.updateDecisionStatus(input.decisionId, input.status, input.decidedBy),
       ),
 
     recordEvidence: procedure
@@ -124,21 +124,23 @@ export function createRouter(ws: Workspace = new Workspace()) {
           recordedBy: z.enum(ROLES),
         }),
       )
-      .mutation(({ input }) => ws.recordEvidence(input)),
+      .mutation(async ({ input }) => await ws.recordEvidence(input)),
 
     /** Guarded: returns a clearance report, never mutates. */
     checkClearance: procedure
       .input(z.object({ productId: z.string() }))
-      .query(({ input }) => {
-        const product = ws.snapshot().products.find((p) => p.id === input.productId);
+      .query(async ({ input }) => {
+        const snap = await ws.snapshot();
+        const product = snap.products.find((p) => p.id === input.productId);
         if (!product) throw new Error(`Unknown product: ${input.productId}`);
-        return evaluateClearance(product, ws.evidenceFor(input.productId));
+        const evidence = await ws.evidenceFor(input.productId);
+        return evaluateClearance(product, evidence);
       }),
 
     /** Guarded: throws unless the product has earned clearance. */
     setProductStatus: procedure
       .input(z.object({ productId: z.string(), status: z.enum(PRODUCT_STATUSES) }))
-      .mutation(({ input }) => ws.updateProductStatus(input.productId, input.status)),
+      .mutation(async ({ input }) => await ws.updateProductStatus(input.productId, input.status)),
   });
 }
 
