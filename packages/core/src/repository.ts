@@ -34,6 +34,7 @@ export interface WorkspaceRepository {
     category: string;
     route: string;
   }): Promise<Product>;
+  hasProductForGoal(goalId: string, productId: string): Promise<boolean>;
   createWorkItem(input: {
     goalId: string;
     productId?: string | null;

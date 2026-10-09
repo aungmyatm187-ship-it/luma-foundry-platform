@@ -5,9 +5,11 @@
 -- a member of `authenticated` (the grant requires ADMIN on that role, which is
 -- reserved for Supabase's service account).
 --
--- `to public` allows any role to query the table, and the row filter inside
--- each policy (using auth.uid()) still enforces isolation: anonymous users get
--- zero rows, authenticated users get only their own rows.
+-- `TO PUBLIC` makes the policies apply to every database role, including
+-- `app_user`. It does not grant table privileges by itself. Migration 0006
+-- grants workspace CRUD to `app_user`, limits `public.users` to SELECT, and
+-- removes direct workspace-table grants from `anon` and `authenticated`.
+-- RLS then scopes app_user queries through auth.uid() to the current user.
 --
 -- Applied via Supabase SQL Editor on 2026-10-09 using RESET ROLE to drop from
 -- anon back to the postgres session identity.
