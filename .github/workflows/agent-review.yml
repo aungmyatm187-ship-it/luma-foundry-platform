@@ -56,7 +56,10 @@ jobs:
           Report concrete findings with file and line references. Do not restate the diff.
           EOF
 
+      # Upstream hosted API may reject conversation creation (405 seen 2026-10-11).
+      # This check is advisory only - it must never block a merge.
       - name: Start OpenHands review conversation
+        continue-on-error: true
         if: env.SKIP != 'true'
         uses: OpenHands/openhands-github-action@v1
         with:
