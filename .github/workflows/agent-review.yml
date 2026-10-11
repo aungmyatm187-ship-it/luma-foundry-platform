@@ -57,6 +57,7 @@ jobs:
           EOF
 
       - name: Start OpenHands review conversation
+        continue-on-error: true
         if: env.SKIP != 'true'
         uses: OpenHands/openhands-github-action@v1
         with:
