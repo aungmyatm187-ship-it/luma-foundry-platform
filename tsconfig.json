@@ -1,10 +1,23 @@
 {
   "files": [],
   "references": [
-    { "path": "packages/core" },
-    { "path": "packages/mcp-server" },
-    { "path": "packages/gateway" },
-    { "path": "apps/api" },
-    { "path": "apps/slack" }
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/mcp-server"
+    },
+    {
+      "path": "packages/gateway"
+    },
+    {
+      "path": "apps/api"
+    },
+    {
+      "path": "apps/slack"
+    },
+    {
+      "path": "packages/ai"
+    }
   ]
 }
