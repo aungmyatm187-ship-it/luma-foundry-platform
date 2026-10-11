@@ -21,7 +21,7 @@ when you make that move:
 
 ## Tools
 
-Eleven tools, grouped by intent.
+Fifteen tools, grouped by intent.
 
 **Read**
 
@@ -53,6 +53,15 @@ Eleven tools, grouped by intent.
 | `create_decision` | Raise a decision requiring explicit resolution |
 | `update_decision_status` | Approve, decline, or defer |
 | `record_evidence` | Attach release evidence to a product |
+
+**Workflow engine**
+
+| Tool | Purpose |
+|---|---|
+| `list_workflows` | List available workflows (functions) and their stages |
+| `start_workflow` | Start a run for a target — validates the actor's capabilities, returns the run id and next options |
+| `advance_workflow` | Advance a run; the engine enforces stage gates and capabilities |
+| `workflow_gates` | Read-only: what currently blocks a run, and what would clear it |
 
 ## The correct order of operations
 

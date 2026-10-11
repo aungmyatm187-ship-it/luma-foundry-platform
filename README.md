@@ -37,7 +37,7 @@ All three must pass before anything ships. CI enforces it.
 
 ## Surfaces
 
-**MCP server** — exposes the platform as 11 tools so any MCP client (Manus, OpenHands,
+**MCP server** — exposes the platform as 15 tools so any MCP client (Manus, OpenHands,
 Claude, an IDE) can drive the pipeline:
 
 ```bash
