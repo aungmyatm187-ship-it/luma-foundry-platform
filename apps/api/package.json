@@ -15,7 +15,7 @@
     "@luma/core": "*",
     "@trpc/server": "^11.19.0",
     "jose": "^6.2.12",
-    "zod": "^3.25.76"
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "vitest": "^5.0.3"
