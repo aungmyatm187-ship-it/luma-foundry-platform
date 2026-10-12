@@ -5,9 +5,8 @@ It carries a product through **Goal → Product → Work Item → Handoff → De
 hard governance gate: **a product cannot be marked `cleared` until every required piece of
 evidence is recorded.**
 
-That rule is not documentation. It is enforced in code (`packages/core/src/governance.ts`)
-and reachable from every surface, so an agent and the web UI cannot disagree about what
-"commercially cleared" means.
+That rule is enforced in code (`packages/core/src/governance.ts`) and reached from every
+surface, so an agent and the web app cannot disagree about what "commercially cleared" means.
 
 ## Why this exists
 
@@ -22,33 +21,29 @@ That discipline worked, and every product it produced still sits at
 repository turns that discipline into an enforceable foundation, so the same rigour can be
 applied by humans and agents at platform scale.
 
-`packages/core` holds all the rules and touches no database, network, or filesystem. Every
-other surface is a thin adapter over it.
+The pure domain rules live in `packages/core`; the package also contains repository
+interfaces and in-memory / Drizzle-Postgres adapters. Application surfaces call the shared
+rules rather than implementing a separate clearance policy.
 
 ## Quick start
 
 ```bash
-npm install
-npm run build
-npm test
+npm ci
+npm run check           # typecheck + all workspace tests + build
 ```
 
-All three must pass before anything ships. CI enforces it.
-
-## Surfaces
-
-**MCP server** — exposes the platform as 16 tools so any MCP client (Manus, OpenHands,
-Claude, an IDE) can drive the pipeline:
+## Run locally
 
 ```bash
-npm run dev:mcp          # stdio
+npm run dev:mcp         # MCP server on stdio
+npm run dev:api         # http://localhost:3000/api/trpc
+npm run dev:storefront  # http://localhost:4178
 ```
 
-**tRPC API** — the surface the web app calls:
-
-```bash
-npm run dev:api          # http://localhost:3000/api/trpc
-```
+The storefront's `POST /api/enquiry` is implemented by its local Node server and appends to a
+gitignored JSONL file. The current Cloudflare Worker configuration deploys static assets only;
+production enquiry handling and durable storage are **not verified or implied**. See
+[docs/AGENT_RUNBOOK.md](docs/AGENT_RUNBOOK.md) and [docs/CLOUDFLARE_DEPLOY.md](docs/CLOUDFLARE_DEPLOY.md).
 
 ## The governance gate
 
@@ -69,7 +64,7 @@ ws.updateProductStatus(product.id, 'cleared');
 Required evidence before clearance:
 
 `source_commit · design_history · asset_licence · contributor_rights ·
-dependency_sbom · third_party_notices · counsel_review · buyer_terms`
+ dependency_sbom · third_party_notices · counsel_review · buyer_terms`
 
 `source_commit` and `dependency_sbom` are **traceability only**. They prove an artefact
 exists. They never prove ownership, licence, or permission to sell. The engine says so
@@ -89,7 +84,7 @@ packages/mcp-server/   Model Context Protocol tool surface   → bin: luma-mcp
 packages/gateway/      Telegram/Discord/Slack bot server      → bin: luma-bot
 apps/api/              tRPC workspace API
 apps/slack/            Slack command router (adapter over core)
-storefront/            deployable static storefront (shop/template/licence + enquiry)
+storefront/            static catalogue, product pages, buyer terms, local Node enquiry server
 ```
 
 ## CLIs
@@ -105,14 +100,14 @@ TELEGRAM_BOT_TOKEN=... npx luma-bot   # serve webhooks; see docs/BOTS.md
 ## Development environment
 
 GitHub Codespaces is preconfigured (`.devcontainer/`): Node 22, Copilot
-extensions, and `npm install && npm run build` on first open. Ports 3000 (API)
+extensions, and `npm install --no-audit --no-fund && npm run build` on first open. Ports 3000 (API)
 and 4178 (storefront) are forwarded automatically.
 
 ## CI / automation
 
-- `.github/workflows/ci.yml` — typecheck, test, build, MCP handshake probe, storefront smoke test.
+- `.github/workflows/ci.yml` — typecheck, test, build, MCP handshake probe, storefront smoke test, and disposable-PostgreSQL RLS tests.
 - `.github/workflows/agent-review.yml` — OpenHands PR review gated on `OPENHANDS_API_KEY`.
-- `.github/workflows/storefront-deploy.yml` — Cloudflare Pages deploy of `storefront/`.
+- `.github/workflows/storefront-deploy.yml` — Cloudflare Worker deployment of static `storefront/` assets via `wrangler.toml`.
 - `.github/workflows/labeler.yml` — auto-label PRs by changed path.
 - `.github/dependabot.yml` — weekly npm + GitHub Actions dependency updates.
 
@@ -120,6 +115,7 @@ and 4178 (storefront) are forwarded automatically.
 
 | Doc | Contents |
 |---|---|
+| [docs/AGENT_RUNBOOK.md](docs/AGENT_RUNBOOK.md) | Project context, safe run/test/deploy workflow, task priorities, and reusable agent prompt |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Layers, boundaries, why one rule set |
 | [docs/MCP.md](docs/MCP.md) | Tool reference, transports, hosting |
 | [docs/GOVERNANCE.md](docs/GOVERNANCE.md) | Evidence model and clearance rules |
@@ -127,14 +123,15 @@ and 4178 (storefront) are forwarded automatically.
 | [docs/COLLABORATION.md](docs/COLLABORATION.md) | Manus ↔ OpenHands working protocol |
 | [docs/DECISIONS.md](docs/DECISIONS.md) | Stack choices and the reasoning |
 | [docs/SECURITY.md](docs/SECURITY.md) | Trust boundaries and secret handling |
+| [docs/CLOUDFLARE_DEPLOY.md](docs/CLOUDFLARE_DEPLOY.md) | Worker deployment behavior and guardrails |
 | [docs/BOTS.md](docs/BOTS.md) | Telegram/Discord/Slack bot setup |
 
 ## Status
 
-Foundation + storefront. The domain, governance gate, MCP and API surfaces, CI, and the
-deployable storefront are real and tested. Core rules remain storage-agnostic; the repository
-interfaces include in-memory and Drizzle/Postgres adapters, while production database
-deployment remains environment-specific. The AI package is an opt-in adapter boundary with
-a mock provider; production providers are not implemented. Commercial clearance remains
-gated on human evidence (`counsel_review`) — see
+Foundation + static storefront. The domain, governance gate, MCP/API surfaces, bot gateway,
+CI, and catalogue are implemented. There is no active browser workspace UI wired to the API;
+recovered UI material is a reference, not a drop-in implementation. Core rules remain storage-
+agnostic; production database and hosted authentication are environment-specific. The AI
+package has a mock provider only. No checkout/payment provider is active, and commercial
+clearance still requires human evidence (`counsel_review`) — see
 [docs/recovery/RECOVERY_REPORT.md](docs/recovery/RECOVERY_REPORT.md).
