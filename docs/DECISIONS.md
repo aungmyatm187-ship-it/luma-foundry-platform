@@ -154,7 +154,7 @@ wiring, not new behaviour.
 ## D15 — Codespaces + GitHub automation as first-class
 
 **Chosen:** ship a `.devcontainer` (Node 22 + Copilot), CI storefront step, a Cloudflare
-Pages deploy workflow, a path-based PR labeler, and Dependabot.
+Workers deploy workflow, a path-based PR labeler, and Dependabot.
 **Rejected:** ad-hoc local setup and manual dependency bumps.
 
 The repo targets agent + human contributors; a reproducible Codespaces environment and
