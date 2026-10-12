@@ -72,3 +72,13 @@ are ungated by design; boundary should be documented in GOVERNANCE.md.
 3. #16/#22: server-derived identity, then MCP bootstrap decision
 4. Reword AGENTS.md rule 3 (small docs PR)
 5. RLS runtime tests (npm run test:db) — review PDF finding 4
+
+## 5. Post-commit verification (same day)
+
+createContext verified in apps/api/src/trpc.ts: production builds
+AsyncWorkspace.fromDrizzle(authUserId) from a verified JWT; tests inject
+fromInMemory() directly. F1 confirmed — #7's remaining work is only the
+restart-persistence test. Note for #16: the API already derives identity
+server-side from a verified JWT (the pattern MCP hosted mode should adopt);
+what remains is deriving actor roles from the DB user record instead of
+accepting recordedBy from client payloads.
