@@ -39,8 +39,9 @@ CLIs (after `npm install` + `npm run build`):
    over `packages/core`. Never reimplement a rule in an adapter. If the two surfaces can
    disagree about what "cleared" means, the foundation is broken.
 
-3. **`packages/core` has no I/O.** No database, no network, no filesystem, no imports outside
-   itself. This keeps the rules pure and testable.
+3. **Keep governance rules pure.** Domain rules and passport generation must not perform
+   database, network, or filesystem I/O. Persistence belongs behind `WorkspaceRepository`;
+   see the in-memory and Drizzle adapters for the storage boundary.
 
 4. **No mocks in tests.** Exercise real code paths — real `Workspace`, real MCP client over
    the SDK's in-memory transport, real tRPC caller.
@@ -60,10 +61,13 @@ CLIs (after `npm install` + `npm run build`):
 ## Architecture notes
 
 - One rule set, many surfaces — see `docs/ARCHITECTURE.md`.
-- Storage is in-memory by design; swap behind `Workspace` without touching rules.
+- Core rules are storage-agnostic; the repository layer currently includes in-memory and
+  Drizzle/Postgres adapters. Production database deployment remains environment-specific.
 - The shipped site already has matching Drizzle tables (`collaborationGoals`,
   `collaborationProducts`, `collaborationWorkItems`, `collaborationHandoffs`,
   `collaborationDecisions`) — that is the migration path.
+- `get_release_passport` is a read-only structured export, not a signature or legal opinion;
+  keep references omitted by default and do not weaken the clearance gate.
 
 ## Working with Manus
 

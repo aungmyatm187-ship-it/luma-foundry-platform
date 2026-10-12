@@ -37,7 +37,7 @@ All three must pass before anything ships. CI enforces it.
 
 ## Surfaces
 
-**MCP server** — exposes the platform as 15 tools so any MCP client (Manus, OpenHands,
+**MCP server** — exposes the platform as 16 tools so any MCP client (Manus, OpenHands,
 Claude, an IDE) can drive the pipeline:
 
 ```bash
@@ -75,10 +75,16 @@ dependency_sbom · third_party_notices · counsel_review · buyer_terms`
 exists. They never prove ownership, licence, or permission to sell. The engine says so
 explicitly when they are the only evidence present.
 
+The read-only `get_release_passport` MCP tool exports a portable JSON snapshot of product
+status, evidence coverage, and blockers. It omits evidence locations by default and does not
+claim to verify those sources or provide a legal opinion. See
+[docs/RELEASE_PASSPORT.md](docs/RELEASE_PASSPORT.md).
+
 ## Layout
 
 ```
-packages/core/         domain model + governance rules (no I/O)
+packages/core/         domain model, pure governance rules, repository adapters
+packages/ai/           provider-agnostic AI adapter boundary (mock only; opt-in)
 packages/mcp-server/   Model Context Protocol tool surface   → bin: luma-mcp
 packages/gateway/      Telegram/Discord/Slack bot server      → bin: luma-bot
 apps/api/              tRPC workspace API
@@ -117,6 +123,7 @@ and 4178 (storefront) are forwarded automatically.
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Layers, boundaries, why one rule set |
 | [docs/MCP.md](docs/MCP.md) | Tool reference, transports, hosting |
 | [docs/GOVERNANCE.md](docs/GOVERNANCE.md) | Evidence model and clearance rules |
+| [docs/RELEASE_PASSPORT.md](docs/RELEASE_PASSPORT.md) | Portable evidence export and trust boundaries |
 | [docs/COLLABORATION.md](docs/COLLABORATION.md) | Manus ↔ OpenHands working protocol |
 | [docs/DECISIONS.md](docs/DECISIONS.md) | Stack choices and the reasoning |
 | [docs/SECURITY.md](docs/SECURITY.md) | Trust boundaries and secret handling |
@@ -124,8 +131,10 @@ and 4178 (storefront) are forwarded automatically.
 
 ## Status
 
-Foundation + storefront. The domain, governance gate, both surfaces, CI, and the
-deployable storefront are real and tested. Persistence is in-memory by design — swap in a
-Drizzle/Postgres repository behind `packages/core` when it is needed, without changing any
-rule. Commercial clearance remains gated on human evidence (`counsel_review`) — see
+Foundation + storefront. The domain, governance gate, MCP and API surfaces, CI, and the
+deployable storefront are real and tested. Core rules remain storage-agnostic; the repository
+interfaces include in-memory and Drizzle/Postgres adapters, while production database
+deployment remains environment-specific. The AI package is an opt-in adapter boundary with
+a mock provider; production providers are not implemented. Commercial clearance remains
+gated on human evidence (`counsel_review`) — see
 [docs/recovery/RECOVERY_REPORT.md](docs/recovery/RECOVERY_REPORT.md).

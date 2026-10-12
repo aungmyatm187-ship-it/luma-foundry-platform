@@ -1,6 +1,7 @@
 export * from './types.js';
 export * from './governance.js';
 export * from './evidence.js';
+export * from './release-passport.js';
 export * from './workspace.js';
 export * from './repository.js';
 export * from './inmemory-repository.js';

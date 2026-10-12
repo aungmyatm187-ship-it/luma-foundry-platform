@@ -38,6 +38,7 @@ describe('MCP server surface', () => {
     expect(names).toContain('create_product');
     expect(names).toContain('record_evidence');
     expect(names).toContain('check_clearance');
+    expect(names).toContain('get_release_passport');
     expect(names).toContain('set_product_status');
     expect(names).toEqual([
       'advance_workflow',
@@ -47,6 +48,7 @@ describe('MCP server surface', () => {
       'create_handoff',
       'create_product',
       'create_work_item',
+      'get_release_passport',
       'list_workflows',
       'record_evidence',
       'set_product_status',
@@ -129,6 +131,17 @@ describe('MCP governance enforcement', () => {
 
     const cleared = await call('check_clearance', { productId: product.id });
     expect(cleared.clearable).toBe(true);
+
+    const passport = await call('get_release_passport', { productId: product.id });
+    expect(passport.format).toBe('luma.release-evidence-passport');
+    expect((passport.clearance as Record<string, unknown>).clearable).toBe(true);
+    expect((passport.evidence as Array<Record<string, unknown>>)).toHaveLength(8);
+    expect((passport.evidence as Array<Record<string, unknown>>)[0]).not.toHaveProperty('reference');
+    const internalPassport = await call('get_release_passport', {
+      productId: product.id,
+      includeReferences: true,
+    });
+    expect((internalPassport.evidence as Array<Record<string, unknown>>)[0]).toHaveProperty('reference');
 
     const final = await call('set_product_status', {
       productId: product.id,
