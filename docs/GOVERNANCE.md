@@ -87,6 +87,10 @@ const report = evaluateClearance(product, ws.evidenceFor(product.id));
 `check_clearance` on the MCP server and `checkClearance` on the API return this same shape,
 so an agent can ask "what is missing?" and act on the answer.
 
+The MCP `get_release_passport` export packages this same report with a product identity and
+the evidence-record metadata. It does not alter the gate, verify referenced files, or establish
+that the underlying legal evidence is sufficient. See [Release evidence passport](RELEASE_PASSPORT.md).
+
 ## Statuses
 
 | Status | Meaning |

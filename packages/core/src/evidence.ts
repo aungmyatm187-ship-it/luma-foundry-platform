@@ -35,6 +35,19 @@ export const HUMAN_EVIDENCE_KINDS: readonly EvidenceKind[] = [
   'counsel_review',
 ] as const;
 
+/** Evidence category describes what a record supports, independently of its producer. */
+export type EvidenceCategory = 'traceability' | 'rights' | 'commercial';
+export const EVIDENCE_CATEGORIES: Readonly<Record<EvidenceKind, EvidenceCategory>> = {
+  source_commit: 'traceability',
+  dependency_sbom: 'traceability',
+  design_history: 'rights',
+  asset_licence: 'rights',
+  contributor_rights: 'rights',
+  third_party_notices: 'rights',
+  counsel_review: 'rights',
+  buyer_terms: 'commercial',
+};
+
 /** A product cannot be cleared on machine evidence alone. */
 export function isMachineKind(kind: EvidenceKind): boolean {
   return (MACHINE_EVIDENCE_KINDS as readonly EvidenceKind[]).includes(kind);

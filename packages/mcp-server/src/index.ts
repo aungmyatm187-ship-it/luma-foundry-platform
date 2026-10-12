@@ -24,6 +24,7 @@ import {
 AsyncWorkspace,
   advance,
   evaluateClearance,
+  createReleaseEvidencePassport,
   evaluateExit,
   findWorkflow,
   options,
@@ -300,6 +301,35 @@ export function createServer(
         if (!product) return fail(new Error(`Unknown product: ${productId}`));
         const evidence = await ws.evidenceFor(productId);
         return ok(evaluateClearance(product, evidence));
+      } catch (e) {
+        return fail(e);
+      }
+    },
+  );
+
+  server.registerTool(
+    'get_release_passport',
+    {
+      title: 'Get release evidence passport',
+      description:
+        'Export a portable, read-only evidence snapshot for a product. It reuses the clearance evaluator, omits evidence references by default, and is not a signed attestation or legal opinion.',
+      inputSchema: {
+        productId: z.string(),
+        includeReferences: z.boolean().optional().describe('Include evidence locations; only enable for an internal export.'),
+      },
+    },
+    async ({ productId, includeReferences }) => {
+      try {
+        const snap = await ws.snapshot();
+        const product = snap.products.find((p) => p.id === productId);
+        if (!product) return fail(new Error(`Unknown product: ${productId}`));
+        const evidence = await ws.evidenceFor(productId);
+        return ok(
+          createReleaseEvidencePassport(product, evidence, {
+            generatedAt: new Date().toISOString(),
+            includeReferences,
+          }),
+        );
       } catch (e) {
         return fail(e);
       }

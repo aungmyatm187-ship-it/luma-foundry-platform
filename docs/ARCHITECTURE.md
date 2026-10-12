@@ -17,23 +17,28 @@ So the rule lives in exactly one place and every surface is a thin adapter over 
              \                      /
               v                    v
         packages/core  — domain model + governance
-        (no I/O, no database, no network)
+        (pure rules; persistence via repository adapters)
 ```
 
 ## Layers
 
 ### `packages/core` — the rules
 
-Pure domain logic. Imports nothing but itself. Contains:
+The domain-rule modules are pure and have no I/O. The package also owns the repository
+abstraction and storage adapters, kept behind the domain boundary. It contains:
 
 - `types.ts` — the domain model: `Goal`, `Product`, `WorkItem`, `Handoff`, `Decision`,
   `Evidence`, plus the status vocabularies.
 - `governance.ts` — `REQUIRED_EVIDENCE`, `evaluateClearance`, `assertTransitionAllowed`.
   The single enforcement point for the clearance gate.
 - `workspace.ts` — an in-memory `Workspace` with validated writes.
+- `repository.ts` / `async-workspace.ts` — storage abstraction and async facade, with in-memory
+  and Drizzle/Postgres repository implementations.
+- `release-passport.ts` — a pure, portable export of product evidence coverage and clearance
+  blockers. It reuses the evaluator and does not claim to verify referenced artefacts.
 
-Because it has no I/O, it is trivially testable and safe to call from anywhere. The clearance
-check is a pure function, so a UI can preview "what is missing?" without side effects.
+The governance check is a pure function, so a UI can preview "what is missing?" without side
+effects. Storage adapters remain outside the rule evaluation path.
 
 ### `packages/mcp-server` — the agent surface
 
@@ -64,15 +69,18 @@ outcome    what we sell   build/review   A → B        approve/decline
 `Evidence` is the only thing that unlocks clearance. Work completing does not. A passing build
 does not. A live URL does not.
 
+The release passport makes that evidence legible across a handoff. It is a read-only snapshot;
+it does not change the gate, fetch evidence references, or confer legal or cryptographic
+assurance.
+
 ## Persistence
 
-`Workspace` is in-memory today, deliberately. The shape of the domain is still settling, and
-an in-memory store keeps the rules honest and the tests fast.
-
-When persistence lands, implement a repository behind `Workspace`'s interface. The shipped
-site already has the matching tables (`collaborationGoals`, `collaborationProducts`,
-`collaborationWorkItems`, `collaborationHandoffs`, `collaborationDecisions`) as a Drizzle v5
-schema, so the migration path is direct. No rule changes — only storage.
+The synchronous `Workspace` and `InMemoryRepository` provide fast isolated local use and tests.
+`AsyncWorkspace` supports the repository interface, including a Drizzle/Postgres adapter. The
+shipped site already has matching tables (`collaborationGoals`, `collaborationProducts`,
+`collaborationWorkItems`, `collaborationHandoffs`, `collaborationDecisions`). Production
+database configuration and deployment remain environment-specific; storage adapters must not
+duplicate or weaken the pure governance rules.
 
 ## Testing
 

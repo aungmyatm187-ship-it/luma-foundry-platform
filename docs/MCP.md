@@ -21,7 +21,7 @@ when you make that move:
 
 ## Tools
 
-Fifteen tools, grouped by intent.
+Sixteen tools, grouped by intent.
 
 **Read**
 
@@ -29,6 +29,7 @@ Fifteen tools, grouped by intent.
 |---|---|
 | `snapshot` | Full workspace state |
 | `check_clearance` | Whether a product has earned clearance, and what is missing |
+| `get_release_passport` | Portable, read-only evidence snapshot; references are omitted unless explicitly requested |
 
 **Goal & product**
 
@@ -79,6 +80,7 @@ kinds — not an exception across the transport:
 ```
 
 `check_clearance` is a pure read. Call it as often as needed; it never mutates.
+`get_release_passport` is also read-only. It applies the same evidence checklist and omits evidence references by default. The passport does not authenticate recorder roles or verify owner approval; it is unsigned, does not verify linked files, and is not legal advice or proof that the evidence is substantively sufficient. See [the clearance report semantics](GOVERNANCE.md#reading-a-clearance-report) and [the passport trust boundaries](RELEASE_PASSPORT.md).
 
 ## Client configuration
 
