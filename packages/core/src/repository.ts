@@ -20,6 +20,12 @@ import type {
  * Implementations must return domain types and must NOT expose DB/Drizzle types.
  */
 export interface WorkspaceRepository {
+  /**
+   * Resolve the authenticated user for this session from the server-verified
+   * identity. Returns null when no session user can be resolved. This is the
+   * single trusted source of actor identity and role.
+   */
+  currentUser(): Promise<User | null>;
   createUser(name: string, role: Role): Promise<User>;
   createGoal(input: {
     ownerId: string;

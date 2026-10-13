@@ -1,4 +1,4 @@
-import { assertTransitionAllowed } from './governance.js';
+import { assertTransitionAllowed, resolveRecordedRole } from './governance.js';
 import type {
   Decision,
   DecisionStatus,
@@ -18,20 +18,46 @@ import type {
 import type { WorkspaceRepository } from './repository.js';
 import { InMemoryRepository } from './inmemory-repository.js';
 import { DrizzleRepository } from './drizzle-repository.js';
+import type { Workspace } from './workspace.js';
 
 /**
  * AsyncWorkspace delegates persistence to a WorkspaceRepository but retains
- * the domain rule enforcement (assertTransitionAllowed).
+ * the domain rule enforcement (assertTransitionAllowed, role resolution).
  */
 export class AsyncWorkspace {
+  private cachedActor: User | null | undefined;
+
   constructor(private repo: WorkspaceRepository) {}
 
-  static fromInMemory(): AsyncWorkspace {
-    return new AsyncWorkspace(new InMemoryRepository());
+  static fromInMemory(ws?: Workspace, actor?: User | null): AsyncWorkspace {
+    return new AsyncWorkspace(new InMemoryRepository(ws, actor ?? null));
   }
 
   static fromDrizzle(authUserId: string): AsyncWorkspace {
     return new AsyncWorkspace(new DrizzleRepository(authUserId));
+  }
+
+  /**
+   * The server-derived session actor, or null when the workspace is unbound
+   * (in-memory standalone use such as tests and the stdio MCP client). Cached:
+   * the actor cannot change within a request.
+   */
+  async currentUser(): Promise<User | null> {
+    if (this.cachedActor === undefined) {
+      this.cachedActor = await this.repo.currentUser();
+    }
+    return this.cachedActor;
+  }
+
+  /**
+   * Resolve the role to record for a write against the session actor.
+   * When unbound, the caller-supplied label is kept so standalone behaviour is
+   * unchanged; when bound, the server role is authoritative.
+   */
+  private async attributedRole(claimed?: Role): Promise<Role | undefined> {
+    const actor = await this.currentUser();
+    if (!actor) return claimed;
+    return resolveRecordedRole(actor.role, claimed);
   }
 
   private async assertProductBelongsToGoal(
@@ -76,7 +102,8 @@ export class AsyncWorkspace {
     priority?: Priority;
   }): Promise<WorkItem> {
     await this.assertProductBelongsToGoal(input.goalId, input.productId);
-    return this.repo.createWorkItem(input);
+    const assignedTo = (await this.attributedRole(input.assignedTo)) ?? input.assignedTo;
+    return this.repo.createWorkItem({ ...input, assignedTo });
   }
 
   // Handoffs
@@ -90,7 +117,8 @@ export class AsyncWorkspace {
     asks: string;
   }): Promise<Handoff> {
     await this.assertProductBelongsToGoal(input.goalId, input.productId);
-    return this.repo.createHandoff(input);
+    const fromRole = (await this.attributedRole(input.fromRole)) ?? input.fromRole;
+    return this.repo.createHandoff({ ...input, fromRole });
   }
 
   // Decisions
@@ -114,7 +142,8 @@ export class AsyncWorkspace {
     note: string;
     recordedBy: Role;
   }): Promise<Evidence> {
-    return this.repo.recordEvidence(input);
+    const recordedBy = (await this.attributedRole(input.recordedBy)) ?? input.recordedBy;
+    return this.repo.recordEvidence({ ...input, recordedBy });
   }
 
   // Status updates
@@ -138,7 +167,8 @@ export class AsyncWorkspace {
     status: DecisionStatus,
     decidedBy: Role | null,
   ): Promise<Decision> {
-    return this.repo.updateDecisionStatus(decisionId, status, decidedBy);
+    const resolved = (await this.attributedRole(decidedBy ?? undefined)) ?? null;
+    return this.repo.updateDecisionStatus(decisionId, status, resolved);
   }
 
   async updateHandoffStatus(handoffId: string, status: HandoffStatus): Promise<Handoff> {

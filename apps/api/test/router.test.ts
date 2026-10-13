@@ -3,36 +3,56 @@
  * web app uses.
  *
  * Every procedure is protected, so tests build a context that satisfies the
- * Context type: { authUserId, ws }. The ws is in-memory — these tests verify
- * rule correctness, not persistence. Persistence is verified separately by
- * scripts/test-drizzle-repository.ts against live Postgres.
+ * Context type: { authUserId, actor, ws }. The ws is in-memory — these tests
+ * verify rule correctness, not persistence. Persistence is verified separately
+ * by scripts/test-drizzle-repository.ts against live Postgres.
+ *
+ * Actor roles are bound into the workspace the same way the API binds the
+ * resolved actor from the verified JWT, so these tests exercise the real
+ * server-derived-role path rather than passing a role in the request body.
  */
-import { AsyncWorkspace } from '@luma/core';
+import { AsyncWorkspace, Workspace, type Role } from '@luma/core';
 import { describe, expect, it } from 'vitest';
 
 import { appRouter } from '../src/router.js';
 import type { Context } from '../src/trpc.js';
 
-function setup(): { ws: AsyncWorkspace; caller: ReturnType<typeof appRouter.createCaller> } {
-  const ws = AsyncWorkspace.fromInMemory();
-  const ctx: Context = { authUserId: 'test-user-id', ws };
-  const caller = appRouter.createCaller(ctx);
-  return { ws, caller };
+function setup(role: Role = 'owner') {
+  const store = new Workspace();
+  const actor = store.createUser(`${role} user`, role);
+  const ws = AsyncWorkspace.fromInMemory(store, actor);
+  const ctx: Context = {
+    authUserId: `auth-${role}`,
+    actor: { id: actor.id, name: actor.name, role: actor.role },
+    ws,
+  };
+  return { store, actor, ws, caller: appRouter.createCaller(ctx) };
 }
 
 describe('workspace router', () => {
   it('rejects unauthenticated calls with UNAUTHORIZED', async () => {
     const ws = AsyncWorkspace.fromInMemory();
-    const caller = appRouter.createCaller({ authUserId: null, ws });
+    const caller = appRouter.createCaller({ authUserId: null, actor: null, ws });
     await expect(caller.snapshot()).rejects.toThrow(/Authentication required/);
   });
 
-  it('runs createGoal -> createProduct -> snapshot', async () => {
-    const { caller } = setup();
+  it('rejects an authenticated identity that has no actor record', async () => {
+    const ws = AsyncWorkspace.fromInMemory();
+    const caller = appRouter.createCaller({ authUserId: 'ghost', actor: null, ws });
+    await expect(caller.snapshot()).rejects.toThrow(/Authentication required/);
+  });
 
-    const user = await caller.createUser({ name: 'Owner', role: 'owner' });
+  it('exposes the server-derived actor via me', async () => {
+    const { actor, caller } = setup('operator_a');
+    const me = await caller.me();
+    expect(me).toMatchObject({ id: actor.id, role: 'operator_a' });
+  });
+
+  it('runs createGoal -> createProduct -> snapshot', async () => {
+    const { actor, caller } = setup('owner');
+
     const goal = await caller.createGoal({
-      ownerId: user.id,
+      ownerId: actor.id,
       title: 'Launch Batch 01 storefront',
       outcome: 'Five products cleared',
       priority: 'high',
@@ -53,9 +73,8 @@ describe('workspace router', () => {
   });
 
   it('exposes clearance as a query and guards the mutation', async () => {
-    const { caller } = setup();
-    const user = await caller.createUser({ name: 'Owner', role: 'owner' });
-    const goal = await caller.createGoal({ ownerId: user.id, title: 'g', outcome: 'o' });
+    const { actor, caller } = setup('owner');
+    const goal = await caller.createGoal({ ownerId: actor.id, title: 'g', outcome: 'o' });
     const product = await caller.createProduct({
       goalId: goal.id,
       name: 'Selene Agents',
@@ -77,15 +96,14 @@ describe('workspace router', () => {
   });
 
   it('tracks a decision from open to approved', async () => {
-    const { caller } = setup();
-    const user = await caller.createUser({ name: 'Owner', role: 'owner' });
-    const goal = await caller.createGoal({ ownerId: user.id, title: 'g', outcome: 'o' });
+    const { actor, caller } = setup('owner');
+    const goal = await caller.createGoal({ ownerId: actor.id, title: 'g', outcome: 'o' });
     const decision = await caller.createDecision({
       goalId: goal.id,
       title: 'Ship Ember Signal?',
       context: 'First real product',
       decision: 'Ship',
-      ownerId: user.id,
+      ownerId: actor.id,
     });
     expect(decision.status).toBe('open');
     expect(decision.resolvedAt).toBeNull();
@@ -101,10 +119,9 @@ describe('workspace router', () => {
   });
 
   it('rejects products that belong to a different goal', async () => {
-    const { caller } = setup();
-    const user = await caller.createUser({ name: 'Owner', role: 'owner' });
-    const goalA = await caller.createGoal({ ownerId: user.id, title: 'Goal A', outcome: 'A' });
-    const goalB = await caller.createGoal({ ownerId: user.id, title: 'Goal B', outcome: 'B' });
+    const { actor, caller } = setup('owner');
+    const goalA = await caller.createGoal({ ownerId: actor.id, title: 'Goal A', outcome: 'A' });
+    const goalB = await caller.createGoal({ ownerId: actor.id, title: 'Goal B', outcome: 'B' });
     const productB = await caller.createProduct({
       goalId: goalB.id,
       name: 'Product B',
@@ -142,15 +159,112 @@ describe('workspace router', () => {
         title: 'Cross-goal decision',
         context: 'Must be rejected',
         decision: 'Reject',
-        ownerId: user.id,
+        ownerId: actor.id,
       }),
     ).rejects.toThrow(/does not belong to the selected goal/);
   });
 
   it('rejects invalid input via schema validation', async () => {
-    const { caller } = setup();
+    const { caller } = setup('owner');
     await expect(
       caller.createProduct({ goalId: 'goal-1', name: '', category: 'c', route: '/x' }),
     ).rejects.toThrow();
+  });
+
+  describe('server-derived actor roles', () => {
+    it('rejects an operator claiming the owner role', async () => {
+      const { actor, caller } = setup('operator_a');
+      const goal = await caller.createGoal({ ownerId: actor.id, title: 'g', outcome: 'o' });
+      const product = await caller.createProduct({
+        goalId: goal.id,
+        name: 'P',
+        category: 'c',
+        route: '/p',
+      });
+
+      await expect(
+        caller.createWorkItem({
+          goalId: goal.id,
+          productId: product.id,
+          type: 'build',
+          assignedTo: 'owner',
+          title: 'Impersonation attempt',
+          detail: 'Must be rejected',
+        }),
+      ).rejects.toThrow(/may not record work as 'owner'/);
+
+      await expect(
+        caller.recordEvidence({
+          productId: product.id,
+          kind: 'source_commit',
+          reference: 'x',
+          note: 'x',
+          recordedBy: 'owner',
+        }),
+      ).rejects.toThrow(/may not record work as 'owner'/);
+    });
+
+    it('records the server role when an owner acts as an operator', async () => {
+      const { actor, caller } = setup('owner');
+      const goal = await caller.createGoal({ ownerId: actor.id, title: 'g', outcome: 'o' });
+      const product = await caller.createProduct({
+        goalId: goal.id,
+        name: 'P',
+        category: 'c',
+        route: '/p',
+      });
+
+      const item = await caller.createWorkItem({
+        goalId: goal.id,
+        productId: product.id,
+        type: 'build',
+        assignedTo: 'operator_b',
+        title: 'Owner acting as operator',
+        detail: 'Attribution must follow the session role',
+      });
+      expect(item.assignedTo).toBe('owner');
+
+      const evidence = await caller.recordEvidence({
+        productId: product.id,
+        kind: 'source_commit',
+        reference: 'x',
+        note: 'x',
+        recordedBy: 'operator_b',
+      });
+      expect(evidence.recordedBy).toBe('owner');
+    });
+
+    it('accepts a valid matching role', async () => {
+      const { actor, caller } = setup('operator_b');
+      const goal = await caller.createGoal({ ownerId: actor.id, title: 'g', outcome: 'o' });
+      const product = await caller.createProduct({
+        goalId: goal.id,
+        name: 'P',
+        category: 'c',
+        route: '/p',
+      });
+
+      const item = await caller.createWorkItem({
+        goalId: goal.id,
+        productId: product.id,
+        type: 'review',
+        assignedTo: 'operator_b',
+        title: 'Valid role',
+        detail: 'Accepted',
+      });
+      expect(item.assignedTo).toBe('operator_b');
+    });
+
+    it('restricts createUser to owners', async () => {
+      const { caller: operator } = setup('operator_a');
+      await expect(
+        operator.createUser({ name: 'New', role: 'operator_b' }),
+      ).rejects.toThrow(/Owner role required/);
+
+      const { caller: owner } = setup('owner');
+      await expect(
+        owner.createUser({ name: 'New', role: 'operator_b' }),
+      ).resolves.toMatchObject({ role: 'operator_b' });
+    });
   });
 });

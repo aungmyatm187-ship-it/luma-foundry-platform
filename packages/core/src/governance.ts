@@ -8,7 +8,7 @@
  * Technical traceability (a source commit, a passing build, a live URL) is never
  * sufficient on its own. It proves the artefact exists, not that it may be sold.
  */
-import type { Evidence, EvidenceKind, Product, ProductStatus } from './types.js';
+import type { Evidence, EvidenceKind, Product, ProductStatus, Role } from './types.js';
 
 /**
  * Evidence required before a product can be commercially cleared.
@@ -107,4 +107,29 @@ export function assertTransitionAllowed(
       `Product ${product.id} cannot be marked 'cleared'. ${report.blockers.join(' ')}`,
     );
   }
+}
+
+/**
+ * Resolve the role to record for a write.
+ *
+ * The server-derived role is authoritative. A caller-supplied role is
+ * descriptive input at most:
+ *   - claiming `owner` without being the owner is rejected outright — `owner` is
+ *     the only role that carries clearance authority, so impersonating it is an
+ *     escalation attempt, not a labelling mistake;
+ *   - any other mismatch resolves to the server role, so a write is never
+ *     attributed to a role the actor does not hold.
+ *
+ * Returning the server role (rather than trusting the claim) keeps attribution
+ * honest: the audit trail records who acted, not who the client said they were.
+ */
+export function resolveRecordedRole(actorRole: Role, claimed?: Role): Role {
+  if (claimed === undefined) return actorRole;
+  if (claimed === 'owner' && actorRole !== 'owner') {
+    throw new GovernanceError(
+      `Actor with role '${actorRole}' may not record work as 'owner'. ` +
+        'Owner is derived from the authenticated session and cannot be claimed.',
+    );
+  }
+  return actorRole;
 }

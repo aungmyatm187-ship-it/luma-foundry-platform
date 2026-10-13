@@ -62,6 +62,21 @@ export interface User {
   createdAt: string;
 }
 
+/**
+ * A server-resolved actor.
+ *
+ * An Actor is derived on the server from the verified session identity
+ * (auth.uid()) and the matching `public.users` row. Its `role` is the only role
+ * the platform trusts for authorization or attribution; role values arriving
+ * from a client are descriptive at most and must never grant authority.
+ */
+export interface Actor {
+  /** `public.users.id` — the row id, not the Supabase auth UUID. */
+  id: string;
+  name: string;
+  role: Role;
+}
+
 export interface Goal {
   id: string;
   ownerId: string;

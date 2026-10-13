@@ -16,6 +16,7 @@ import { eq, and, desc } from 'drizzle-orm';
 
 import { withUser } from './db.js';
 import * as schema from './schema.js';
+import { GovernanceError } from './governance.js';
 import type { WorkspaceRepository } from './repository.js';
 import type {
   Decision,
@@ -41,6 +42,38 @@ export class DrizzleRepository implements WorkspaceRepository {
 
   private run<T>(fn: (tx: any) => Promise<T>): Promise<T> {
     return withUser(this.authUserId, fn);
+  }
+
+  /**
+   * Resolve the session user from auth.uid(). RLS (`users_own_rows`) restricts
+   * this SELECT to the caller's own row, so it can only ever return the
+   * authenticated user — never another actor.
+   */
+  async currentUser(): Promise<User | null> {
+    return this.run(async (tx) => {
+      const [row] = await tx
+        .select()
+        .from(schema.users)
+        .where(eq(schema.users.authUserId, this.authUserId))
+        .limit(1);
+      return row ? rowToUser(row) : null;
+    });
+  }
+
+  /**
+   * The authenticated user's server-derived role. Throws when the session
+   * identity has no `public.users` row: an authenticated caller with no role
+   * record is not a known actor, so it must not be attributed as one.
+   */
+  async currentRole(): Promise<Role> {
+    const user = await this.currentUser();
+    if (!user) {
+      throw new GovernanceError(
+        `No workspace user record for the authenticated identity (${this.authUserId}). ` +
+          'Role must be provisioned before this identity can act.',
+      );
+    }
+    return user.role;
   }
 
   async createUser(_name: string, _role: Role): Promise<User> {

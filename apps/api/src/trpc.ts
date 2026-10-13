@@ -13,11 +13,13 @@
  */
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
-import { AsyncWorkspace } from '@luma/core';
+import { AsyncWorkspace, type Actor } from '@luma/core';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 
 export type Context = {
   authUserId: string | null;
+  /** Server-derived actor. Null when unauthenticated or unprovisioned. */
+  actor: Actor | null;
   ws: AsyncWorkspace;
 };
 
@@ -60,10 +62,21 @@ export async function createContext(
     // Unauthenticated requests get an in-memory workspace. Every protected
     // procedure rejects them before touching it, so this is a placeholder
     // that satisfies the context type without pretending to be a real session.
-    return { authUserId: null, ws: AsyncWorkspace.fromInMemory() };
+    return { authUserId: null, actor: null, ws: AsyncWorkspace.fromInMemory() };
   }
 
-  return { authUserId, ws: AsyncWorkspace.fromDrizzle(authUserId) };
+  const ws = AsyncWorkspace.fromDrizzle(authUserId);
+  // Resolve the actor from the verified identity, server-side. A failure here
+  // (no users row) leaves actor null; protectedProcedure rejects it rather than
+  // silently treating an unknown identity as an actor.
+  let actor: Actor | null = null;
+  try {
+    const user = await ws.currentUser();
+    if (user) actor = { id: user.id, name: user.name, role: user.role };
+  } catch {
+    actor = null;
+  }
+  return { authUserId, actor, ws };
 }
 
 const t = initTRPC.context<Context>().create();
@@ -72,17 +85,36 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 
 /**
- * Requires a verified Supabase session.
- * The narrowed ctx exposes authUserId as non-null and preserves ws.
+ * Requires a verified Supabase session AND a provisioned workspace actor.
+ * Role is never taken from the request body — it is derived here, once.
  */
 export const protectedProcedure = t.procedure.use(async (opts) => {
-  if (!opts.ctx.authUserId) {
+  if (!opts.ctx.authUserId || !opts.ctx.actor) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
       message: 'Authentication required',
     });
   }
   return opts.next({
-    ctx: { authUserId: opts.ctx.authUserId, ws: opts.ctx.ws },
+    ctx: {
+      authUserId: opts.ctx.authUserId,
+      actor: opts.ctx.actor,
+      ws: opts.ctx.ws,
+    },
   });
+});
+
+/**
+ * Owner-only. Authorization is derived from the server-resolved actor role,
+ * never from client input. Used for operations that grant authority (e.g.
+ * creating users), which must not be available to an operator.
+ */
+export const ownerProcedure = protectedProcedure.use(async (opts) => {
+  if (opts.ctx.actor.role !== 'owner') {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Owner role required',
+    });
+  }
+  return opts.next();
 });

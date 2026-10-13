@@ -23,9 +23,21 @@ import type { WorkspaceRepository } from './repository.js';
  */
 export class InMemoryRepository implements WorkspaceRepository {
   private ws: Workspace;
+  private actor: User | null;
 
-  constructor() {
-    this.ws = new Workspace();
+  /**
+   * @param ws   optional store to wrap (lets a caller seed data first)
+   * @param actor optional pre-bound session user. When omitted, `currentUser()`
+   *   returns null and the workspace behaves standalone (tests / stdio MCP),
+   *   where role labels remain caller-supplied.
+   */
+  constructor(ws: Workspace = new Workspace(), actor: User | null = null) {
+    this.ws = ws;
+    this.actor = actor;
+  }
+
+  currentUser(): Promise<User | null> {
+    return Promise.resolve(this.actor);
   }
 
   createUser(name: string, role: Role): Promise<User> {

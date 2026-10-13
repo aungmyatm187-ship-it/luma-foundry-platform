@@ -25,12 +25,22 @@ import {
   evaluateClearance,
 } from '@luma/core';
 
-import { router, protectedProcedure } from './trpc.js';
+import { router, protectedProcedure, ownerProcedure } from './trpc.js';
 
 export const appRouter = router({
   snapshot: protectedProcedure.query(async ({ ctx }) => await ctx.ws.snapshot()),
 
-  createUser: protectedProcedure
+  /**
+   * The server-derived actor for the current session. The client reads role
+   * from here — it is not asked to supply one.
+   */
+  me: protectedProcedure.query(({ ctx }) => ctx.actor),
+
+  /**
+   * Creating users grants a role, so it is owner-only and derived from the
+   * server session rather than a client-provided role.
+   */
+  createUser: ownerProcedure
     .input(z.object({ name: z.string().min(1), role: z.enum(ROLES) }))
     .mutation(async ({ ctx, input }) => await ctx.ws.createUser(input.name, input.role)),
 
