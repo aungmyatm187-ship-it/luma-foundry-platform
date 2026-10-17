@@ -51,9 +51,13 @@ export type Priority = (typeof PRIORITIES)[number];
 /**
  * The two-operator model. Operator A builds; Operator B reviews and gates.
  * Operator B never edits product code — evidence and data handoff only.
+ * `pending` is for new signups before they are assigned an operator role.
  */
-export const ROLES = ['owner', 'operator_a', 'operator_b'] as const;
+export const ROLES = ['owner', 'operator_a', 'operator_b', 'pending'] as const;
 export type Role = (typeof ROLES)[number];
+
+export const WORKSPACE_ROLES = ['owner', 'member'] as const;
+export type WorkspaceRole = (typeof WORKSPACE_ROLES)[number];
 
 export interface User {
   id: string;
@@ -62,8 +66,22 @@ export interface User {
   createdAt: string;
 }
 
+export interface WorkspaceRecord {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
+export interface WorkspaceMember {
+  workspaceId: string;
+  userId: string;
+  role: WorkspaceRole;
+  createdAt: string;
+}
+
 export interface Goal {
   id: string;
+  workspaceId: string;
   ownerId: string;
   title: string;
   outcome: string;
@@ -75,6 +93,7 @@ export interface Goal {
 
 export interface Product {
   id: string;
+  workspaceId: string;
   goalId: string;
   name: string;
   category: string;
@@ -87,6 +106,7 @@ export interface Product {
 
 export interface WorkItem {
   id: string;
+  workspaceId: string;
   goalId: string;
   productId: string | null;
   type: string;
@@ -101,6 +121,7 @@ export interface WorkItem {
 
 export interface Handoff {
   id: string;
+  workspaceId: string;
   goalId: string;
   productId: string | null;
   fromRole: Role;
@@ -115,6 +136,7 @@ export interface Handoff {
 
 export interface Decision {
   id: string;
+  workspaceId: string;
   goalId: string;
   productId: string | null;
   title: string;
@@ -130,6 +152,7 @@ export interface Decision {
 /** One piece of release evidence attached to a product. */
 export interface Evidence {
   id: string;
+  workspaceId: string;
   productId: string;
   kind: EvidenceKind;
   /** Where the evidence lives (URL, commit, file reference). */
@@ -137,11 +160,15 @@ export interface Evidence {
   note: string;
   recordedBy: Role;
   recordedAt: string;
+  prevHash: string | null;
+  rowHash: string | null;
 }
 
 /** Everything a workspace holds. */
 export interface Snapshot {
   users: User[];
+  workspaces: WorkspaceRecord[];
+  workspaceMembers: WorkspaceMember[];
   goals: Goal[];
   products: Product[];
   workItems: WorkItem[];

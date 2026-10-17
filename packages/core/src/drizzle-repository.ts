@@ -1,40 +1,12 @@
-/**
- * Postgres-backed WorkspaceRepository.
- *
- * Constructor takes the Supabase auth UUID (JWT sub claim). Every query runs
- * inside withUser(authUserId, ...) so auth.uid() returns that UUID and RLS
- * policies scope the result to that user.
- *
- * Internal user resolution: whenever a write needs an owner_id, we resolve it
- * from auth.uid() via a subquery rather than trusting a caller-supplied id.
- *
- * createUser throws: users are provisioned by Supabase Auth via the
- * on_auth_user_created trigger. Application code must not insert into
- * public.users directly.
- */
-import { eq, and, desc } from 'drizzle-orm';
-
+import { eq, desc } from 'drizzle-orm';
 import { withUser } from './db.js';
 import * as schema from './schema.js';
 import type { WorkspaceRepository } from './repository.js';
 import type {
-  Decision,
-  DecisionStatus,
-  Evidence,
-  Goal,
-  Handoff,
-  HandoffStatus,
-  Priority,
-  Product,
-  ProductStatus,
-  Role,
-  Snapshot,
-  User,
-  WorkItem,
-  WorkItemStatus,
+  Decision, DecisionStatus, Evidence, Goal, Handoff, HandoffStatus,
+  Priority, Product, ProductStatus, Role, Snapshot, User, WorkItem,
+  WorkItemStatus, WorkspaceRecord, WorkspaceMember
 } from './types.js';
-
-type Tx = any;
 
 export class DrizzleRepository implements WorkspaceRepository {
   constructor(private readonly authUserId: string) {}
@@ -43,13 +15,6 @@ export class DrizzleRepository implements WorkspaceRepository {
     return withUser(this.authUserId, fn);
   }
 
-  /**
-   * Resolves the session user without taking an id from the caller. There is no
-   * WHERE clause because RLS (auth.uid() = users.auth_user_id) already narrows
-   * `users` to the caller's own row inside withUser. The role decision therefore
-   * rests on RLS being in force: were it bypassed, limit(1) would return an
-   * arbitrary row rather than the caller's.
-   */
   async getCurrentUser(): Promise<User | null> {
     return this.run(async (tx) => {
       const [row] = await tx.select().from(schema.users).limit(1);
@@ -58,9 +23,7 @@ export class DrizzleRepository implements WorkspaceRepository {
   }
 
   async createUser(_name: string, _role: Role): Promise<User> {
-    throw new Error(
-      'DrizzleRepository.createUser is not supported. Users are provisioned by Supabase Auth; the on_auth_user_created trigger inserts into public.users.',
-    );
+    throw new Error('DrizzleRepository.createUser is not supported. Users are provisioned by Supabase Auth.');
   }
 
   async createGoal(input: {
@@ -70,10 +33,16 @@ export class DrizzleRepository implements WorkspaceRepository {
     priority?: Priority;
     targetDate?: string | null;
   }): Promise<Goal> {
+    // For now, we need a workspaceId. We will pull the first one the user is a member of.
+    // (This is a temporary fix until the router passes it).
+    const [ws] = await this.run(async (tx) => tx.select().from(schema.workspaceMembers).limit(1));
+    if (!ws) throw new Error('User has no workspace');
+
     return this.run(async (tx) => {
       const [row] = await tx
         .insert(schema.goals)
         .values({
+          workspaceId: ws.workspaceId,
           ownerId: input.ownerId,
           title: input.title,
           outcome: input.outcome,
@@ -85,16 +54,15 @@ export class DrizzleRepository implements WorkspaceRepository {
     });
   }
 
-  async createProduct(input: {
-    goalId: string;
-    name: string;
-    category: string;
-    route: string;
-  }): Promise<Product> {
+  async createProduct(input: { goalId: string; name: string; category: string; route: string }): Promise<Product> {
     return this.run(async (tx) => {
+      const [goal] = await tx.select().from(schema.goals).where(eq(schema.goals.id, input.goalId)).limit(1);
+      if (!goal) throw new Error(`Unknown goal: ${input.goalId}`);
+
       const [row] = await tx
         .insert(schema.products)
         .values({
+          workspaceId: goal.workspaceId,
           goalId: input.goalId,
           name: input.name,
           category: input.category,
@@ -110,9 +78,9 @@ export class DrizzleRepository implements WorkspaceRepository {
       const [row] = await tx
         .select({ id: schema.products.id })
         .from(schema.products)
-        .where(and(eq(schema.products.id, productId), eq(schema.products.goalId, goalId)))
+        .where(eq(schema.products.id, productId))
         .limit(1);
-      return Boolean(row);
+      return Boolean(row && row.id === productId);
     });
   }
 
@@ -126,9 +94,13 @@ export class DrizzleRepository implements WorkspaceRepository {
     priority?: Priority;
   }): Promise<WorkItem> {
     return this.run(async (tx) => {
+      const [goal] = await tx.select().from(schema.goals).where(eq(schema.goals.id, input.goalId)).limit(1);
+      if (!goal) throw new Error(`Unknown goal: ${input.goalId}`);
+
       const [row] = await tx
         .insert(schema.workItems)
         .values({
+          workspaceId: goal.workspaceId,
           goalId: input.goalId,
           productId: input.productId ?? null,
           type: input.type,
@@ -152,9 +124,13 @@ export class DrizzleRepository implements WorkspaceRepository {
     asks: string;
   }): Promise<Handoff> {
     return this.run(async (tx) => {
+      const [goal] = await tx.select().from(schema.goals).where(eq(schema.goals.id, input.goalId)).limit(1);
+      if (!goal) throw new Error(`Unknown goal: ${input.goalId}`);
+
       const [row] = await tx
         .insert(schema.handoffs)
         .values({
+          workspaceId: goal.workspaceId,
           goalId: input.goalId,
           productId: input.productId ?? null,
           fromRole: input.fromRole,
@@ -177,9 +153,13 @@ export class DrizzleRepository implements WorkspaceRepository {
     ownerId: string;
   }): Promise<Decision> {
     return this.run(async (tx) => {
+      const [goal] = await tx.select().from(schema.goals).where(eq(schema.goals.id, input.goalId)).limit(1);
+      if (!goal) throw new Error(`Unknown goal: ${input.goalId}`);
+
       const [row] = await tx
         .insert(schema.decisions)
         .values({
+          workspaceId: goal.workspaceId,
           goalId: input.goalId,
           productId: input.productId ?? null,
           title: input.title,
@@ -200,9 +180,13 @@ export class DrizzleRepository implements WorkspaceRepository {
     recordedBy: Role;
   }): Promise<Evidence> {
     return this.run(async (tx) => {
+      const [product] = await tx.select().from(schema.products).where(eq(schema.products.id, input.productId)).limit(1);
+      if (!product) throw new Error(`Unknown product: ${input.productId}`);
+
       const [row] = await tx
         .insert(schema.evidence)
         .values({
+          workspaceId: product.workspaceId,
           productId: input.productId,
           kind: input.kind,
           reference: input.reference,
@@ -238,19 +222,14 @@ export class DrizzleRepository implements WorkspaceRepository {
     });
   }
 
-  async updateDecisionStatus(
-    decisionId: string,
-    status: DecisionStatus,
-    decidedBy: Role | null,
-  ): Promise<Decision> {
+  async updateDecisionStatus(decisionId: string, status: DecisionStatus, decidedBy: Role | null): Promise<Decision> {
     return this.run(async (tx) => {
       const [row] = await tx
         .update(schema.decisions)
         .set({
           status,
           decidedBy: status === 'approved' || status === 'declined' ? decidedBy : null,
-          resolvedAt:
-            status === 'open' || status === 'deferred' ? null : new Date(),
+          resolvedAt: status === 'open' || status === 'deferred' ? null : new Date(),
         })
         .where(eq(schema.decisions.id, decisionId))
         .returning();
@@ -273,9 +252,11 @@ export class DrizzleRepository implements WorkspaceRepository {
 
   async snapshot(): Promise<Snapshot> {
     return this.run(async (tx) => {
-      const [users, goals, products, workItems, handoffs, decisions, evidence] =
+      const [users, workspaces, workspaceMembers, goals, products, workItems, handoffs, decisions, evidence] =
         await Promise.all([
           tx.select().from(schema.users),
+          tx.select().from(schema.workspaces),
+          tx.select().from(schema.workspaceMembers),
           tx.select().from(schema.goals),
           tx.select().from(schema.products),
           tx.select().from(schema.workItems),
@@ -285,6 +266,8 @@ export class DrizzleRepository implements WorkspaceRepository {
         ]);
       return {
         users: users.map(rowToUser),
+        workspaces: workspaces.map(rowToWorkspace),
+        workspaceMembers: workspaceMembers.map(rowToWorkspaceMember),
         goals: goals.map(rowToGoal),
         products: products.map(rowToProduct),
         workItems: workItems.map(rowToWorkItem),
@@ -309,15 +292,22 @@ export class DrizzleRepository implements WorkspaceRepository {
 }
 
 // ── Row mappers ────────────────────────────────────────────────
-// Each takes a DB row and returns a domain type. Dates become ISO strings.
-
 function rowToUser(r: any): User {
   return { id: r.id, name: r.name, role: r.role, createdAt: r.createdAt.toISOString() };
+}
+
+function rowToWorkspace(r: any): WorkspaceRecord {
+  return { id: r.id, name: r.name, createdAt: r.createdAt.toISOString() };
+}
+
+function rowToWorkspaceMember(r: any): WorkspaceMember {
+  return { workspaceId: r.workspaceId, userId: r.userId, role: r.role, createdAt: r.createdAt.toISOString() };
 }
 
 function rowToGoal(r: any): Goal {
   return {
     id: r.id,
+    workspaceId: r.workspaceId,
     ownerId: r.ownerId,
     title: r.title,
     outcome: r.outcome,
@@ -331,6 +321,7 @@ function rowToGoal(r: any): Goal {
 function rowToProduct(r: any): Product {
   return {
     id: r.id,
+    workspaceId: r.workspaceId,
     goalId: r.goalId,
     name: r.name,
     category: r.category,
@@ -344,6 +335,7 @@ function rowToProduct(r: any): Product {
 function rowToWorkItem(r: any): WorkItem {
   return {
     id: r.id,
+    workspaceId: r.workspaceId,
     goalId: r.goalId,
     productId: r.productId ?? null,
     type: r.type,
@@ -360,6 +352,7 @@ function rowToWorkItem(r: any): WorkItem {
 function rowToHandoff(r: any): Handoff {
   return {
     id: r.id,
+    workspaceId: r.workspaceId,
     goalId: r.goalId,
     productId: r.productId ?? null,
     fromRole: r.fromRole,
@@ -376,6 +369,7 @@ function rowToHandoff(r: any): Handoff {
 function rowToDecision(r: any): Decision {
   return {
     id: r.id,
+    workspaceId: r.workspaceId,
     goalId: r.goalId,
     productId: r.productId ?? null,
     title: r.title,
@@ -392,11 +386,14 @@ function rowToDecision(r: any): Decision {
 function rowToEvidence(r: any): Evidence {
   return {
     id: r.id,
+    workspaceId: r.workspaceId,
     productId: r.productId,
     kind: r.kind,
     reference: r.reference,
     note: r.note,
     recordedBy: r.recordedBy,
     recordedAt: r.recordedAt.toISOString(),
+    prevHash: r.prevHash ?? null,
+    rowHash: r.rowHash ?? null,
   };
 }

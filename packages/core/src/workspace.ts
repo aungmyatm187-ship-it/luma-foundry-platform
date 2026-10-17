@@ -1,26 +1,8 @@
-/**
- * In-memory workspace store.
- *
- * Deliberately storage-agnostic: the domain and governance layers never touch a
- * database. Swap this for a Drizzle/Postgres repository later without changing
- * the rules. All writes go through the same validation.
- */
 import { assertTransitionAllowed } from './governance.js';
 import type {
-  Decision,
-  DecisionStatus,
-  Evidence,
-  Goal,
-  Handoff,
-  HandoffStatus,
-  Priority,
-  Product,
-  ProductStatus,
-  Role,
-  Snapshot,
-  User,
-  WorkItem,
-  WorkItemStatus,
+  Decision, DecisionStatus, Evidence, Goal, Handoff, HandoffStatus,
+  Priority, Product, ProductStatus, Role, Snapshot, User, WorkItem,
+  WorkItemStatus, WorkspaceRecord, WorkspaceMember
 } from './types.js';
 
 let counter = 0;
@@ -28,13 +10,17 @@ function id(prefix: string): string {
   counter += 1;
   return `${prefix}-${counter.toString().padStart(4, '0')}`;
 }
-
 function now(): string {
   return new Date().toISOString();
 }
 
+// A fixed default workspace for the in-memory store to satisfy types
+const DEFAULT_WS = 'ws-default-0001';
+
 export class Workspace {
   private users: User[] = [];
+  private workspaces: WorkspaceRecord[] = [];
+  private workspaceMembers: WorkspaceMember[] = [];
   private goals: Goal[] = [];
   private products: Product[] = [];
   private workItems: WorkItem[] = [];
@@ -42,9 +28,14 @@ export class Workspace {
   private decisions: Decision[] = [];
   private evidence: Evidence[] = [];
 
+  constructor() {
+    this.workspaces.push({ id: DEFAULT_WS, name: 'Default Workspace', createdAt: now() });
+  }
+
   createUser(name: string, role: Role): User {
     const user: User = { id: id('usr'), name, role, createdAt: now() };
     this.users.push(user);
+    this.workspaceMembers.push({ workspaceId: DEFAULT_WS, userId: user.id, role: 'owner', createdAt: now() });
     return user;
   }
 
@@ -60,6 +51,7 @@ export class Workspace {
     }
     const goal: Goal = {
       id: id('goal'),
+      workspaceId: DEFAULT_WS,
       ownerId: input.ownerId,
       title: input.title,
       outcome: input.outcome,
@@ -72,15 +64,11 @@ export class Workspace {
     return goal;
   }
 
-  createProduct(input: {
-    goalId: string;
-    name: string;
-    category: string;
-    route: string;
-  }): Product {
+  createProduct(input: { goalId: string; name: string; category: string; route: string }): Product {
     this.requireGoal(input.goalId);
     const product: Product = {
       id: id('prd'),
+      workspaceId: DEFAULT_WS,
       goalId: input.goalId,
       name: input.name,
       category: input.category,
@@ -106,6 +94,7 @@ export class Workspace {
     if (input.productId) this.requireProduct(input.productId);
     const item: WorkItem = {
       id: id('wi'),
+      workspaceId: DEFAULT_WS,
       goalId: input.goalId,
       productId: input.productId ?? null,
       type: input.type,
@@ -134,6 +123,7 @@ export class Workspace {
     if (input.productId) this.requireProduct(input.productId);
     const handoff: Handoff = {
       id: id('hof'),
+      workspaceId: DEFAULT_WS,
       goalId: input.goalId,
       productId: input.productId ?? null,
       fromRole: input.fromRole,
@@ -161,6 +151,7 @@ export class Workspace {
     if (input.productId) this.requireProduct(input.productId);
     const decision: Decision = {
       id: id('dec'),
+      workspaceId: DEFAULT_WS,
       goalId: input.goalId,
       productId: input.productId ?? null,
       title: input.title,
@@ -186,18 +177,20 @@ export class Workspace {
     this.requireProduct(input.productId);
     const record: Evidence = {
       id: id('ev'),
+      workspaceId: DEFAULT_WS,
       productId: input.productId,
       kind: input.kind,
       reference: input.reference,
       note: input.note,
       recordedBy: input.recordedBy,
       recordedAt: now(),
+      prevHash: null,
+      rowHash: null,
     };
     this.evidence.push(record);
     return record;
   }
 
-  /** Status changes are guarded — clearing a product requires full evidence. */
   updateProductStatus(productId: string, status: ProductStatus): Product {
     const product = this.requireProduct(productId);
     assertTransitionAllowed(product, status, this.evidence);
@@ -222,8 +215,7 @@ export class Workspace {
     const decision = this.decisions.find((d) => d.id === decisionId);
     if (!decision) throw new Error(`Unknown decision: ${decisionId}`);
     decision.status = status;
-    decision.decidedBy =
-      status === 'approved' || status === 'declined' ? decidedBy : null;
+    decision.decidedBy = status === 'approved' || status === 'declined' ? decidedBy : null;
     decision.resolvedAt = status === 'open' || status === 'deferred' ? null : now();
     return decision;
   }
@@ -239,6 +231,8 @@ export class Workspace {
   snapshot(): Snapshot {
     return {
       users: [...this.users],
+      workspaces: [...this.workspaces],
+      workspaceMembers: [...this.workspaceMembers],
       goals: [...this.goals],
       products: [...this.products],
       workItems: [...this.workItems],

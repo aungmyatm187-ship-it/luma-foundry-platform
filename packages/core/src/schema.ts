@@ -1,12 +1,3 @@
-/**
- * Drizzle schema for Luma Foundry.
- *
- * RLS is co-located with tables so policies ship in the same migration.
- * authUid is a SQL value in drizzle-orm/supabase, not a function.
- * Usage: sql`${authUid} = ${column}`.
- *
- * Evidence is append-only with a hash chain for tamper-evident provenance.
- */
 import { relations, sql } from 'drizzle-orm';
 import {
   foreignKey,
@@ -14,34 +5,28 @@ import {
   pgEnum,
   pgPolicy,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   unique,
   uuid,
 } from 'drizzle-orm/pg-core';
-import { authUid } from 'drizzle-orm/supabase';
 
 // ── Enums ──────────────────────────────────────────────────────
-export const roleEnum = pgEnum('role', ['owner', 'operator_a', 'operator_b']);
+export const roleEnum = pgEnum('role', ['owner', 'operator_a', 'operator_b', 'pending']);
+export const workspaceRoleEnum = pgEnum('workspace_role', ['owner', 'member']);
+export const productStatusEnum = pgEnum('product_status', ['concept', 'in_build', 'in_review', 'conditional', 'cleared', 'blocked']);
 export const priorityEnum = pgEnum('priority', ['low', 'medium', 'high', 'critical']);
-export const productStatusEnum = pgEnum('product_status', [
-  'concept', 'in_build', 'in_review', 'conditional', 'cleared', 'blocked',
-]);
-export const workItemStatusEnum = pgEnum('work_item_status', [
-  'todo', 'in_progress', 'blocked', 'done',
-]);
-export const handoffStatusEnum = pgEnum('handoff_status', [
-  'draft', 'sent', 'accepted', 'returned',
-]);
-export const decisionStatusEnum = pgEnum('decision_status', [
-  'open', 'approved', 'declined', 'deferred',
-]);
+export const workItemStatusEnum = pgEnum('work_item_status', ['todo', 'in_progress', 'blocked', 'done']);
+export const handoffStatusEnum = pgEnum('handoff_status', ['draft', 'sent', 'accepted', 'returned']);
+export const decisionStatusEnum = pgEnum('decision_status', ['open', 'approved', 'declined', 'deferred']);
 export const evidenceKindEnum = pgEnum('evidence_kind', [
   'source_commit', 'design_history', 'asset_licence', 'contributor_rights',
   'dependency_sbom', 'third_party_notices', 'counsel_review', 'buyer_terms',
 ]);
 
-// ── Users ──────────────────────────────────────────────────────
+// ── Tables ─────────────────────────────────────────────────────
+
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   authUserId: uuid('auth_user_id').notNull().unique(),
@@ -50,16 +35,65 @@ export const users = pgTable('users', {
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (t) => [
   pgPolicy('users_own_rows', {
-    as: 'permissive',
-    for: 'select',
-    to: 'public',
-    using: sql`${authUid} = ${t.authUserId}`,
+    as: 'permissive', for: 'select', to: 'public',
+    using: sql`auth.uid() = ${t.authUserId}`,
+  }),
+  pgPolicy('users_workspace_peers', {
+    as: 'permissive', for: 'select', to: 'public',
+    using: sql`public.shares_workspace_with(${t.id})`,
   }),
 ]).enableRLS();
 
-// ── Goals ──────────────────────────────────────────────────────
+export const workspaces = pgTable('workspaces', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  name: text('name').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+}, (t) => [
+  pgPolicy('workspaces_select_members', {
+    as: 'permissive', for: 'select', to: 'public',
+    using: sql`public.is_workspace_member(${t.id})`,
+  }),
+  pgPolicy('workspaces_update_owners', {
+    as: 'permissive', for: 'update', to: 'public',
+    using: sql`public.is_workspace_owner(${t.id})`,
+    withCheck: sql`public.is_workspace_owner(${t.id})`,
+  }),
+  pgPolicy('workspaces_delete_owners', {
+    as: 'permissive', for: 'delete', to: 'public',
+    using: sql`public.is_workspace_owner(${t.id})`,
+  }),
+]).enableRLS();
+
+export const workspaceMembers = pgTable('workspace_members', {
+  workspaceId: uuid('workspace_id').notNull().references(() => workspaces.id, { onDelete: 'cascade' }),
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  role: workspaceRoleEnum('role').notNull().default('member'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+}, (t) => [
+  primaryKey({ name: 'workspace_members_pkey', columns: [t.workspaceId, t.userId] }),
+  index('workspace_members_user_idx').on(t.userId),
+  pgPolicy('workspace_members_select', {
+    as: 'permissive', for: 'select', to: 'public',
+    using: sql`public.is_workspace_member(${t.workspaceId})`,
+  }),
+  pgPolicy('workspace_members_insert_owners', {
+    as: 'permissive', for: 'insert', to: 'public',
+    withCheck: sql`public.is_workspace_owner(${t.workspaceId})`,
+  }),
+  pgPolicy('workspace_members_update_owners', {
+    as: 'permissive', for: 'update', to: 'public',
+    using: sql`public.is_workspace_owner(${t.workspaceId})`,
+    withCheck: sql`public.is_workspace_owner(${t.workspaceId})`,
+  }),
+  pgPolicy('workspace_members_delete_owner_or_self', {
+    as: 'permissive', for: 'delete', to: 'public',
+    using: sql`public.is_workspace_owner(${t.workspaceId}) or ${t.userId} = public.current_user_id()`,
+  }),
+]).enableRLS();
+
 export const goals = pgTable('goals', {
   id: uuid('id').primaryKey().defaultRandom(),
+  workspaceId: uuid('workspace_id').notNull().references(() => workspaces.id, { onDelete: 'restrict' }),
   ownerId: uuid('owner_id').notNull().references(() => users.id, { onDelete: 'restrict' }),
   title: text('title').notNull(),
   outcome: text('outcome').notNull(),
@@ -69,19 +103,19 @@ export const goals = pgTable('goals', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (t) => [
   index('goals_owner_idx').on(t.ownerId),
-  pgPolicy('goals_own_rows', {
-    as: 'permissive',
-    for: 'all',
-    to: 'public',
-    using: sql`exists (select 1 from users where users.id = ${t.ownerId} and ${authUid} = users.auth_user_id)`,
-    withCheck: sql`exists (select 1 from users where users.id = ${t.ownerId} and ${authUid} = users.auth_user_id)`,
+  index('goals_workspace_idx').on(t.workspaceId),
+  unique('goals_id_workspace_id_unique').on(t.id, t.workspaceId),
+  pgPolicy('goals_workspace_members', {
+    as: 'permissive', for: 'all', to: 'public',
+    using: sql`public.is_workspace_member(${t.workspaceId})`,
+    withCheck: sql`public.is_workspace_member(${t.workspaceId})`,
   }),
 ]).enableRLS();
 
-// ── Products ───────────────────────────────────────────────────
 export const products = pgTable('products', {
   id: uuid('id').primaryKey().defaultRandom(),
-  goalId: uuid('goal_id').notNull().references(() => goals.id, { onDelete: 'cascade' }),
+  workspaceId: uuid('workspace_id').notNull(),
+  goalId: uuid('goal_id').notNull(),
   name: text('name').notNull(),
   category: text('category').notNull(),
   route: text('route').notNull(),
@@ -90,20 +124,24 @@ export const products = pgTable('products', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (t) => [
   index('products_goal_idx').on(t.goalId),
-  unique('products_id_goal_id_unique').on(t.id, t.goalId),
-  pgPolicy('products_own_rows', {
-    as: 'permissive',
-    for: 'all',
-    to: 'public',
-    using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
-    withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id)`,
+  index('products_workspace_idx').on(t.workspaceId),
+  unique('products_id_workspace_id_unique').on(t.id, t.workspaceId),
+  foreignKey({
+    name: 'products_goal_workspace_fk',
+    columns: [t.goalId, t.workspaceId],
+    foreignColumns: [goals.id, goals.workspaceId],
+  }).onDelete('cascade'),
+  pgPolicy('products_workspace_members', {
+    as: 'permissive', for: 'all', to: 'public',
+    using: sql`public.is_workspace_member(${t.workspaceId})`,
+    withCheck: sql`public.is_workspace_member(${t.workspaceId})`,
   }),
 ]).enableRLS();
 
-// ── Work Items ─────────────────────────────────────────────────
 export const workItems = pgTable('work_items', {
   id: uuid('id').primaryKey().defaultRandom(),
-  goalId: uuid('goal_id').notNull().references(() => goals.id, { onDelete: 'cascade' }),
+  workspaceId: uuid('workspace_id').notNull(),
+  goalId: uuid('goal_id').notNull(),
   productId: uuid('product_id'),
   type: text('type').notNull(),
   assignedTo: roleEnum('assigned_to').notNull(),
@@ -115,25 +153,24 @@ export const workItems = pgTable('work_items', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (t) => [
   index('work_items_goal_idx').on(t.goalId),
-  index('work_items_product_goal_idx').on(t.productId, t.goalId),
+  index('work_items_product_idx').on(t.productId),
+  index('work_items_workspace_idx').on(t.workspaceId),
   foreignKey({
-    name: 'work_items_product_goal_fk',
-    columns: [t.productId, t.goalId],
-    foreignColumns: [products.id, products.goalId],
+    name: 'work_items_goal_workspace_fk',
+    columns: [t.goalId, t.workspaceId],
+    foreignColumns: [goals.id, goals.workspaceId],
   }).onDelete('cascade'),
-  pgPolicy('work_items_own_rows', {
-    as: 'permissive',
-    for: 'all',
-    to: 'public',
-    using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
-    withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
+  pgPolicy('work_items_workspace_members', {
+    as: 'permissive', for: 'all', to: 'public',
+    using: sql`public.is_workspace_member(${t.workspaceId})`,
+    withCheck: sql`public.is_workspace_member(${t.workspaceId})`,
   }),
 ]).enableRLS();
 
-// ── Handoffs ───────────────────────────────────────────────────
 export const handoffs = pgTable('handoffs', {
   id: uuid('id').primaryKey().defaultRandom(),
-  goalId: uuid('goal_id').notNull().references(() => goals.id, { onDelete: 'cascade' }),
+  workspaceId: uuid('workspace_id').notNull(),
+  goalId: uuid('goal_id').notNull(),
   productId: uuid('product_id'),
   fromRole: roleEnum('from_role').notNull(),
   toRole: roleEnum('to_role').notNull(),
@@ -145,25 +182,24 @@ export const handoffs = pgTable('handoffs', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (t) => [
   index('handoffs_goal_idx').on(t.goalId),
-  index('handoffs_product_goal_idx').on(t.productId, t.goalId),
+  index('handoffs_product_idx').on(t.productId),
+  index('handoffs_workspace_idx').on(t.workspaceId),
   foreignKey({
-    name: 'handoffs_product_goal_fk',
-    columns: [t.productId, t.goalId],
-    foreignColumns: [products.id, products.goalId],
+    name: 'handoffs_goal_workspace_fk',
+    columns: [t.goalId, t.workspaceId],
+    foreignColumns: [goals.id, goals.workspaceId],
   }).onDelete('cascade'),
-  pgPolicy('handoffs_own_rows', {
-    as: 'permissive',
-    for: 'all',
-    to: 'public',
-    using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
-    withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
+  pgPolicy('handoffs_workspace_members', {
+    as: 'permissive', for: 'all', to: 'public',
+    using: sql`public.is_workspace_member(${t.workspaceId})`,
+    withCheck: sql`public.is_workspace_member(${t.workspaceId})`,
   }),
 ]).enableRLS();
 
-// ── Decisions ──────────────────────────────────────────────────
 export const decisions = pgTable('decisions', {
   id: uuid('id').primaryKey().defaultRandom(),
-  goalId: uuid('goal_id').notNull().references(() => goals.id, { onDelete: 'cascade' }),
+  workspaceId: uuid('workspace_id').notNull(),
+  goalId: uuid('goal_id').notNull(),
   productId: uuid('product_id'),
   title: text('title').notNull(),
   context: text('context').notNull(),
@@ -175,25 +211,24 @@ export const decisions = pgTable('decisions', {
   resolvedAt: timestamp('resolved_at', { withTimezone: true }),
 }, (t) => [
   index('decisions_goal_idx').on(t.goalId),
-  index('decisions_product_goal_idx').on(t.productId, t.goalId),
+  index('decisions_product_idx').on(t.productId),
+  index('decisions_workspace_idx').on(t.workspaceId),
   foreignKey({
-    name: 'decisions_product_goal_fk',
-    columns: [t.productId, t.goalId],
-    foreignColumns: [products.id, products.goalId],
+    name: 'decisions_goal_workspace_fk',
+    columns: [t.goalId, t.workspaceId],
+    foreignColumns: [goals.id, goals.workspaceId],
   }).onDelete('cascade'),
-  pgPolicy('decisions_own_rows', {
-    as: 'permissive',
-    for: 'all',
-    to: 'public',
-    using: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
-    withCheck: sql`exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = ${t.goalId} and ${authUid} = users.auth_user_id) and (${t.productId} is null or exists (select 1 from products where products.id = ${t.productId} and products.goal_id = ${t.goalId}))`,
+  pgPolicy('decisions_workspace_members', {
+    as: 'permissive', for: 'all', to: 'public',
+    using: sql`public.is_workspace_member(${t.workspaceId})`,
+    withCheck: sql`public.is_workspace_member(${t.workspaceId})`,
   }),
 ]).enableRLS();
 
-// ── Evidence (append-only, hash-chained) ───────────────────────
 export const evidence = pgTable('evidence', {
   id: uuid('id').primaryKey().defaultRandom(),
-  productId: uuid('product_id').notNull().references(() => products.id, { onDelete: 'cascade' }),
+  workspaceId: uuid('workspace_id').notNull(),
+  productId: uuid('product_id').notNull(),
   kind: evidenceKindEnum('kind').notNull(),
   reference: text('reference').notNull(),
   note: text('note').notNull(),
@@ -203,32 +238,42 @@ export const evidence = pgTable('evidence', {
   rowHash: text('row_hash'),
 }, (t) => [
   index('evidence_product_idx').on(t.productId),
-  pgPolicy('evidence_own_rows', {
-    as: 'permissive',
-    for: 'all',
-    to: 'public',
-    using: sql`exists (select 1 from products join goals on goals.id = products.goal_id join users on users.id = goals.owner_id where products.id = ${t.productId} and ${authUid} = users.auth_user_id)`,
-    withCheck: sql`exists (select 1 from products join goals on goals.id = products.goal_id join users on users.id = goals.owner_id where products.id = ${t.productId} and ${authUid} = users.auth_user_id)`,
+  index('evidence_workspace_idx').on(t.workspaceId),
+  foreignKey({
+    name: 'evidence_product_workspace_fk',
+    columns: [t.productId, t.workspaceId],
+    foreignColumns: [products.id, products.workspaceId],
+  }).onDelete('cascade'),
+  pgPolicy('evidence_workspace_members', {
+    as: 'permissive', for: 'all', to: 'public',
+    using: sql`public.is_workspace_member(${t.workspaceId})`,
+    withCheck: sql`public.is_workspace_member(${t.workspaceId})`,
   }),
 ]).enableRLS();
 
 // ── Relations ──────────────────────────────────────────────────
 export const usersRelations = relations(users, ({ many }) => ({
+  ownedGoals: many(goals),
+  memberships: many(workspaceMembers),
+}));
+
+export const workspacesRelations = relations(workspaces, ({ many }) => ({
+  members: many(workspaceMembers),
   goals: many(goals),
 }));
 
+export const workspaceMembersRelations = relations(workspaceMembers, ({ one }) => ({
+  workspace: one(workspaces, { fields: [workspaceMembers.workspaceId], references: [workspaces.id] }),
+  user: one(users, { fields: [workspaceMembers.userId], references: [users.id] }),
+}));
+
 export const goalsRelations = relations(goals, ({ one, many }) => ({
+  workspace: one(workspaces, { fields: [goals.workspaceId], references: [workspaces.id] }),
   owner: one(users, { fields: [goals.ownerId], references: [users.id] }),
   products: many(products),
-  workItems: many(workItems),
-  handoffs: many(handoffs),
-  decisions: many(decisions),
 }));
 
 export const productsRelations = relations(products, ({ one, many }) => ({
   goal: one(goals, { fields: [products.goalId], references: [goals.id] }),
   workItems: many(workItems),
-  handoffs: many(handoffs),
-  decisions: many(decisions),
-  evidence: many(evidence),
 }));
