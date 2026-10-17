@@ -20,6 +20,15 @@ import type {
  * Implementations must return domain types and must NOT expose DB/Drizzle types.
  */
 export interface WorkspaceRepository {
+  /**
+   * The authenticated user for this session, or null when no users row can be
+   * resolved (unprovisioned identity, or an in-memory store with no session).
+   *
+   * This is the single trusted source of actor identity. Role is read from
+   * users.role, never from the JWT or from client input, so a caller can
+   * describe a role but cannot claim one.
+   */
+  getCurrentUser(): Promise<User | null>;
   createUser(name: string, role: Role): Promise<User>;
   createGoal(input: {
     ownerId: string;

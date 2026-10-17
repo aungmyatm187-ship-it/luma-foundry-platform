@@ -28,6 +28,16 @@ export class InMemoryRepository implements WorkspaceRepository {
     this.ws = new Workspace();
   }
 
+  /**
+   * The in-memory store has no session identity, so there is never an actor to
+   * resolve. createContext only uses this repository for unauthenticated
+   * requests, which protectedProcedure rejects before any procedure runs; tests
+   * bind an actor on the Context directly instead of going through this method.
+   */
+  getCurrentUser(): Promise<User | null> {
+    return Promise.resolve(null);
+  }
+
   createUser(name: string, role: Role): Promise<User> {
     return Promise.resolve(this.ws.createUser(name, role));
   }
