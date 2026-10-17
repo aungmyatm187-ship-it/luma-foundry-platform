@@ -15,3 +15,7 @@ data/
 .env
 .wrangler/
 worker-configuration.d.ts
+
+# never commit recovered literal configs that may carry live secrets
+docs/recovery/literal-source/*.project-config.json
+docs/recovery/literal-source/*-api-connector-draft.json
