@@ -44,6 +44,15 @@ export class AsyncWorkspace {
     }
   }
 
+  // Session identity
+  /**
+   * Pass-through on purpose: AsyncWorkspace does not interpret the role. The
+   * API edge builds its actor from this call and enforces role policy there.
+   */
+  async getCurrentUser(): Promise<User | null> {
+    return this.repo.getCurrentUser();
+  }
+
   // Users
   async createUser(name: string, role: Role): Promise<User> {
     return this.repo.createUser(name, role);

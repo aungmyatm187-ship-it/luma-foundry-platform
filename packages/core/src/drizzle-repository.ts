@@ -43,6 +43,20 @@ export class DrizzleRepository implements WorkspaceRepository {
     return withUser(this.authUserId, fn);
   }
 
+  /**
+   * Resolves the session user without taking an id from the caller. There is no
+   * WHERE clause because RLS (auth.uid() = users.auth_user_id) already narrows
+   * `users` to the caller's own row inside withUser. The role decision therefore
+   * rests on RLS being in force: were it bypassed, limit(1) would return an
+   * arbitrary row rather than the caller's.
+   */
+  async getCurrentUser(): Promise<User | null> {
+    return this.run(async (tx) => {
+      const [row] = await tx.select().from(schema.users).limit(1);
+      return row ? rowToUser(row) : null;
+    });
+  }
+
   async createUser(_name: string, _role: Role): Promise<User> {
     throw new Error(
       'DrizzleRepository.createUser is not supported. Users are provisioned by Supabase Auth; the on_auth_user_created trigger inserts into public.users.',
