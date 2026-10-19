@@ -9,6 +9,11 @@ order. They capture changes that Drizzle Kit cannot generate:
 - 0004 — RLS policies retargeted to `PUBLIC` so the non-member `app_user` role is covered
 - 0005 — security-linter fixes for trigger functions
 - 0006 — least-privilege table grants and `app_user` deployment assertions
+- 0007 — workspace membership: `workspaces`/`workspace_members` tables, `workspace_id`
+  on all governance tables with backfill and same-workspace composite foreign keys,
+  workspace-membership RLS replacing the per-user policies, `create_workspace()` and
+  RLS helper functions, and a replacement signup trigger that assigns the global
+  role `pending` plus a personal workspace
 
 The Drizzle migration chain is separate and is applied first with
 `npx drizzle-kit migrate`. It contains the initial schema and the follow-up
@@ -22,7 +27,7 @@ Drizzle Kit and these manual files are the source of truth.
    own workspace tables or inherit membership in their owner role. Do not put
    its password in this repository.
 2. Run `npx drizzle-kit migrate` with the administrator migration connection.
-3. In the Supabase SQL Editor, run manual files `0001` through `0006` in order.
+3. In the Supabase SQL Editor, run manual files `0001` through `0007` in order.
 4. Configure the application `DATABASE_URL` to use `app_user`; the API does
    not use direct Supabase Data API table access.
 5. Run `npm run test:db` against a disposable Postgres database. CI runs this
@@ -39,6 +44,39 @@ access explicitly in each table migration.
 product. It does not verify the authenticity of evidence references or prove
 that a human review actually occurred; those require separate trusted
 provenance/verification controls.
+
+## What migration 0007 does to existing data (current behavior)
+
+The backfill in `0007` is deterministic, and `scripts/test-rls-postgres.mjs`
+replays it against synthetic pre-0007 fixtures to pin that behavior:
+
+- If any goals exist, ONE shared workspace named `Luma Foundry` is created and
+  every pre-existing goal (with its products, work_items, handoffs, decisions,
+  and evidence) is placed in it. Users who owned a goal or hold the global role
+  `operator_a`/`operator_b` become members; a user whose global role is `owner`
+  becomes a workspace owner; if that leaves no owner, the oldest user is
+  promoted. Consequence: rows that were previously private to one user become
+  readable and editable by every member of the shared workspace — that is a
+  product/data-sharing decision, recorded here as implemented and pending
+  product confirmation.
+- Users not placed in the shared workspace (no goal, no operator role, or a
+  global `owner` with no goals) get a personal workspace they own, matching the
+  post-0007 signup trigger.
+- The evidence hash payload deliberately excludes `workspace_id`; user triggers
+  are disabled only for the single-column backfill, so pre-existing hash chains
+  remain verifiable (asserted by the test suite).
+
+Known gaps deliberately NOT changed here, awaiting design review:
+
+- **Last-owner protection.** The "every workspace has at least one owner"
+  invariant is enforced only while 0007 runs (its closing verification block);
+  there is no runtime guard, so a sole owner can currently self-leave or demote
+  themselves and leave a workspace ownerless. The test suite pins this current
+  behavior and marks it as an unresolved gate; add a product rule before
+  altering any policy.
+- **Backfill grouping.** Whether all legacy goals belong in one shared
+  workspace (versus per-owner workspaces) is the data-sharing decision above;
+  the suite tests the behavior as built.
 
 Never modify the remote schema without committing the corresponding change
 here. Do not apply these files to production as part of this test workflow;
