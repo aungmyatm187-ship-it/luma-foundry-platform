@@ -13,6 +13,7 @@ import type {
   User,
   WorkItem,
   WorkItemStatus,
+  WorkspaceInvitation,
 } from './types.js';
 
 /**
@@ -88,4 +89,39 @@ export interface WorkspaceRepository {
   updateHandoffStatus(handoffId: string, status: HandoffStatus): Promise<Handoff>;
   snapshot(): Promise<Snapshot>;
   evidenceFor(productId: string): Promise<Evidence[]>;
+
+  // ── Invitations (migration 0008) ─────────────────────────────
+  /**
+   * Membership is consent-based: there is deliberately no method on this
+   * interface that inserts workspace_members. All four operations delegate to
+   * the SECURITY DEFINER database functions, which are the single authority
+   * for who may invite (workspace owner), who may accept (the invitee, before
+   * expiry, once), and what happens on duplicate invites (revoke + replace).
+   */
+
+  /**
+   * Owner issues an invitation. The database function verifies the caller
+   * owns the workspace and rejects users who are already members. Seven-day
+   * expiry is applied inside the function; it is never a client argument.
+   */
+  inviteUser(input: { workspaceId: string; inviteeUserId: string }): Promise<WorkspaceInvitation>;
+
+  /**
+   * Invitee accepts. The database function re-checks identity, expiry,
+   * revocation and single-use inside the same transaction and creates the
+   * membership row itself. Returns the workspace that was joined.
+   */
+  acceptInvite(invitationId: string): Promise<{ workspaceId: string }>;
+
+  /**
+   * Workspace owner revokes an outstanding invitation. The database function
+   * verifies the caller owns the workspace at call time.
+   */
+  revokeInvite(invitationId: string): Promise<void>;
+
+  /**
+   * Invitations addressed to the current user that are still actionable:
+   * not accepted, not revoked, not expired. Backed by list_my_invitations().
+   */
+  listMyInvites(): Promise<WorkspaceInvitation[]>;
 }

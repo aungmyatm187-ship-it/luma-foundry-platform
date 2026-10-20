@@ -79,6 +79,30 @@ export interface WorkspaceMember {
   createdAt: string;
 }
 
+/**
+ * One membership invitation (migration 0008). Rows are created, accepted and
+ * revoked exclusively by the SECURITY DEFINER database functions
+ * create_invitation / accept_invitation / revoke_invitation — never by an API
+ * insert — so the shape below is a read model of database-owned state.
+ *
+ * Seven-day expiry is database policy, not a client argument: expiresAt is
+ * computed inside create_invitation, which also revokes any outstanding
+ * invitation for the same invitee when a replacement is issued.
+ */
+export interface WorkspaceInvitation {
+  id: string;
+  workspaceId: string;
+  /** The public.users id this invitation was issued to. */
+  inviteeUserId: string;
+  /** The public.users id of the workspace owner who issued it. */
+  invitedBy: string;
+  invitedAt: string;
+  expiresAt: string;
+  acceptedAt: string | null;
+  acceptedBy: string | null;
+  revokedAt: string | null;
+}
+
 export interface Goal {
   id: string;
   workspaceId: string;

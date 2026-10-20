@@ -14,6 +14,7 @@ import type {
   User,
   WorkItem,
   WorkItemStatus,
+  WorkspaceInvitation,
 } from './types.js';
 import type { WorkspaceRepository } from './repository.js';
 
@@ -130,5 +131,37 @@ export class InMemoryRepository implements WorkspaceRepository {
 
   evidenceFor(productId: string): Promise<Evidence[]> {
     return Promise.resolve(this.ws.evidenceFor(productId));
+  }
+
+  // Invitations (migration 0008): fail closed.
+  //
+  // Invitation state and its authorization rules live in the database
+  // (SECURITY DEFINER functions over workspace_invitations). The in-memory
+  // store has neither the table nor a membership model, so simulating the
+  // flow here would create a second rule set that could drift from the
+  // database's — the exact problem the 0008 design exists to remove. Router
+  // tests that need the invitation surface inject a stub repository instead.
+  inviteUser(_input: { workspaceId: string; inviteeUserId: string }): Promise<WorkspaceInvitation> {
+    return Promise.reject(
+      new Error('Invitations require the database-backed repository (migration 0008 functions).'),
+    );
+  }
+
+  acceptInvite(_invitationId: string): Promise<{ workspaceId: string }> {
+    return Promise.reject(
+      new Error('Invitations require the database-backed repository (migration 0008 functions).'),
+    );
+  }
+
+  revokeInvite(_invitationId: string): Promise<void> {
+    return Promise.reject(
+      new Error('Invitations require the database-backed repository (migration 0008 functions).'),
+    );
+  }
+
+  listMyInvites(): Promise<WorkspaceInvitation[]> {
+    return Promise.reject(
+      new Error('Invitations require the database-backed repository (migration 0008 functions).'),
+    );
   }
 }
