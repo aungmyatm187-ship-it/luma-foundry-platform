@@ -147,6 +147,7 @@ async function applyMigrationsThrough0006() {
       '0007_workspace_membership.sql',
       '0008_workspace_invitations.sql',
       '0009_per_owner_workspaces_and_strict_attribution.sql',
+      '0010_fix_role_race.sql',
     ],
     'Manual migration chain must remain complete and ordered.',
   );
