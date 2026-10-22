@@ -113,6 +113,7 @@ export function createServer(
       title: 'Create goal',
       description: 'Create an outcome goal. Everything else hangs off a goal.',
       inputSchema: {
+        workspaceId: z.string().uuid().describe('Workspace ID'),
         ownerId: z.string().describe('User id of the goal owner'),
         title: z.string().min(1),
         outcome: z.string().min(1).describe('The measurable outcome'),

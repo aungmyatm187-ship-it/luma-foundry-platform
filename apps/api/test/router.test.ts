@@ -51,7 +51,8 @@ async function setup(role: Role = 'owner') {
 }
 
 async function seedProduct(caller: Caller, ownerId: string) {
-  const goal = await caller.createGoal({ ownerId, title: 'g', outcome: 'o' });
+  const goal = await caller.createGoal({
+        workspaceId: "00000000-0000-0000-0000-000000000000", ownerId, title: 'g', outcome: 'o' });
   const product = await caller.createProduct({
     goalId: goal.id,
     name: 'P',
@@ -80,6 +81,7 @@ describe('workspace router', () => {
     const { ownerId, caller } = await setup('owner');
 
     const goal = await caller.createGoal({
+        workspaceId: "00000000-0000-0000-0000-000000000000",
       ownerId,
       title: 'Launch Batch 01 storefront',
       outcome: 'Five products cleared',
@@ -102,7 +104,8 @@ describe('workspace router', () => {
 
   it('exposes clearance as a query and guards the mutation', async () => {
     const { ownerId, caller } = await setup('owner');
-    const goal = await caller.createGoal({ ownerId, title: 'g', outcome: 'o' });
+    const goal = await caller.createGoal({
+        workspaceId: "00000000-0000-0000-0000-000000000000", ownerId, title: 'g', outcome: 'o' });
     const product = await caller.createProduct({
       goalId: goal.id,
       name: 'Selene Agents',
@@ -125,7 +128,8 @@ describe('workspace router', () => {
 
   it('tracks a decision from open to approved', async () => {
     const { ownerId, caller } = await setup('owner');
-    const goal = await caller.createGoal({ ownerId, title: 'g', outcome: 'o' });
+    const goal = await caller.createGoal({
+        workspaceId: "00000000-0000-0000-0000-000000000000", ownerId, title: 'g', outcome: 'o' });
     const decision = await caller.createDecision({
       goalId: goal.id,
       title: 'Ship Ember Signal?',
@@ -147,8 +151,10 @@ describe('workspace router', () => {
 
   it('rejects products that belong to a different goal', async () => {
     const { ownerId, caller } = await setup('owner');
-    const goalA = await caller.createGoal({ ownerId, title: 'Goal A', outcome: 'A' });
-    const goalB = await caller.createGoal({ ownerId, title: 'Goal B', outcome: 'B' });
+    const goalA = await caller.createGoal({
+        workspaceId: "00000000-0000-0000-0000-000000000000", ownerId, title: 'Goal A', outcome: 'A' });
+    const goalB = await caller.createGoal({
+        workspaceId: "00000000-0000-0000-0000-000000000000", ownerId, title: 'Goal B', outcome: 'B' });
     const productB = await caller.createProduct({
       goalId: goalB.id,
       name: 'Product B',
@@ -290,7 +296,8 @@ describe('workspace router', () => {
 
     it('operator_a cannot approve a decision', async () => {
       const { caller, ownerId } = await setup('operator_a');
-      const goal = await caller.createGoal({ ownerId, title: 'g', outcome: 'o' });
+      const goal = await caller.createGoal({
+        workspaceId: "00000000-0000-0000-0000-000000000000", ownerId, title: 'g', outcome: 'o' });
       const decision = await caller.createDecision({
         goalId: goal.id,
         title: 'Ship?',
@@ -312,7 +319,8 @@ describe('workspace router', () => {
 
     it('lets the owner approve, with decidedBy recorded as owner', async () => {
       const { caller, ownerId } = await setup('owner');
-      const goal = await caller.createGoal({ ownerId, title: 'g', outcome: 'o' });
+      const goal = await caller.createGoal({
+        workspaceId: "00000000-0000-0000-0000-000000000000", ownerId, title: 'g', outcome: 'o' });
       const decision = await caller.createDecision({
         goalId: goal.id,
         title: 'Ship?',

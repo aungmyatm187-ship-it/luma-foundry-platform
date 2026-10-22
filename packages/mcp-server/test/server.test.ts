@@ -64,6 +64,7 @@ describe('MCP server surface', () => {
 
   it('drives the full pipeline through tool calls', async () => {
     const owner = await call('create_goal', {
+      workspaceId: '00000000-0000-0000-0000-000000000000',
       ownerId: 'missing-user',
       title: 'x',
       outcome: 'y',
