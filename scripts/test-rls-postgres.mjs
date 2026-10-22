@@ -145,6 +145,8 @@ async function applyMigrationsThrough0006() {
       '0005_security_linter_fixes.sql',
       '0006_least_privilege_grants.sql',
       '0007_workspace_membership.sql',
+      '0008_workspace_invitations.sql',
+      '0009_per_owner_workspaces_and_strict_attribution.sql',
     ],
     'Manual migration chain must remain complete and ordered.',
   );
