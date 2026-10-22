@@ -27,22 +27,22 @@ export class DrizzleRepository implements WorkspaceRepository {
   }
 
   async createGoal(input: {
+    workspaceId: string;
     ownerId: string;
     title: string;
     outcome: string;
     priority?: Priority;
     targetDate?: string | null;
   }): Promise<Goal> {
-    // For now, we need a workspaceId. We will pull the first one the user is a member of.
-    // (This is a temporary fix until the router passes it).
-    const [ws] = await this.run(async (tx) => tx.select().from(schema.workspaceMembers).limit(1));
-    if (!ws) throw new Error('User has no workspace');
-
+    // RLS on the goals INSERT verifies that the caller is a member of
+    // input.workspaceId (goals_workspace_members, WITH CHECK). A non-member
+    // receives 42501, which the router maps to FORBIDDEN. No client-chosen
+    // workspace can bypass that.
     return this.run(async (tx) => {
       const [row] = await tx
         .insert(schema.goals)
         .values({
-          workspaceId: ws.workspaceId,
+          workspaceId: input.workspaceId,
           ownerId: input.ownerId,
           title: input.title,
           outcome: input.outcome,

@@ -62,6 +62,7 @@ export const appRouter = router({
   createGoal: protectedProcedure
     .input(
       z.object({
+        workspaceId: z.string().uuid(),
         ownerId: z.string(),
         title: z.string().min(1),
         outcome: z.string().min(1),

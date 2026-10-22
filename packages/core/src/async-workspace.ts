@@ -60,6 +60,7 @@ export class AsyncWorkspace {
 
   // Goals
   async createGoal(input: {
+    workspaceId: string;
     ownerId: string;
     title: string;
     outcome: string;

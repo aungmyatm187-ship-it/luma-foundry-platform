@@ -43,6 +43,7 @@ export class InMemoryRepository implements WorkspaceRepository {
   }
 
   createGoal(input: {
+    workspaceId: string;
     ownerId: string;
     title: string;
     outcome: string;

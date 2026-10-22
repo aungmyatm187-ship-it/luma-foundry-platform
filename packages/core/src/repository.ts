@@ -31,6 +31,7 @@ export interface WorkspaceRepository {
   getCurrentUser(): Promise<User | null>;
   createUser(name: string, role: Role): Promise<User>;
   createGoal(input: {
+    workspaceId: string;
     ownerId: string;
     title: string;
     outcome: string;
