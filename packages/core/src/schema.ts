@@ -1,5 +1,6 @@
 import { relations, sql } from 'drizzle-orm';
 import {
+  check,
   foreignKey,
   index,
   pgEnum,
@@ -76,10 +77,12 @@ export const workspaceMembers = pgTable('workspace_members', {
     as: 'permissive', for: 'select', to: 'public',
     using: sql`public.is_workspace_member(${t.workspaceId})`,
   }),
-  pgPolicy('workspace_members_insert_owners', {
-    as: 'permissive', for: 'insert', to: 'public',
-    withCheck: sql`public.is_workspace_owner(${t.workspaceId})`,
-  }),
+  // No INSERT policy on purpose (migration 0008, locked decision #2): membership
+  // rows are created only by the SECURITY DEFINER function accept_invitation()
+  // when an invitee accepts. With RLS enabled and app_user NOBYPASSRLS, even a
+  // workspace owner cannot insert members directly — owner action alone is not
+  // consent. 0008 additionally revokes the INSERT grant and guards UPDATE from
+  // changing user_id/workspace_id, closing the consent bypass.
   pgPolicy('workspace_members_update_owners', {
     as: 'permissive', for: 'update', to: 'public',
     using: sql`public.is_workspace_owner(${t.workspaceId})`,
@@ -88,6 +91,52 @@ export const workspaceMembers = pgTable('workspace_members', {
   pgPolicy('workspace_members_delete_owner_or_self', {
     as: 'permissive', for: 'delete', to: 'public',
     using: sql`public.is_workspace_owner(${t.workspaceId}) or ${t.userId} = public.current_user_id()`,
+  }),
+]).enableRLS();
+
+/**
+ * Membership invitations (migration 0008, locked decisions #1–#2). Membership
+ * is consent-based: an owner invites an existing registered user, and only
+ * that user's acceptance creates the workspace_members row.
+ *
+ * Rows are written ONLY by the SECURITY DEFINER database functions
+ * create_invitation / accept_invitation / revoke_invitation, which enforce:
+ *   - create: caller owns the workspace; invitee is not already a member;
+ *     re-inviting the same user revokes the outstanding invitation and
+ *     issues a replacement; seven-day expiry is set by the function itself,
+ *     never by the client;
+ *   - accept: caller is the invitee; invitation is not expired, revoked,
+ *     or already accepted (single-use, atomic with the membership insert);
+ *   - revoke: caller owns the workspace at call time.
+ *
+ * RLS therefore declares NO INSERT/UPDATE/DELETE policy: with RLS enabled and
+ * app_user NOBYPASSRLS, direct writes to this table are impossible even if a
+ * table grant existed. Reading is limited to the two parties of an invitation
+ * (the invitee and the workspace owners).
+ */
+export const workspaceInvitations = pgTable('workspace_invitations', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  workspaceId: uuid('workspace_id').notNull().references(() => workspaces.id, { onDelete: 'cascade' }),
+  inviteeUserId: uuid('invitee_user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  invitedBy: uuid('invited_by').notNull().references(() => users.id, { onDelete: 'restrict' }),
+  invitedAt: timestamp('invited_at', { withTimezone: true }).defaultNow().notNull(),
+  expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+  acceptedAt: timestamp('accepted_at', { withTimezone: true }),
+  acceptedBy: uuid('accepted_by').references(() => users.id, { onDelete: 'restrict' }),
+  revokedAt: timestamp('revoked_at', { withTimezone: true }),
+}, (t) => [
+  check('workspace_invitations_expiry_check', sql`${t.expiresAt} > ${t.invitedAt}`),
+  check('workspace_invitations_accept_pair_check', sql`(${t.acceptedAt} is null) = (${t.acceptedBy} is null)`),
+  check('workspace_invitations_revoked_not_accepted_check', sql`not (${t.revokedAt} is not null and ${t.acceptedAt} is not null)`),
+  index('workspace_invitations_invitee_pending_idx')
+    .on(t.inviteeUserId, t.expiresAt)
+    .where(sql`accepted_at is null and revoked_at is null`),
+  index('workspace_invitations_workspace_pending_idx')
+    .on(t.workspaceId, t.expiresAt)
+    .where(sql`accepted_at is null and revoked_at is null`),
+  pgPolicy('workspace_invitations_select_parties', {
+    as: 'permissive', for: 'select', to: 'public',
+    using: sql`${t.inviteeUserId} = public.current_user_id() or public.is_workspace_owner(${t.workspaceId})`,
   }),
 ]).enableRLS();
 
@@ -206,6 +255,14 @@ export const decisions = pgTable('decisions', {
   decision: text('decision').notNull(),
   ownerId: uuid('owner_id').notNull().references(() => users.id, { onDelete: 'restrict' }),
   decidedBy: roleEnum('decided_by'),
+  /**
+   * Database-derived identity of the authenticated actor who recorded the
+   * decision state (migration 0008 BEFORE trigger). Never a trusted client
+   * input: input schemas and the repository leave it unset, and the trigger
+   * derives it from auth.uid() on every INSERT/update. Nullable while rows
+   * written before 0008 keep their historical NULL.
+   */
+  decidedByUserId: uuid('decided_by_user_id').references(() => users.id, { onDelete: 'restrict' }),
   status: decisionStatusEnum('status').notNull().default('open'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   resolvedAt: timestamp('resolved_at', { withTimezone: true }),
@@ -233,6 +290,16 @@ export const evidence = pgTable('evidence', {
   reference: text('reference').notNull(),
   note: text('note').notNull(),
   recordedBy: roleEnum('recorded_by').notNull(),
+  /**
+   * Database-derived identity of the authenticated actor who recorded this
+   * evidence (migration 0008). The 0008 attribution trigger runs before the
+   * 0001 hash-chain trigger (a10_… before z90_…), so the DB-derived actor is
+   * what the row hash commits to. Never a trusted client input: input schemas
+   * and the repository leave it unset. Nullable while rows written before
+   * 0008 keep their historical NULL — historical rows are never backfilled
+   * with guessed identities.
+   */
+  recordedByUserId: uuid('recorded_by_user_id').references(() => users.id, { onDelete: 'restrict' }),
   recordedAt: timestamp('recorded_at', { withTimezone: true }).defaultNow().notNull(),
   prevHash: text('prev_hash'),
   rowHash: text('row_hash'),
@@ -255,16 +322,39 @@ export const evidence = pgTable('evidence', {
 export const usersRelations = relations(users, ({ many }) => ({
   ownedGoals: many(goals),
   memberships: many(workspaceMembers),
+  invitationsReceived: many(workspaceInvitations, { relationName: 'invitations_invitee' }),
+  invitationsSent: many(workspaceInvitations, { relationName: 'invitations_inviter' }),
+  invitationsAccepted: many(workspaceInvitations, { relationName: 'invitations_accepted_by' }),
 }));
 
 export const workspacesRelations = relations(workspaces, ({ many }) => ({
   members: many(workspaceMembers),
   goals: many(goals),
+  invitations: many(workspaceInvitations),
 }));
 
 export const workspaceMembersRelations = relations(workspaceMembers, ({ one }) => ({
   workspace: one(workspaces, { fields: [workspaceMembers.workspaceId], references: [workspaces.id] }),
   user: one(users, { fields: [workspaceMembers.userId], references: [users.id] }),
+}));
+
+export const workspaceInvitationsRelations = relations(workspaceInvitations, ({ one }) => ({
+  workspace: one(workspaces, { fields: [workspaceInvitations.workspaceId], references: [workspaces.id] }),
+  invitee: one(users, {
+    fields: [workspaceInvitations.inviteeUserId],
+    references: [users.id],
+    relationName: 'invitations_invitee',
+  }),
+  inviter: one(users, {
+    fields: [workspaceInvitations.invitedBy],
+    references: [users.id],
+    relationName: 'invitations_inviter',
+  }),
+  acceptedByUser: one(users, {
+    fields: [workspaceInvitations.acceptedBy],
+    references: [users.id],
+    relationName: 'invitations_accepted_by',
+  }),
 }));
 
 export const goalsRelations = relations(goals, ({ one, many }) => ({

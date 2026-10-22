@@ -1,11 +1,12 @@
 import { eq, desc } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { withUser } from './db.js';
 import * as schema from './schema.js';
 import type { WorkspaceRepository } from './repository.js';
 import type {
   Decision, DecisionStatus, Evidence, Goal, Handoff, HandoffStatus,
   Priority, Product, ProductStatus, Role, Snapshot, User, WorkItem,
-  WorkItemStatus, WorkspaceRecord, WorkspaceMember
+  WorkItemStatus, WorkspaceInvitation, WorkspaceRecord, WorkspaceMember
 } from './types.js';
 
 export class DrizzleRepository implements WorkspaceRepository {
@@ -27,22 +28,22 @@ export class DrizzleRepository implements WorkspaceRepository {
   }
 
   async createGoal(input: {
+    workspaceId: string;
     ownerId: string;
     title: string;
     outcome: string;
     priority?: Priority;
     targetDate?: string | null;
   }): Promise<Goal> {
-    // For now, we need a workspaceId. We will pull the first one the user is a member of.
-    // (This is a temporary fix until the router passes it).
-    const [ws] = await this.run(async (tx) => tx.select().from(schema.workspaceMembers).limit(1));
-    if (!ws) throw new Error('User has no workspace');
-
+    // RLS on the goals INSERT verifies that the caller is a member of
+    // input.workspaceId (goals_workspace_members, WITH CHECK). A non-member
+    // receives 42501, which the router maps to FORBIDDEN. No client-chosen
+    // workspace can bypass that.
     return this.run(async (tx) => {
       const [row] = await tx
         .insert(schema.goals)
         .values({
-          workspaceId: ws.workspaceId,
+          workspaceId: input.workspaceId,
           ownerId: input.ownerId,
           title: input.title,
           outcome: input.outcome,
@@ -289,6 +290,98 @@ export class DrizzleRepository implements WorkspaceRepository {
       return rows.map(rowToEvidence);
     });
   }
+
+  // ── Invitations (migration 0008) ────────────────────────────────
+  // All four operations call the SECURITY DEFINER database functions — there
+  // is deliberately no INSERT into workspace_members anywhere in this file.
+  // The functions own the rules: owner-only create/revoke, invitee-only
+  // accept, seven-day expiry, revoke-and-replace on duplicate invites, and
+  // single-use atomic acceptance.
+
+  async inviteUser(input: { workspaceId: string; inviteeUserId: string }): Promise<WorkspaceInvitation> {
+    return this.run(async (tx) => {
+      // Assumed 0008 contract (to be confirmed against the applied SQL):
+      //   public.create_invitation(p_workspace_id uuid, p_invitee_user_id uuid)
+      //     returns uuid — the new invitation id.
+      // The seven-day expiry is set inside the function; it is deliberately
+      // not a client argument. If the applied function takes an explicit
+      // expiry instead, only this call site changes — the API surface does not.
+      const result: unknown = await tx.execute(sql`
+        select public.create_invitation(
+          ${input.workspaceId}::uuid,
+          ${input.inviteeUserId}::uuid
+        ) as id
+      `);
+      const created = (Array.isArray(result)
+        ? result
+        : (result as { rows?: Array<{ id: string }> }).rows ?? []) as Array<{ id: string }>;
+      const id = created[0]?.id;
+      if (!id) throw new Error('create_invitation returned no invitation id');
+
+      // Read back the stored truth through RLS (the owner-read policy), so the
+      // response reflects what the database recorded. If the row is somehow
+      // unreadable the transaction rolls back — an invitation that cannot be
+      // verified is not created silently.
+      const [row] = await tx
+        .select()
+        .from(schema.workspaceInvitations)
+        .where(eq(schema.workspaceInvitations.id, id))
+        .limit(1);
+      if (!row) throw new Error('Invitation row is not readable after creation');
+      return rowToInvitation(row);
+    });
+  }
+
+  async acceptInvite(invitationId: string): Promise<{ workspaceId: string }> {
+    return this.run(async (tx) => {
+      // Reading first gives the invitee a clean not-found signal (P0002) and
+      // lets us echo the workspace joined. accept_invitation() remains the sole
+      // authority: inside the same transaction it re-checks that the caller is
+      // the invitee, that the invitation is not expired, revoked or already
+      // accepted, and inserts the workspace_members row itself.
+      const [row] = await tx
+        .select()
+        .from(schema.workspaceInvitations)
+        .where(eq(schema.workspaceInvitations.id, invitationId))
+        .limit(1);
+      if (!row) {
+        throw Object.assign(new Error('Invitation not found.'), { code: 'P0002' });
+      }
+      await tx.execute(sql`select public.accept_invitation(${invitationId}::uuid)`);
+      return { workspaceId: row.workspaceId };
+    });
+  }
+
+  async revokeInvite(invitationId: string): Promise<void> {
+    return this.run(async (tx) => {
+      // revoke_invitation() verifies the caller owns the workspace at call
+      // time and refuses to touch accepted invitations.
+      await tx.execute(sql`select public.revoke_invitation(${invitationId}::uuid)`);
+    });
+  }
+
+  async listMyInvites(): Promise<WorkspaceInvitation[]> {
+    return this.run(async (tx) => {
+      // Assumed 0008 contract: public.list_my_invitations() returns the
+      // current user's still-actionable invitations (not accepted, not
+      // revoked, not expired), shaped like workspace_invitations rows.
+      const result = await tx.execute(sql`select * from public.list_my_invitations()`);
+      const rows = (Array.isArray(result)
+        ? result
+        : (result as { rows?: Array<Record<string, unknown>> }).rows ?? []) as Array<Record<string, unknown>>;
+      return rows.map((r) => ({
+        id: String(r.id),
+        workspaceId: String(r.workspace_id),
+        inviteeUserId: String(r.invitee_user_id),
+        invitedBy: String(r.invited_by),
+        invitedAt: new Date(String(r.invited_at)).toISOString(),
+        expiresAt: new Date(String(r.expires_at)).toISOString(),
+        acceptedAt: r.accepted_at ? new Date(String(r.accepted_at)).toISOString() : null,
+        acceptedBy: r.accepted_by ? String(r.accepted_by) : null,
+        revokedAt: r.revoked_at ? new Date(String(r.revoked_at)).toISOString() : null,
+      }));
+    });
+  }
 }
 
 // ── Row mappers ────────────────────────────────────────────────
@@ -395,5 +488,19 @@ function rowToEvidence(r: any): Evidence {
     recordedAt: r.recordedAt.toISOString(),
     prevHash: r.prevHash ?? null,
     rowHash: r.rowHash ?? null,
+  };
+}
+
+function rowToInvitation(r: any): WorkspaceInvitation {
+  return {
+    id: r.id,
+    workspaceId: r.workspaceId,
+    inviteeUserId: r.inviteeUserId,
+    invitedBy: r.invitedBy,
+    invitedAt: r.invitedAt.toISOString(),
+    expiresAt: r.expiresAt.toISOString(),
+    acceptedAt: r.acceptedAt ? r.acceptedAt.toISOString() : null,
+    acceptedBy: r.acceptedBy ?? null,
+    revokedAt: r.revokedAt ? r.revokedAt.toISOString() : null,
   };
 }

@@ -14,6 +14,7 @@ import type {
   User,
   WorkItem,
   WorkItemStatus,
+  WorkspaceInvitation,
 } from './types.js';
 import type { WorkspaceRepository } from './repository.js';
 import { InMemoryRepository } from './inmemory-repository.js';
@@ -60,6 +61,7 @@ export class AsyncWorkspace {
 
   // Goals
   async createGoal(input: {
+    workspaceId: string;
     ownerId: string;
     title: string;
     outcome: string;
@@ -161,5 +163,29 @@ export class AsyncWorkspace {
 
   async evidenceFor(productId: string): Promise<Evidence[]> {
     return this.repo.evidenceFor(productId);
+  }
+
+  // Invitations (migration 0008)
+  /**
+   * Pure pass-throughs on purpose, like getCurrentUser: the authorization
+   * rules for membership (owner-only invite, invitee-only accept, expiry,
+   * single-use, revoke-and-replace) live inside the SECURITY DEFINER database
+   * functions, which are the single authority. AsyncWorkspace neither repeats
+   * nor weakens them — and offers no method that inserts workspace_members.
+   */
+  async inviteUser(input: { workspaceId: string; inviteeUserId: string }): Promise<WorkspaceInvitation> {
+    return this.repo.inviteUser(input);
+  }
+
+  async acceptInvite(invitationId: string): Promise<{ workspaceId: string }> {
+    return this.repo.acceptInvite(invitationId);
+  }
+
+  async revokeInvite(invitationId: string): Promise<void> {
+    return this.repo.revokeInvite(invitationId);
+  }
+
+  async listMyInvites(): Promise<WorkspaceInvitation[]> {
+    return this.repo.listMyInvites();
   }
 }
