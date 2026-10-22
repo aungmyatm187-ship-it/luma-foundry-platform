@@ -150,7 +150,7 @@ async function applyMigrationsThrough0006() {
     ],
     'Manual migration chain must remain complete and ordered.',
   );
-  const through0006 = manualFiles.filter((name) => name !== '0007_workspace_membership.sql');
+  const through0006 = manualFiles.filter((name) => name.match(/^000[1-6]_/));
   assert.equal(through0006.length, 6, 'Expected manual migrations 0001-0006 before the 0007 backfill phase.');
   for (const name of through0006) await applySqlFile(path.join(manualDir, name));
   return path.join(manualDir, '0007_workspace_membership.sql');
