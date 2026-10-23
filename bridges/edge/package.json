@@ -1,0 +1,19 @@
+{
+  "name": "@luma/edge-bridge",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Premium Edge Bridge (B1) — cached, resilient, exact-CORS Cloudflare Worker proxying the ember-signal evidence payload.",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20251011.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0",
+    "wrangler": "^3.90.0"
+  }
+}

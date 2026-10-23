@@ -1,0 +1,19 @@
+name = "luma-bridge"
+main = "src/worker.ts"
+compatibility_date = "2025-09-01"
+workers_dev = true
+
+[observability]
+enabled = true
+
+[vars]
+UPSTREAM_URL = "https://ember-signal-web.onrender.com/api/signals"
+ALLOWED_ORIGIN = "https://lumafoundry.live"
+RENDER_SERVICE_ID = "srv-dap9srff3r2c73ehf7g0"
+CACHE_TTL_SECONDS = "60"
+STALE_TTL_SECONDS = "86400"
+MAX_RETRIES = "3"
+BACKOFF_BASE_MS = "200"
+BACKOFF_MAX_MS = "1600"
+UPSTREAM_TIMEOUT_MS = "10000"
+REQUIRE_SIGNATURE = "false"
