@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Noor Vale — an editorial fashion portfolio template with responsive masonry and glass overlays." />
+    <title>Noor Vale — Fashion Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+    <style>
+      :root { color-scheme: light; }
+      html { scroll-behavior: smooth; }
+      body { font-family: "DM Sans", sans-serif; background: #ede8df; color: #1d1b19; }
+      .font-editorial { font-family: "Playfair Display", serif; }
+      .font-mono { font-family: "DM Mono", monospace; }
+      .paper-noise { background-image: radial-gradient(rgba(29,27,25,.11) .55px, transparent .55px); background-size: 5px 5px; }
+      .hero-shade { background: linear-gradient(90deg, rgba(15,14,12,.72) 0%, rgba(15,14,12,.36) 47%, rgba(15,14,12,.08) 100%); }
+      .glass-caption { background: rgba(18, 17, 15, .48); border: 1px solid rgba(255,255,255,.24); box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 10px 35px rgba(0,0,0,.14); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+      .masonry { column-count: 1; column-gap: 1rem; }
+      .masonry-item { break-inside: avoid; margin-bottom: 1rem; }
+      .reveal { opacity: 0; transform: translateY(24px); transition: opacity 650ms cubic-bezier(.22,1,.36,1), transform 650ms cubic-bezier(.22,1,.36,1); }
+      .reveal.is-visible { opacity: 1; transform: translateY(0); }
+      .image-card img { transition: transform 700ms cubic-bezier(.22,1,.36,1), filter 500ms ease; }
+      .image-card:hover img { transform: scale(1.045); filter: saturate(.88) contrast(1.04); }
+      .image-card:hover .glass-caption { transform: translateY(-4px); background: rgba(18,17,15,.65); }
+      .glass-caption { transition: transform 280ms cubic-bezier(.22,1,.36,1), background 280ms ease; }
+      .nav-link { position: relative; }
+      .nav-link::after { content:""; position:absolute; height:1px; left:0; bottom:-.42rem; width:0; background:#7b1e25; transition:width 240ms cubic-bezier(.22,1,.36,1); }
+      .nav-link:hover::after, .nav-link:focus-visible::after { width:100%; }
+      @media (min-width: 640px) { .masonry { column-count: 2; } }
+      @media (min-width: 1024px) { .masonry { column-count: 3; column-gap: 1.25rem; } .masonry-item { margin-bottom: 1.25rem; } }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 1ms !important; } .reveal { opacity:1; transform:none; } }
+    </style>
+  </head>
+  <body class="paper-noise antialiased">
+    <a href="#content" class="fixed left-4 top-[-5rem] z-[60] rounded-full bg-[#7b1e25] px-4 py-2 text-xs font-bold text-white transition-[top] duration-200 focus:top-4">Skip to content</a>
+
+    <header class="sticky top-0 z-50 border-b border-black/10 bg-[#ede8df]/90 backdrop-blur-xl">
+      <nav class="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-4 lg:px-10" aria-label="Primary navigation">
+        <a href="#top" class="group flex items-baseline gap-2 text-[#1d1b19]" aria-label="Noor Vale home">
+          <span class="font-editorial text-2xl italic leading-none">Noor</span><span class="font-mono text-[10px] tracking-[.24em]">VALE</span>
+        </a>
+        <div class="hidden items-center gap-8 text-xs font-medium tracking-wide md:flex">
+          <a class="nav-link" href="#work">Selected work</a>
+          <a class="nav-link" href="#about">Studio</a>
+          <a class="nav-link" href="#contact">Contact</a>
+        </div>
+        <a href="#contact" class="hidden rounded-full border border-black/70 px-4 py-2 text-[11px] font-bold uppercase tracking-[.12em] transition hover:bg-[#1d1b19] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7b1e25] sm:block">Inquire</a>
+        <button id="menu-button" class="grid size-10 place-items-center rounded-full border border-black/70 md:hidden" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open navigation">
+          <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+        </button>
+      </nav>
+      <div id="mobile-menu" class="hidden border-t border-black/10 px-5 pb-5 md:hidden">
+        <div class="flex flex-col gap-1 pt-3 text-sm">
+          <a href="#work" class="rounded-lg px-3 py-2 hover:bg-black/5">Selected work</a>
+          <a href="#about" class="rounded-lg px-3 py-2 hover:bg-black/5">Studio</a>
+          <a href="#contact" class="rounded-lg px-3 py-2 hover:bg-black/5">Contact</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="content">
+      <section id="top" class="reveal px-4 pb-16 pt-4 sm:px-6 lg:px-10 lg:pb-24">
+        <div class="relative mx-auto min-h-[640px] max-w-[1600px] overflow-hidden rounded-[2rem] bg-[#25211e] sm:min-h-[720px]">
+          <img src="/manus-storage/noor-fashion-hero_f40d2c42.png" alt="Model in an ivory silk and black tailored fashion look inside a brutalist gallery" class="absolute inset-0 size-full object-cover" />
+          <div class="hero-shade absolute inset-0" aria-hidden="true"></div>
+          <div class="relative flex min-h-[640px] flex-col justify-between p-6 text-white sm:min-h-[720px] sm:p-10 lg:p-14">
+            <div class="flex items-center justify-between font-mono text-[10px] tracking-[.18em] text-white/75"><span>PORTFOLIO / 2026</span><span>PARIS · LONDON</span></div>
+            <div class="max-w-3xl pt-20 sm:pt-32">
+              <p class="mb-5 font-mono text-[10px] tracking-[.2em] text-[#e6cdbd]">NOOR VALE — INDEPENDENT CREATIVE DIRECTION</p>
+              <h1 class="font-editorial text-[clamp(4.3rem,10vw,10rem)] leading-[.78] tracking-[-.07em]">A study in<br /><em class="font-normal">modern</em> ritual.</h1>
+            </div>
+            <div class="flex flex-col justify-between gap-6 border-t border-white/25 pt-5 text-sm text-white/80 sm:flex-row sm:items-end"><p class="max-w-sm leading-6">Image, form, and the quiet drama of getting dressed. Selected fashion stories by Noor Vale.</p><a href="#work" class="group inline-flex items-center gap-2 self-start rounded-full border border-white/40 px-4 py-2.5 text-xs font-bold uppercase tracking-[.12em] transition hover:border-white hover:bg-white hover:text-[#1d1b19]">View selected work <span class="text-base leading-none transition-transform duration-200 group-hover:translate-y-0.5">↓</span></a></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="reveal border-y border-black/10 bg-[#dcd4c9] px-5 py-12 sm:px-6 lg:px-10 lg:py-16" aria-label="Portfolio introduction">
+        <div class="mx-auto grid max-w-[1600px] gap-8 lg:grid-cols-[1fr_2fr] lg:gap-16">
+          <p class="font-mono text-[10px] tracking-[.18em] text-[#7b1e25]">A FASHION EDITORIAL PRACTICE</p>
+          <div><h2 class="max-w-4xl font-editorial text-4xl leading-[.96] tracking-[-.05em] sm:text-5xl lg:text-7xl">A visual language built from <em>tension</em>, texture, and attention.</h2><p class="mt-7 max-w-2xl text-sm leading-7 text-black/65">Noor Vale creates image worlds for fashion houses, independent labels, and artists. Every series begins with the material: the weight of a garment, the feel of a room, the pause before movement.</p></div>
+        </div>
+      </section>
+
+      <section id="work" class="px-5 py-16 sm:px-6 lg:px-10 lg:py-24" aria-labelledby="work-heading">
+        <div class="mx-auto max-w-[1600px]">
+          <div class="reveal mb-10 flex flex-col justify-between gap-5 border-b border-black/15 pb-5 sm:flex-row sm:items-end lg:mb-14">
+            <div><p class="font-mono text-[10px] tracking-[.18em] text-[#7b1e25]">01 — 05 / SELECTED WORK</p><h2 id="work-heading" class="mt-4 font-editorial text-5xl leading-none tracking-[-.06em] sm:text-6xl">The work index.</h2></div>
+            <p class="max-w-xs text-sm leading-6 text-black/55">Scroll through stories. Hover to reveal project context.</p>
+          </div>
+
+          <div class="masonry" aria-label="Selected fashion portfolio gallery">
+            <article class="masonry-item image-card reveal group relative overflow-hidden rounded-[1.4rem] bg-[#27211f]">
+              <img src="/manus-storage/noor-fashion-01_1f15528a.png" alt="Model in a pleated black gown against a clay studio wall" class="block h-auto w-full object-cover" />
+              <div class="absolute inset-x-3 bottom-3 flex items-end justify-between gap-3 rounded-2xl px-4 py-3 text-white glass-caption"><div><p class="font-mono text-[9px] tracking-[.16em] text-white/65">01 / AW 26</p><h3 class="mt-1 font-editorial text-xl leading-none">Aperture</h3></div><span class="font-mono text-[10px]">01</span></div>
+            </article>
+
+            <article class="masonry-item image-card reveal group relative overflow-hidden rounded-[1.4rem] bg-[#27211f]">
+              <img src="/manus-storage/noor-fashion-02_a6180f40.png" alt="Sculptural black shoes and accessories arranged on a limestone plinth" class="block h-auto w-full object-cover" />
+              <div class="absolute inset-x-3 bottom-3 flex items-end justify-between gap-3 rounded-2xl px-4 py-3 text-white glass-caption"><div><p class="font-mono text-[9px] tracking-[.16em] text-white/65">02 / OBJECT STUDY</p><h3 class="mt-1 font-editorial text-xl leading-none">Held form</h3></div><span class="font-mono text-[10px]">02</span></div>
+            </article>
+
+            <article class="masonry-item image-card reveal group relative overflow-hidden rounded-[1.4rem] bg-[#27211f]">
+              <img src="/manus-storage/noor-fashion-03_6d4b96c1.png" alt="Model in an oversized cream coat moving through a concrete corridor" class="block h-auto w-full object-cover" />
+              <div class="absolute inset-x-3 bottom-3 flex items-end justify-between gap-3 rounded-2xl px-4 py-3 text-white glass-caption"><div><p class="font-mono text-[9px] tracking-[.16em] text-white/65">03 / MOVEMENT</p><h3 class="mt-1 font-editorial text-xl leading-none">Soft armour</h3></div><span class="font-mono text-[10px]">03</span></div>
+            </article>
+
+            <article class="masonry-item image-card reveal group relative overflow-hidden rounded-[1.4rem] bg-[#27211f]">
+              <img src="/manus-storage/noor-fashion-04_04d35e08.png" alt="Hands adjusting a silver clasp on a black blazer against a velvet background" class="block h-auto w-full object-cover" />
+              <div class="absolute inset-x-3 bottom-3 flex items-end justify-between gap-3 rounded-2xl px-4 py-3 text-white glass-caption"><div><p class="font-mono text-[9px] tracking-[.16em] text-white/65">04 / DETAIL</p><h3 class="mt-1 font-editorial text-xl leading-none">The fastening</h3></div><span class="font-mono text-[10px]">04</span></div>
+            </article>
+
+            <article class="masonry-item reveal min-h-[340px] overflow-hidden rounded-[1.4rem] bg-[#7b1e25] p-6 text-[#f2ebe1] sm:p-8">
+              <div class="flex h-full min-h-[276px] flex-col justify-between"><p class="font-mono text-[10px] tracking-[.18em] text-[#f1c2a3]">05 / CURRENTLY</p><p class="font-editorial text-4xl leading-[.92] tracking-[-.055em]">“Clothes are a form of private architecture.”</p><a href="#contact" class="inline-flex w-fit items-center gap-2 border-b border-[#f1c2a3]/70 pb-1 text-xs font-bold uppercase tracking-[.12em] transition hover:text-[#f1c2a3]">Start a conversation <span>↗</span></a></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="reveal bg-[#1d1b19] px-5 py-16 text-[#f2ebe1] sm:px-6 lg:px-10 lg:py-24">
+        <div class="mx-auto grid max-w-[1600px] gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16"><p class="font-mono text-[10px] tracking-[.18em] text-[#e6cdbd]">STUDIO NOTE</p><div><h2 class="max-w-4xl font-editorial text-5xl leading-[.92] tracking-[-.055em] sm:text-6xl lg:text-7xl">The image begins <em>before</em> the shutter.</h2><div class="mt-10 grid gap-6 border-t border-white/20 pt-5 sm:grid-cols-2"><p class="max-w-sm text-sm leading-7 text-white/65">Each project is shaped as a complete atmosphere: casting, material, location, movement, and the final rhythm of an edit.</p><div class="font-mono text-[10px] leading-6 tracking-[.14em] text-white/50"><p>CREATIVE DIRECTION</p><p>IMAGE &amp; FILM</p><p>EDITORIAL CONCEPTS</p><p>VISUAL IDENTITY</p></div></div></div></div>
+      </section>
+
+      <section id="contact" class="reveal px-5 py-20 sm:px-6 lg:px-10 lg:py-28">
+        <div class="mx-auto max-w-[1600px] rounded-[1.6rem] border border-black/15 bg-[#e4ded4] p-7 sm:p-10 lg:p-14"><p class="font-mono text-[10px] tracking-[.18em] text-[#7b1e25]">AVAILABLE FOR SELECTED COMMISSIONS</p><div class="mt-12 flex flex-col justify-between gap-10 lg:flex-row lg:items-end"><h2 class="max-w-4xl font-editorial text-[clamp(3.8rem,8vw,8.4rem)] leading-[.78] tracking-[-.08em]">Tell me what<br /><em>you are making.</em></h2><a href="mailto:studio@noorvale.example" class="group inline-flex w-fit items-center gap-3 rounded-full bg-[#1d1b19] px-5 py-3 text-xs font-bold uppercase tracking-[.12em] text-white transition hover:bg-[#7b1e25] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7b1e25]">studio@noorvale.example <span class="text-base transition-transform duration-200 group-hover:translate-x-1">→</span></a></div></div>
+      </section>
+    </main>
+
+    <footer class="border-t border-black/10 px-5 py-6 sm:px-6 lg:px-10"><div class="mx-auto flex max-w-[1600px] flex-col gap-3 text-[10px] font-mono tracking-[.13em] text-black/50 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 NOOR VALE — TEMPLATE DEMONSTRATION</span><span>MADE FOR EDITORIAL PORTFOLIOS</span></div></footer>
+
+    <script>
+      const menuButton = document.getElementById('menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      menuButton.addEventListener('click', () => {
+        const open = menuButton.getAttribute('aria-expanded') === 'true';
+        menuButton.setAttribute('aria-expanded', String(!open));
+        menuButton.setAttribute('aria-label', open ? 'Open navigation' : 'Close navigation');
+        mobileMenu.classList.toggle('hidden');
+      });
+      mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuButton.setAttribute('aria-expanded', 'false');
+        menuButton.setAttribute('aria-label', 'Open navigation');
+      }));
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealItems = document.querySelectorAll('.reveal');
+      if (reduceMotion) revealItems.forEach((element) => element.classList.add('is-visible'));
+      else {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: 0.12 });
+        revealItems.forEach((element) => observer.observe(element));
+      }
+    </script>
+  </body>
+</html>

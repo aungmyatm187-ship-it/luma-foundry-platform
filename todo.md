@@ -1,0 +1,126 @@
+# AI SaaS Adaptation Checklist
+
+- [x] Define the AI product name, core promise, target user, and CTA vocabulary.
+- [x] Generate a distinct AI systems hero visual and three supporting product-flow visuals.
+- [x] Replace creative-workflow copy with AI SaaS messaging across navigation, hero, bento features, gallery, and final CTA.
+- [x] Reframe bento artifacts as concrete AI capabilities, agent states, and model-assisted workflow signals.
+- [x] Update gallery captions so the masonry wall explains customer-facing AI use cases rather than studio projects.
+- [x] Verify the revised page at desktop and mobile sizes, including reduced-motion behavior and keyboard-visible focus.
+- [x] Save the delivery checkpoint.
+- [x] Fix mobile feature-card overflow so the feature description and workflow artifact remain fully visible.
+- [x] Confirm the revised feature-card layout preserves full text visibility at 375 px mobile width and desktop width.
+- [x] Define the enforceable Operator A automation and quality-control rules, including the boundaries of user-turn checkpoint counting.
+- [x] Create a reusable Operator A QC skill following the skill-authoring workflow.
+- [x] Confirm all 50 official product routes and live records in the shared master sheet.
+- [x] Audit every official route at desktop, tablet, and mobile sizes for overflow, overlap, missing modules, and accessible navigation.
+- [x] Audit all product copy and calls to action for placeholder text, duplication, and realistic product-specific content.
+- [x] Verify scroll-reveal and hover motion against the 200–350 ms motion standard and reduced-motion fallbacks.
+- [x] Correct all confirmed quality defects and revalidate every affected route.
+- [x] Append the post-batch validation result to the shared master sheet.
+- [x] Save an Operator A state checkpoint to Google Drive by explicit user request before the automatic threshold trigger.
+- [x] Deliver the complete QC and production-readiness report with explicit runtime, legal, commerce, and universal-coverage limitations.
+- [x] Run and record a route-by-route keyboard focus and navigation audit for all 50 official template routes.
+- [x] Complete and record a route-by-route copy and CTA differentiation review for all 50 official template routes.
+- [x] Inventory all product-route hover and reveal timing declarations, normalize required interactions to 200–350 ms, and recheck verified exceptions.
+- [x] Capture explicit keyboard tab-order and visible-focus evidence for every official route group.
+- [x] Complete a written per-route copy and CTA differentiation ledger covering all 50 official routes.
+- [x] Create a complete, non-truncated timing inventory for every product-route hover and reveal rule, including intentional exceptions.
+- [x] Document all 50 official template routes in the route-by-route certification ledger using the completed QC evidence.
+- [x] Create and verify the explicitly requested op_a_state_checkpoint.json file in the Google Drive root.
+- [x] Keep the next automatic MEMEX checkpoint pending until a documented five-user-turn threshold is reached; owner-approved deferral recorded.
+- [x] Verify and report master-sheet logging completeness for all 50 official template routes.
+- [x] Deliver the verified master-sheet sync status summary for all 50 official routes, including the 50/50 Products match and Sync Log identifier note.
+- [x] Roll back the project and live deployment to checkpoint 3a5dcc8e as explicitly requested.
+- [x] Verify the restored checkpoint with tests, build checks, and desktop/mobile public-page renders.
+- [x] Deliver the prioritized non-watermark IP-protection roadmap to the user, including signed releases, rights records, controlled delivery, SPDX/SBOM, brand monitoring, enforcement, and legal-review boundaries.
+- [x] Record the actual delivery sequence: the roadmap was first shared as an interim update and then saved in restored-state checkpoint 2d26d47b before the final user-facing result.
+- [x] Preserve checkpoint-first handling for the next user-facing project deliverable.
+- [x] Replace every outdated public catalogue “Forty-three” count with the verified 50-product count.
+- [x] Verify the corrected catalogue-count copy at desktop and mobile sizes.
+- [x] Prepare source-level keyboard evidence matrix for all 50 official routes without claiming runtime verification.
+- [x] Prepare written per-route copy and CTA differentiation ledger from existing source and certification records.
+- [x] Prepare complete static motion-timing inventory with intentional exceptions clearly labeled.
+- [x] Assemble a no-credit QC report draft that separates existing evidence from deferred runtime evidence.
+- [x] Diagnose the reported public website access failure and record current response/runtime evidence: live domain returns 404 because the project has no active deployment; local preview returns 200.
+- [x] Publish the checkpoint and revalidate `https://kanpi1inburma.manus.space/api/signals`; live JSON now returns `status: ready` and includes `My First Evidence`.
+- [x] Audit core features for Ember Signal — Mail Pilot, Selene Agents, Kinetic Mesh, Folio Forms, and Peregrine Editions.
+- [x] Map provider-neutral API/LLM usage inputs without estimating Manus credits or account-specific charges.
+- [x] Deliver the five-pilot feature and usage review with explicit deferred integration boundaries.
+- [x] Add a protected Ember Signal campaign-brief generation tRPC procedure with validated inputs and usage metadata.
+- [x] Wire the Ember Signal campaign brief panel to the protected procedure with loading, success, error, and login-safe behavior.
+- [x] Add unit tests for Ember Signal input validation and procedure boundaries without invoking the LLM.
+- [x] Validate the Ember Signal API integration with tests, TypeScript, production build, responsive rendering, and an authenticated live LLM submission returning structured output and usage metadata.
+- [x] Open the Ember Signal brief-builder panel and verify its desktop layout, field spacing, channel toggles, loading state, and close control; verify the public route at mobile width separately.
+- [x] Run an authenticated Ember Signal brief submission to verify structured readout and usage metadata handling when project LLM access is available.
+- [x] Verify the unauthenticated Ember Signal submission path fails or redirects safely in the browser.
+- [x] Finish the read-only Operator B compliance-register versus local 50-route reconciliation, then stop as requested without final readiness certification.
+- [x] Define the local evidence file path and validated record schema for Ember Signal. Default: `data/ember-signal-evidence.json`; override: `EMBER_SIGNAL_EVIDENCE_FILE`.
+- [x] Add a local-development evidence read/refresh path without inventing or seeding evidence data.
+- [x] Display evidence records in Ember Signal with source, timestamp, and provenance labels.
+- [x] Validate local empty/error states and evidence-boundary messaging; the supplied redacted JSON evidence file is displayed and its refresh path is verified.
+- [x] Add a credential-free Ember Signal local evidence adapter for redacted user-provided data.
+- [x] Add explicit empty, 404/error, and provenance states so failed API responses cannot appear as evidence.
+- [x] Validate the adapter with unit tests and the existing project build without calling the external Dify endpoint.
+- [x] Keep protected local-evidence invalid/credential-rejection-state coverage explicitly deferred by owner; authenticated panel, refresh, safe empty-form, and unauthenticated redirect evidence are recorded.
+- [x] Verify a user-supplied redacted evidence JSON file refreshes displayed records with source and timestamp metadata; do not seed synthetic evidence.
+- [x] Diagnose the KanPi Ember Signal `/api/signals` 404, verify the evidence-file path and deployment mode, and repair only if needed. The published public route now returns status ready JSON with My First Evidence.
+- [x] Inspect available Google Drive collaboration materials for an Operator 2 handoff without changing access or files.
+- [x] Prepare an Ember Signal status handoff for Operator 2 and request confirmation of the exact shared Drive destination before posting.
+- [x] Post and verify the owner-approved Operator 2 Drive handoff.
+- [x] Create and verify a low-cost Ember Signal handoff document in Drive root for Operator 2 without modifying the existing compliance register or Drive permissions.
+- [x] Create the Operator 2 Ember Signal handoff directly as a Google Doc via the approved Workspace connector, avoiding the missing local python-docx dependency.
+- [x] Verify the new Operator 2 handoff Google Doc parent metadata and confirm it is in Drive root; parent is `My Drive` (`0ANsjyMERxrT1Uk9PVA`).
+- [x] Record the handoff document ID, link, and parent evidence in the project log/checklist: ID `1_4CrRLIu6h8Ali-NMHv62LIPZV3AKDMsV430JH8W9b0`, link `https://docs.google.com/document/d/1_4CrRLIu6h8Ali-NMHv62LIPZV3AKDMsV430JH8W9b0/edit`, parent `My Drive`.
+- [x] Save a checkpoint after adding `Final_Technical_Production_Readiness_Report_2026-09-07.md`.
+- [x] Deliver the final technical production-readiness report with explicit runtime, mobile-panel, credential-rejection, commercial/IP, checkout, fulfilment, universal-AT, and MEMEX limitations.
+- [x] Audit Ember Signal and Axiom Grid for lightweight, evidence-based fixes only; exclude new templates, commerce, and external integrations.
+- [x] Implement the smallest approved Ember Signal and Axiom Grid UI/accessibility/evidence refinements: Ember build CTAs now open the existing protected builder; Axiom access CTAs now scroll to the existing access section.
+- [x] Validate both pilot routes with focused tests, type-check/build, and desktop/mobile evidence: 15 test files / 34 tests passed; desktop and mobile screenshots captured.
+- [x] Save and deliver the lightweight Ember Signal/Axiom Grid progress checkpoint as `4690c880`.
+- [x] Sweep Ember Signal for small visual, interaction, accessibility, copy, and state inconsistencies.
+- [x] Sweep Axiom Grid for small visual, interaction, accessibility, copy, and state inconsistencies.
+- [x] Fix only confirmed micro-defects and revalidate both pilot routes at desktop and mobile sizes.
+- [x] Run authorized browser verification for Ember Signal protected panel states and unauthenticated behavior.
+- [x] Attempt authenticated Ember Signal brief submission and record whether live structured output is available.
+- [x] Capture available runtime keyboard/focus evidence for pilot routes without claiming universal 50-route certification.
+- [x] Update the readiness report and checklist with evidence-supported runtime results.
+- [x] Keep authenticated Ember Signal builder mobile-viewport verification explicitly deferred by owner; public 390px route render and authenticated desktop builder evidence are recorded.
+- [x] Exercise Ember Signal REFRESH after the supplied evidence file is present and confirm title, source, status, and date remain correct.
+- [x] Run an actual keyboard tab/focus pass on Axiom Grid and capture focused interactive elements.
+
+- [x] Implement and publicly verify the canonical Render-to-Luma Ember Signal bridge: checkpoint `067e5115` now serves normalized Render evidence, release identity, and a bounded local-file fallback through `/api/signals`.
+- [x] Create, activate, and execute the manual-only Make scenario `6365626` for Render signals verification; execution `d836bd947e4b4c21812172a5b77a855c` returned `SUCCESS`.
+- [x] Upload the verified live-bridge handoff for Operator B and append/read back Operator Sync Log `sync-0036`; Google Sheets destination writing remains explicitly pending an approved Product ID and Make Google Sheets connection.
+
+- [x] Add a development-only browser-audit dependency and reproducible script for public route focus checks.
+- [x] Execute the scripted first-focus and visible-focus audit across all 50 official public routes.
+- [x] Analyze audit findings, repair only confirmed issues, and update the runtime evidence report.
+- [x] Repair the shared document title so each official route exposes its own product name instead of the Ember Signal title.
+- [x] Diagnose the current custom-domain bundle mismatch: the project alias temporarily served product-specific titles while kanpi1inburma served the prior Ember Signal title bundle; propagation completed and the live audit now sees product-specific titles.
+- [x] Record Luma Foundry / lumafoundry.live as the canonical public brand and preserve existing domain/email continuity.
+- [x] Audit public naming and domain surfaces for accidental KanPi references without changing unrelated product copy.
+- [x] Apply only safe canonical-brand corrections and verify the live domain remains reachable; source is corrected and public domain currently responds HTTP 200, with deployment propagation separately noted.
+- [x] Publish the static homepage metadata correction; checkpoint `6c422791` published the corrected source, while live custom-domain propagation remains separately open.
+- [x] Re-verify lumafoundry.live and www.lumafoundry.live after publish, confirming HTTP 200 and the approved Luma Foundry — 50 AI Automation Workspace root title/description.
+- [x] Align the approved title `Luma Foundry — 50 AI Automation Workspace` across root metadata and route-title surfaces.
+- [x] Re-publish and verify the approved title on both `lumafoundry.live` and `www.lumafoundry.live`.
+- [x] Correct the stale Management UI project title `KanPi Foundry - All in one AI Automation Workshop` to `Luma Foundry — 50 AI Automation Workspace` through the actual platform metadata mechanism; direct screenshot evidence confirms the updated Management UI card label.
+- [x] Verify the Management UI label and both public domains show consistent Luma Foundry naming after the metadata correction; direct Management UI screenshot and public-domain checks confirm consistent Luma Foundry naming.
+- [x] Apply the owner-approved nameserver change from Global Domain Group to Cloudflare (`ethan.ns.cloudflare.com`, `phoenix.ns.cloudflare.com`) without deleting website records; Cloudflare confirms registrar propagation is pending.
+- [ ] Recheck `lumafoundry.live` and `www.lumafoundry.live` after nameserver propagation.
+- [ ] Retry Zoho domain verification after Cloudflare becomes authoritative.
+- [ ] Add Zoho MX records and verify `hello@lumafoundry.live` delivery.
+- [ ] Configure and validate SPF, DKIM, and DMARC for Zoho mail.
+- [x] Create a reusable Cloudflare DNS and custom-domain email setup skill from the supplied fundamentals content.
+- [x] Deliver the validated Cloudflare skill package as an installable attachment and record the completed delivery.
+- [x] Restart light-task lane with Axiom Grid as the first evidence packet.
+- [x] Reconcile Axiom Grid repository URL and immutable commit/hash from local project evidence; checkpoint-4bf92357 and commit 4bf92357a9a47653af1331e63bc1befcd4f7bcd8 recorded.
+- [x] Reconcile Axiom Grid design-history, asset-licence, contributor-rights, SBOM, and factual product fields without inventing missing evidence; unresolved groups remain explicitly Pending evidence.
+- [x] Prepare the Axiom Grid handoff update for the shared IP Compliance Register and record the sync reference `sync-0023`.
+- [x] Validate and report the Axiom Grid light-task progress with explicit Pending/Needs evidence boundaries in `AXIOM-GRID-EVIDENCE-PACKET-2026-09-17.md`.
+- [ ] Obtain an owner-approved original design-history/source-file reference for Axiom Grid checkpoint-4bf92357.
+- [ ] Obtain creator/rightsholder, commercial licence proof, attribution, and restriction evidence for the Axiom Grid hero asset.
+- [ ] Obtain Axiom Grid contributor/contractor rights assignment or work-for-hire evidence.
+- [x] Produce and attach a release-specific Axiom Grid SBOM/dependency licence inventory and notices reference; CycloneDX and third-party-notices artifacts are attached in Drive, while authoritative licence-text and compatibility review remain pending under the commercial gate.
+- [ ] Obtain approved factual buyer-facing fields for Axiom Grid: platform, included files, setup, requirements, support, updates, and limitations.
+- [ ] Obtain qualified IP counsel review tied to the Axiom Grid release before any commercial-clearance claim.

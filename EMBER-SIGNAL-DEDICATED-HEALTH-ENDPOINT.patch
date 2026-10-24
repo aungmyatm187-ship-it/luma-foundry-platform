@@ -1,0 +1,28 @@
+From cf83370ea46c4fb795aeebfefb90df2acc5d8649 Mon Sep 17 00:00:00 2001
+From: highfive251677-wq
+ <2.94299793e+08+highfive251677-wq@users.noreply.github.com>
+Date: Tue, 22 Sep 2026 15:19:57 +0000
+Subject: [PATCH] Add dedicated health endpoint for Render
+
+---
+ app.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/app.py b/app.py
+index 400e2a9..16a733a 100644
+--- a/app.py
++++ b/app.py
+@@ -29,6 +29,10 @@ def get_json_evidence():
+ def index():
+     return render_template('index.html')
+ 
++@app.route('/api/health')
++def health():
++    return jsonify({"status": "ok"}), 200
++
+ @app.route('/api/signals')
+ def get_signals():
+     db_data = get_db_data()
+-- 
+2.43.0
+

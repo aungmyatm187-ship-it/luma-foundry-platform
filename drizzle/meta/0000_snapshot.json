@@ -1,109 +1,94 @@
 {
-  "id": "8f50a9f7-6d20-43ae-8f0a-308d1dd4aab6",
+  "version": "5",
+  "dialect": "mysql",
+  "id": "dbbb67a0-4c7d-43db-9dd4-4d7694835449",
   "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "7",
-  "dialect": "postgresql",
   "tables": {
-    "public.decisions": {
-      "name": "decisions",
-      "schema": "",
+    "collaborationDecisions": {
+      "name": "collaborationDecisions",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
+          "type": "int",
+          "primaryKey": false,
           "notNull": true,
-          "default": "gen_random_uuid()"
+          "autoincrement": true
         },
-        "goal_id": {
-          "name": "goal_id",
-          "type": "uuid",
+        "goalId": {
+          "name": "goalId",
+          "type": "int",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
-        "product_id": {
-          "name": "product_id",
-          "type": "uuid",
+        "productId": {
+          "name": "productId",
+          "type": "int",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         },
         "title": {
           "name": "title",
-          "type": "text",
+          "type": "varchar(180)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "context": {
           "name": "context",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "decision": {
           "name": "decision",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "autoincrement": false
         },
-        "owner_id": {
-          "name": "owner_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "decided_by": {
-          "name": "decided_by",
-          "type": "role",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "status": {
-          "name": "status",
-          "type": "decision_status",
-          "typeSchema": "public",
+        "decisionStatus": {
+          "name": "decisionStatus",
+          "type": "enum('pending','approved','declined')",
           "primaryKey": false,
           "notNull": true,
-          "default": "'open'"
+          "autoincrement": false,
+          "default": "'pending'"
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "autoincrement": false,
+          "default": "(now())"
         },
-        "resolved_at": {
-          "name": "resolved_at",
-          "type": "timestamp with time zone",
+        "resolvedAt": {
+          "name": "resolvedAt",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {
-        "decisions_goal_idx": {
-          "name": "decisions_goal_idx",
+        "collaborationDecisions_goalId_idx": {
+          "name": "collaborationDecisions_goalId_idx",
           "columns": [
-            {
-              "expression": "goal_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
+            "goalId"
           ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
+          "isUnique": false
         }
       },
       "foreignKeys": {
-        "decisions_goal_id_goals_id_fk": {
-          "name": "decisions_goal_id_goals_id_fk",
-          "tableFrom": "decisions",
-          "tableTo": "goals",
+        "collaborationDecisions_goalId_collaborationGoals_id_fk": {
+          "name": "collaborationDecisions_goalId_collaborationGoals_id_fk",
+          "tableFrom": "collaborationDecisions",
+          "tableTo": "collaborationGoals",
           "columnsFrom": [
-            "goal_id"
+            "goalId"
           ],
           "columnsTo": [
             "id"
@@ -111,371 +96,239 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "decisions_product_id_products_id_fk": {
-          "name": "decisions_product_id_products_id_fk",
-          "tableFrom": "decisions",
-          "tableTo": "products",
+        "collaborationDecisions_productId_collaborationProducts_id_fk": {
+          "name": "collaborationDecisions_productId_collaborationProducts_id_fk",
+          "tableFrom": "collaborationDecisions",
+          "tableTo": "collaborationProducts",
           "columnsFrom": [
-            "product_id"
+            "productId"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "decisions_owner_id_users_id_fk": {
-          "name": "decisions_owner_id_users_id_fk",
-          "tableFrom": "decisions",
-          "tableTo": "users",
-          "columnsFrom": [
-            "owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {
-        "decisions_own_rows": {
-          "name": "decisions_own_rows",
-          "as": "PERMISSIVE",
-          "for": "ALL",
-          "to": [
-            "authenticated"
-          ],
-          "using": "exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = \"decisions\".\"goal_id\" and (select auth.uid()) = users.auth_user_id)",
-          "withCheck": "exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = \"decisions\".\"goal_id\" and (select auth.uid()) = users.auth_user_id)"
-        }
-      },
-      "checkConstraints": {},
-      "isRLSEnabled": true
-    },
-    "public.evidence": {
-      "name": "evidence",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "product_id": {
-          "name": "product_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "kind": {
-          "name": "kind",
-          "type": "evidence_kind",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "reference": {
-          "name": "reference",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "note": {
-          "name": "note",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "recorded_by": {
-          "name": "recorded_by",
-          "type": "role",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "recorded_at": {
-          "name": "recorded_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "prev_hash": {
-          "name": "prev_hash",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "row_hash": {
-          "name": "row_hash",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {
-        "evidence_product_idx": {
-          "name": "evidence_product_idx",
+      "compositePrimaryKeys": {
+        "collaborationDecisions_id": {
+          "name": "collaborationDecisions_id",
           "columns": [
-            {
-              "expression": "product_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "evidence_product_id_products_id_fk": {
-          "name": "evidence_product_id_products_id_fk",
-          "tableFrom": "evidence",
-          "tableTo": "products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
             "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          ]
         }
       },
-      "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {
-        "evidence_own_rows": {
-          "name": "evidence_own_rows",
-          "as": "PERMISSIVE",
-          "for": "ALL",
-          "to": [
-            "authenticated"
-          ],
-          "using": "exists (select 1 from products join goals on goals.id = products.goal_id join users on users.id = goals.owner_id where products.id = \"evidence\".\"product_id\" and (select auth.uid()) = users.auth_user_id)",
-          "withCheck": "exists (select 1 from products join goals on goals.id = products.goal_id join users on users.id = goals.owner_id where products.id = \"evidence\".\"product_id\" and (select auth.uid()) = users.auth_user_id)"
-        }
-      },
-      "checkConstraints": {},
-      "isRLSEnabled": true
+      "checkConstraint": {}
     },
-    "public.goals": {
-      "name": "goals",
-      "schema": "",
+    "collaborationGoals": {
+      "name": "collaborationGoals",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "owner_id": {
-          "name": "owner_id",
-          "type": "uuid",
+          "type": "int",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": true
+        },
+        "ownerId": {
+          "name": "ownerId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         },
         "title": {
           "name": "title",
-          "type": "text",
+          "type": "varchar(160)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "outcome": {
           "name": "outcome",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "priority": {
           "name": "priority",
-          "type": "priority",
-          "typeSchema": "public",
+          "type": "enum('focus','next','later')",
           "primaryKey": false,
           "notNull": true,
-          "default": "'medium'"
+          "autoincrement": false,
+          "default": "'focus'"
         },
-        "target_date": {
-          "name": "target_date",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
+        "goalStatus": {
+          "name": "goalStatus",
+          "type": "enum('active','paused','complete')",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "autoincrement": false,
+          "default": "'active'"
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
+        "targetDate": {
+          "name": "targetDate",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
         }
       },
       "indexes": {
-        "goals_owner_idx": {
-          "name": "goals_owner_idx",
+        "collaborationGoals_ownerId_idx": {
+          "name": "collaborationGoals_ownerId_idx",
           "columns": [
-            {
-              "expression": "owner_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
+            "ownerId"
           ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
+          "isUnique": false
         }
       },
       "foreignKeys": {
-        "goals_owner_id_users_id_fk": {
-          "name": "goals_owner_id_users_id_fk",
-          "tableFrom": "goals",
+        "collaborationGoals_ownerId_users_id_fk": {
+          "name": "collaborationGoals_ownerId_users_id_fk",
+          "tableFrom": "collaborationGoals",
           "tableTo": "users",
           "columnsFrom": [
-            "owner_id"
+            "ownerId"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {
-        "goals_own_rows": {
-          "name": "goals_own_rows",
-          "as": "PERMISSIVE",
-          "for": "ALL",
-          "to": [
-            "authenticated"
-          ],
-          "using": "exists (select 1 from users where users.id = \"goals\".\"owner_id\" and (select auth.uid()) = users.auth_user_id)",
-          "withCheck": "exists (select 1 from users where users.id = \"goals\".\"owner_id\" and (select auth.uid()) = users.auth_user_id)"
+      "compositePrimaryKeys": {
+        "collaborationGoals_id": {
+          "name": "collaborationGoals_id",
+          "columns": [
+            "id"
+          ]
         }
       },
-      "checkConstraints": {},
-      "isRLSEnabled": true
+      "uniqueConstraints": {},
+      "checkConstraint": {}
     },
-    "public.handoffs": {
-      "name": "handoffs",
-      "schema": "",
+    "collaborationHandoffs": {
+      "name": "collaborationHandoffs",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
+          "type": "int",
+          "primaryKey": false,
           "notNull": true,
-          "default": "gen_random_uuid()"
+          "autoincrement": true
         },
-        "goal_id": {
-          "name": "goal_id",
-          "type": "uuid",
+        "goalId": {
+          "name": "goalId",
+          "type": "int",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
-        "product_id": {
-          "name": "product_id",
-          "type": "uuid",
+        "productId": {
+          "name": "productId",
+          "type": "int",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         },
-        "from_role": {
-          "name": "from_role",
-          "type": "role",
-          "typeSchema": "public",
+        "fromRole": {
+          "name": "fromRole",
+          "type": "enum('owner','operator_a','operator_b')",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
-        "to_role": {
-          "name": "to_role",
-          "type": "role",
-          "typeSchema": "public",
+        "toRole": {
+          "name": "toRole",
+          "type": "enum('owner','operator_a','operator_b')",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "title": {
           "name": "title",
-          "type": "text",
+          "type": "varchar(180)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "summary": {
           "name": "summary",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "asks": {
           "name": "asks",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "autoincrement": false
         },
-        "status": {
-          "name": "status",
-          "type": "handoff_status",
-          "typeSchema": "public",
+        "handoffStatus": {
+          "name": "handoffStatus",
+          "type": "enum('open','acknowledged','resolved')",
           "primaryKey": false,
           "notNull": true,
-          "default": "'draft'"
+          "autoincrement": false,
+          "default": "'open'"
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "autoincrement": false,
+          "default": "(now())"
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
         }
       },
       "indexes": {
-        "handoffs_goal_idx": {
-          "name": "handoffs_goal_idx",
+        "collaborationHandoffs_goalId_idx": {
+          "name": "collaborationHandoffs_goalId_idx",
           "columns": [
-            {
-              "expression": "goal_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
+            "goalId"
           ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
+          "isUnique": false
         }
       },
       "foreignKeys": {
-        "handoffs_goal_id_goals_id_fk": {
-          "name": "handoffs_goal_id_goals_id_fk",
-          "tableFrom": "handoffs",
-          "tableTo": "goals",
+        "collaborationHandoffs_goalId_collaborationGoals_id_fk": {
+          "name": "collaborationHandoffs_goalId_collaborationGoals_id_fk",
+          "tableFrom": "collaborationHandoffs",
+          "tableTo": "collaborationGoals",
           "columnsFrom": [
-            "goal_id"
+            "goalId"
           ],
           "columnsTo": [
             "id"
@@ -483,312 +336,241 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "handoffs_product_id_products_id_fk": {
-          "name": "handoffs_product_id_products_id_fk",
-          "tableFrom": "handoffs",
-          "tableTo": "products",
+        "collaborationHandoffs_productId_collaborationProducts_id_fk": {
+          "name": "collaborationHandoffs_productId_collaborationProducts_id_fk",
+          "tableFrom": "collaborationHandoffs",
+          "tableTo": "collaborationProducts",
           "columnsFrom": [
-            "product_id"
+            "productId"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {
-        "handoffs_own_rows": {
-          "name": "handoffs_own_rows",
-          "as": "PERMISSIVE",
-          "for": "ALL",
-          "to": [
-            "authenticated"
-          ],
-          "using": "exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = \"handoffs\".\"goal_id\" and (select auth.uid()) = users.auth_user_id)",
-          "withCheck": "exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = \"handoffs\".\"goal_id\" and (select auth.uid()) = users.auth_user_id)"
-        }
-      },
-      "checkConstraints": {},
-      "isRLSEnabled": true
-    },
-    "public.products": {
-      "name": "products",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "goal_id": {
-          "name": "goal_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "category": {
-          "name": "category",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "route": {
-          "name": "route",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "status": {
-          "name": "status",
-          "type": "product_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'concept'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "products_goal_idx": {
-          "name": "products_goal_idx",
+      "compositePrimaryKeys": {
+        "collaborationHandoffs_id": {
+          "name": "collaborationHandoffs_id",
           "columns": [
-            {
-              "expression": "goal_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "products_goal_id_goals_id_fk": {
-          "name": "products_goal_id_goals_id_fk",
-          "tableFrom": "products",
-          "tableTo": "goals",
-          "columnsFrom": [
-            "goal_id"
-          ],
-          "columnsTo": [
             "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {
-        "products_own_rows": {
-          "name": "products_own_rows",
-          "as": "PERMISSIVE",
-          "for": "ALL",
-          "to": [
-            "authenticated"
-          ],
-          "using": "exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = \"products\".\"goal_id\" and (select auth.uid()) = users.auth_user_id)",
-          "withCheck": "exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = \"products\".\"goal_id\" and (select auth.uid()) = users.auth_user_id)"
-        }
-      },
-      "checkConstraints": {},
-      "isRLSEnabled": true
-    },
-    "public.users": {
-      "name": "users",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "auth_user_id": {
-          "name": "auth_user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "role": {
-          "name": "role",
-          "type": "role",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "users_auth_user_id_unique": {
-          "name": "users_auth_user_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "auth_user_id"
           ]
         }
       },
-      "policies": {
-        "users_own_rows": {
-          "name": "users_own_rows",
-          "as": "PERMISSIVE",
-          "for": "ALL",
-          "to": [
-            "authenticated"
-          ],
-          "using": "(select auth.uid()) = \"users\".\"auth_user_id\"",
-          "withCheck": "(select auth.uid()) = \"users\".\"auth_user_id\""
-        }
-      },
-      "checkConstraints": {},
-      "isRLSEnabled": true
+      "uniqueConstraints": {},
+      "checkConstraint": {}
     },
-    "public.work_items": {
-      "name": "work_items",
-      "schema": "",
+    "collaborationProducts": {
+      "name": "collaborationProducts",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
+          "type": "int",
+          "primaryKey": false,
           "notNull": true,
-          "default": "gen_random_uuid()"
+          "autoincrement": true
         },
-        "goal_id": {
-          "name": "goal_id",
-          "type": "uuid",
+        "goalId": {
+          "name": "goalId",
+          "type": "int",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
-        "product_id": {
-          "name": "product_id",
-          "type": "uuid",
+        "name": {
+          "name": "name",
+          "type": "varchar(160)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "autoincrement": false
         },
-        "type": {
-          "name": "type",
-          "type": "text",
+        "category": {
+          "name": "category",
+          "type": "varchar(120)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
-        "assigned_to": {
-          "name": "assigned_to",
-          "type": "role",
-          "typeSchema": "public",
+        "route": {
+          "name": "route",
+          "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "autoincrement": false
+        },
+        "productStatus": {
+          "name": "productStatus",
+          "type": "enum('concept','in_progress','review','live','packaged')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'concept'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "collaborationProducts_goalId_idx": {
+          "name": "collaborationProducts_goalId_idx",
+          "columns": [
+            "goalId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "collaborationProducts_goalId_collaborationGoals_id_fk": {
+          "name": "collaborationProducts_goalId_collaborationGoals_id_fk",
+          "tableFrom": "collaborationProducts",
+          "tableTo": "collaborationGoals",
+          "columnsFrom": [
+            "goalId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "collaborationProducts_id": {
+          "name": "collaborationProducts_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "collaborationWorkItems": {
+      "name": "collaborationWorkItems",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "goalId": {
+          "name": "goalId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "productId": {
+          "name": "productId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "workItemType": {
+          "name": "workItemType",
+          "type": "enum('task','support')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'task'"
+        },
+        "assignedTo": {
+          "name": "assignedTo",
+          "type": "enum('owner','operator_a','operator_b')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'owner'"
         },
         "title": {
           "name": "title",
-          "type": "text",
+          "type": "varchar(180)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "detail": {
           "name": "detail",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "autoincrement": false
         },
-        "priority": {
-          "name": "priority",
-          "type": "priority",
-          "typeSchema": "public",
+        "workItemPriority": {
+          "name": "workItemPriority",
+          "type": "enum('high','medium','low')",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false,
           "default": "'medium'"
         },
-        "status": {
-          "name": "status",
-          "type": "work_item_status",
-          "typeSchema": "public",
+        "workItemStatus": {
+          "name": "workItemStatus",
+          "type": "enum('backlog','ready','in_progress','blocked','review','done')",
           "primaryKey": false,
           "notNull": true,
-          "default": "'todo'"
+          "autoincrement": false,
+          "default": "'ready'"
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "autoincrement": false,
+          "default": "(now())"
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
         }
       },
       "indexes": {
-        "work_items_goal_idx": {
-          "name": "work_items_goal_idx",
+        "collaborationWorkItems_goalId_idx": {
+          "name": "collaborationWorkItems_goalId_idx",
           "columns": [
-            {
-              "expression": "goal_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
+            "goalId"
           ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
+          "isUnique": false
+        },
+        "collaborationWorkItems_assignedTo_idx": {
+          "name": "collaborationWorkItems_assignedTo_idx",
+          "columns": [
+            "assignedTo"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
-        "work_items_goal_id_goals_id_fk": {
-          "name": "work_items_goal_id_goals_id_fk",
-          "tableFrom": "work_items",
-          "tableTo": "goals",
+        "collaborationWorkItems_goalId_collaborationGoals_id_fk": {
+          "name": "collaborationWorkItems_goalId_collaborationGoals_id_fk",
+          "tableFrom": "collaborationWorkItems",
+          "tableTo": "collaborationGoals",
           "columnsFrom": [
-            "goal_id"
+            "goalId"
           ],
           "columnsTo": [
             "id"
@@ -796,123 +578,132 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "work_items_product_id_products_id_fk": {
-          "name": "work_items_product_id_products_id_fk",
-          "tableFrom": "work_items",
-          "tableTo": "products",
+        "collaborationWorkItems_productId_collaborationProducts_id_fk": {
+          "name": "collaborationWorkItems_productId_collaborationProducts_id_fk",
+          "tableFrom": "collaborationWorkItems",
+          "tableTo": "collaborationProducts",
           "columnsFrom": [
-            "product_id"
+            "productId"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {
-        "work_items_own_rows": {
-          "name": "work_items_own_rows",
-          "as": "PERMISSIVE",
-          "for": "ALL",
-          "to": [
-            "authenticated"
-          ],
-          "using": "exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = \"work_items\".\"goal_id\" and (select auth.uid()) = users.auth_user_id)",
-          "withCheck": "exists (select 1 from goals join users on users.id = goals.owner_id where goals.id = \"work_items\".\"goal_id\" and (select auth.uid()) = users.auth_user_id)"
+      "compositePrimaryKeys": {
+        "collaborationWorkItems_id": {
+          "name": "collaborationWorkItems_id",
+          "columns": [
+            "id"
+          ]
         }
       },
-      "checkConstraints": {},
-      "isRLSEnabled": true
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "users": {
+      "name": "users",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "openId": {
+          "name": "openId",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(320)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "loginMethod": {
+          "name": "loginMethod",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "role": {
+          "name": "role",
+          "type": "enum('user','admin')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'user'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "onUpdate": true,
+          "default": "(now())"
+        },
+        "lastSignedIn": {
+          "name": "lastSignedIn",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "users_id": {
+          "name": "users_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "users_openId_unique": {
+          "name": "users_openId_unique",
+          "columns": [
+            "openId"
+          ]
+        }
+      },
+      "checkConstraint": {}
     }
   },
-  "enums": {
-    "public.decision_status": {
-      "name": "decision_status",
-      "schema": "public",
-      "values": [
-        "open",
-        "approved",
-        "declined",
-        "deferred"
-      ]
-    },
-    "public.evidence_kind": {
-      "name": "evidence_kind",
-      "schema": "public",
-      "values": [
-        "source_commit",
-        "design_history",
-        "asset_licence",
-        "contributor_rights",
-        "dependency_sbom",
-        "third_party_notices",
-        "counsel_review",
-        "buyer_terms"
-      ]
-    },
-    "public.handoff_status": {
-      "name": "handoff_status",
-      "schema": "public",
-      "values": [
-        "draft",
-        "sent",
-        "accepted",
-        "returned"
-      ]
-    },
-    "public.priority": {
-      "name": "priority",
-      "schema": "public",
-      "values": [
-        "low",
-        "medium",
-        "high",
-        "critical"
-      ]
-    },
-    "public.product_status": {
-      "name": "product_status",
-      "schema": "public",
-      "values": [
-        "concept",
-        "in_build",
-        "in_review",
-        "conditional",
-        "cleared",
-        "blocked"
-      ]
-    },
-    "public.role": {
-      "name": "role",
-      "schema": "public",
-      "values": [
-        "owner",
-        "operator_a",
-        "operator_b"
-      ]
-    },
-    "public.work_item_status": {
-      "name": "work_item_status",
-      "schema": "public",
-      "values": [
-        "todo",
-        "in_progress",
-        "blocked",
-        "done"
-      ]
-    }
-  },
-  "schemas": {},
-  "sequences": {},
-  "roles": {},
-  "policies": {},
   "views": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {},
+    "indexes": {}
   }
 }

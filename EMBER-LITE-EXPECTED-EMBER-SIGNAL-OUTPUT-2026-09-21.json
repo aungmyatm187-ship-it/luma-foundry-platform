@@ -1,0 +1,24 @@
+{
+  "updatedAt": "2026-09-18T10:56:23.267528Z",
+  "records": [
+    {
+      "id": "ember-lite-2283f25d449a8853",
+      "title": "ember-lite backend observation",
+      "source": "ember-lite verified bundle",
+      "observedAt": "2026-09-18T10:56:23.267528Z",
+      "status": "observed",
+      "summary": "status_code=200; evidence=41",
+      "reference": "ember-lite:2bb64e184c5618cf5d7fef2f4755975b6041b535:backend"
+    },
+    {
+      "id": "ember-lite-9a91f4311e2bcd1f",
+      "title": "ember-lite repo observation",
+      "source": "ember-lite verified bundle",
+      "observedAt": "2026-09-18T10:56:23.267528Z",
+      "status": "observed",
+      "summary": "release identity observed",
+      "reference": "ember-lite:2bb64e184c5618cf5d7fef2f4755975b6041b535:repo"
+    }
+  ],
+  "sourceCommit": "2bb64e184c5618cf5d7fef2f4755975b6041b535"
+}

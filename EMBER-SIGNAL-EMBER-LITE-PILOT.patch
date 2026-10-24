@@ -1,0 +1,261 @@
+[1mdiff --git a/server/emberLiteEvidenceAdapter.ts b/server/emberLiteEvidenceAdapter.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..3d25979[m
+[1m--- /dev/null[m
+[1m+++ b/server/emberLiteEvidenceAdapter.ts[m
+[36m@@ -0,0 +1,94 @@[m
+[32m+[m[32mimport { createHash } from "node:crypto";[m
+[32m+[m
+[32m+[m[32mexport const EMBER_LITE_COMMIT =[m
+[32m+[m[32m  "2bb64e184c5618cf5d7fef2f4755975b6041b535";[m
+[32m+[m
+[32m+[m[32mexport type EmberSignalEvidenceRecord = {[m
+[32m+[m[32m  id: string;[m
+[32m+[m[32m  title: string;[m
+[32m+[m[32m  source: string;[m
+[32m+[m[32m  observedAt: string;[m
+[32m+[m[32m  status: "observed" | "verified" | "blocked";[m
+[32m+[m[32m  summary: string;[m
+[32m+[m[32m  reference: string;[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mtype Bundle = Record<string, unknown>;[m
+[32m+[m
+[32m+[m[32mconst credentialPattern = /(authorization\s*:\s*bearer|api[_ -]?key|secret|password|private[_ -]?key|token\s*[:=])/i;[m
+[32m+[m
+[32m+[m[32mfunction text(value: unknown): string {[m
+[32m+[m[32m  return typeof value === "string" ? value.trim() : "";[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mfunction stableId(value: string): string {[m
+[32m+[m[32m  return `ember-lite-${createHash("sha256").update(value).digest("hex").slice(0, 16)}`;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mfunction readObservation(bundle: Bundle): Record<string, unknown> {[m
+[32m+[m[32m  const perception = bundle.perception;[m
+[32m+[m[32m  if (!perception || typeof perception !== "object" || Array.isArray(perception)) {[m
+[32m+[m[32m    throw new Error("ember-lite bundle has no perception object");[m
+[32m+[m[32m  }[m
+[32m+[m[32m  const observations = (perception as Bundle).observations;[m
+[32m+[m[32m  if (!observations || typeof observations !== "object" || Array.isArray(observations)) {[m
+[32m+[m[32m    throw new Error("ember-lite bundle has no observations object");[m
+[32m+[m[32m  }[m
+[32m+[m[32m  return observations as Record<string, unknown>;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mfunction requireVerifiedChain(bundle: Bundle): void {[m
+[32m+[m[32m  const chain = bundle.chain;[m
+[32m+[m[32m  if (!chain || typeof chain !== "object" || Array.isArray(chain)) {[m
+[32m+[m[32m    throw new Error("ember-lite bundle has no chain verification object");[m
+[32m+[m[32m  }[m
+[32m+[m[32m  const verified = (chain as Bundle).verified;[m
+[32m+[m[32m  const signed = (chain as Bundle).signed;[m
+[32m+[m[32m  if (verified !== true || signed !== true) {[m
+[32m+[m[32m    throw new Error("ember-lite bundle chain is unsigned or unverified");[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mexport function adaptEmberLiteEvidenceBundle([m
+[32m+[m[32m  input: unknown,[m
+[32m+[m[32m  sourceCommit = EMBER_LITE_COMMIT,[m
+[32m+[m[32m): { updatedAt: string; records: EmberSignalEvidenceRecord[]; sourceCommit: string } {[m
+[32m+[m[32m  if (!input || typeof input !== "object" || Array.isArray(input)) {[m
+[32m+[m[32m    throw new Error("ember-lite bundle must be a JSON object");[m
+[32m+[m[32m  }[m
+[32m+[m[32m  if (!/^[0-9a-f]{40}$/i.test(sourceCommit)) {[m
+[32m+[m[32m    throw new Error("source commit must be a 40-character hexadecimal hash");[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  const bundle = input as Bundle;[m
+[32m+[m[32m  const serialized = JSON.stringify(bundle);[m
+[32m+[m[32m  if (credentialPattern.test(serialized)) {[m
+[32m+[m[32m    throw new Error("credential-like text is not renderable");[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  requireVerifiedChain(bundle);[m
+[32m+[m[32m  const observations = readObservation(bundle);[m
+[32m+[m[32m  const observedAt = text(bundle.perceived_at) || new Date(0).toISOString();[m
+[32m+[m[32m  const records = Object.entries(observations).flatMap(([key, value]) => {[m
+[32m+[m[32m    if (!value || typeof value !== "object" || Array.isArray(value)) return [];[m
+[32m+[m[32m    const observation = value as Bundle;[m
+[32m+[m[32m    const status = text(observation.status);[m
+[32m+[m[32m    const summary = text(observation.data) || text(observation.error);[m
+[32m+[m[32m    const safeSummary = summary || `Observed ${key} from ember-lite evidence bundle.`;[m
+[32m+[m[32m    if (credentialPattern.test(`${key} ${status} ${safeSummary}`)) {[m
+[32m+[m[32m      throw new Error(`credential-like observation rejected: ${key}`);[m
+[32m+[m[32m    }[m
+[32m+[m[32m    const record: EmberSignalEvidenceRecord = {[m
+[32m+[m[32m      id: stableId(`${sourceCommit}:${key}:${observedAt}`),[m
+[32m+[m[32m      title: `ember-lite ${key} observation`,[m
+[32m+[m[32m      source: "ember-lite verified bundle",[m
+[32m+[m[32m      observedAt,[m
+[32m+[m[32m      status: status === "error" ? "blocked" : "observed",[m
+[32m+[m[32m      summary: safeSummary.slice(0, 500),[m
+[32m+[m[32m      reference: `ember-lite:${sourceCommit}:${key}`,[m
+[32m+[m[32m    };[m
+[32m+[m[32m    return [record];[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  return { updatedAt: observedAt, records, sourceCommit };[m
+[32m+[m[32m}[m
+[1mdiff --git a/server/emberLiteEvidenceAdapter.test.ts b/server/emberLiteEvidenceAdapter.test.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..58ab7f2[m
+[1m--- /dev/null[m
+[1m+++ b/server/emberLiteEvidenceAdapter.test.ts[m
+[36m@@ -0,0 +1,56 @@[m
+[32m+[m[32mimport { describe, expect, it } from "vitest";[m
+[32m+[m[32mimport { adaptEmberLiteEvidenceBundle } from "./emberLiteEvidenceAdapter";[m
+[32m+[m
+[32m+[m[32mconst validBundle = {[m
+[32m+[m[32m  perceived_at: "2026-09-18T10:56:23.267528Z",[m
+[32m+[m[32m  chain: { signed: true, verified: true },[m
+[32m+[m[32m  perception: {[m
+[32m+[m[32m    observations: {[m
+[32m+[m[32m      backend: {[m
+[32m+[m[32m        status: "healthy",[m
+[32m+[m[32m        data: "status_code=200; evidence=41",[m
+[32m+[m[32m      },[m
+[32m+[m[32m      repo: {[m
+[32m+[m[32m        status: "healthy",[m
+[32m+[m[32m        data: "release identity observed",[m
+[32m+[m[32m      },[m
+[32m+[m[32m    },[m
+[32m+[m[32m  },[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mdescribe("ember-lite evidence adapter", () => {[m
+[32m+[m[32m  it("maps safe observations to deterministic Ember Signal records", () => {[m
+[32m+[m[32m    const result = adaptEmberLiteEvidenceBundle(validBundle);[m
+[32m+[m[32m    expect(result.records).toHaveLength(2);[m
+[32m+[m[32m    expect(result.records[0]?.source).toBe("ember-lite verified bundle");[m
+[32m+[m[32m    expect(result.records[0]?.reference).toContain("2bb64e184c5618cf5d7fef2f4755975b6041b535");[m
+[32m+[m[32m    expect(result.records[0]?.id).toMatch(/^ember-lite-[0-9a-f]{16}$/);[m
+[32m+[m[32m    expect(adaptEmberLiteEvidenceBundle(validBundle).records[0]?.id).toBe(result.records[0]?.id);[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  it("rejects malformed bundles and invalid source commits", () => {[m
+[32m+[m[32m    expect(() => adaptEmberLiteEvidenceBundle({})).toThrow("no chain verification object");[m
+[32m+[m[32m    expect(() => adaptEmberLiteEvidenceBundle(validBundle, "not-a-commit")).toThrow([m
+[32m+[m[32m      "40-character hexadecimal hash",[m
+[32m+[m[32m    );[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  it("rejects unsigned or unverified bundles", () => {[m
+[32m+[m[32m    expect(() =>[m
+[32m+[m[32m      adaptEmberLiteEvidenceBundle({ ...validBundle, chain: { signed: true, verified: false } }),[m
+[32m+[m[32m    ).toThrow("unsigned or unverified");[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  it("rejects credential-like text before it can be rendered", () => {[m
+[32m+[m[32m    expect(() =>[m
+[32m+[m[32m      adaptEmberLiteEvidenceBundle({[m
+[32m+[m[32m        ...validBundle,[m
+[32m+[m[32m        perception: {[m
+[32m+[m[32m          observations: {[m
+[32m+[m[32m            backend: { status: "healthy", data: "Authorization: Bearer do-not-render" },[m
+[32m+[m[32m          },[m
+[32m+[m[32m        },[m
+[32m+[m[32m      }),[m
+[32m+[m[32m    ).toThrow("credential-like text");[m
+[32m+[m[32m  });[m
+[32m+[m[32m});[m
+[1mdiff --git a/fixtures/ember-lite/verified-bundle.json b/fixtures/ember-lite/verified-bundle.json[m
+[1mnew file mode 100644[m
+[1mindex 0000000..2ae2ef3[m
+[1m--- /dev/null[m
+[1m+++ b/fixtures/ember-lite/verified-bundle.json[m
+[36m@@ -0,0 +1,19 @@[m
+[32m+[m[32m{[m
+[32m+[m[32m  "perceived_at": "2026-09-18T10:56:23.267528Z",[m
+[32m+[m[32m  "chain": {[m
+[32m+[m[32m    "signed": true,[m
+[32m+[m[32m    "verified": true[m
+[32m+[m[32m  },[m
+[32m+[m[32m  "perception": {[m
+[32m+[m[32m    "observations": {[m
+[32m+[m[32m      "backend": {[m
+[32m+[m[32m        "status": "healthy",[m
+[32m+[m[32m        "data": "status_code=200; evidence=41"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      "repo": {[m
+[32m+[m[32m        "status": "healthy",[m
+[32m+[m[32m        "data": "release identity observed"[m
+[32m+[m[32m      }[m
+[32m+[m[32m    }[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[1mdiff --git a/fixtures/ember-lite/expected-ember-signal-output.json b/fixtures/ember-lite/expected-ember-signal-output.json[m
+[1mnew file mode 100644[m
+[1mindex 0000000..b450d54[m
+[1m--- /dev/null[m
+[1m+++ b/fixtures/ember-lite/expected-ember-signal-output.json[m
+[36m@@ -0,0 +1,24 @@[m
+[32m+[m[32m{[m
+[32m+[m[32m  "updatedAt": "2026-09-18T10:56:23.267528Z",[m
+[32m+[m[32m  "records": [[m
+[32m+[m[32m    {[m
+[32m+[m[32m      "id": "ember-lite-2283f25d449a8853",[m
+[32m+[m[32m      "title": "ember-lite backend observation",[m
+[32m+[m[32m      "source": "ember-lite verified bundle",[m
+[32m+[m[32m      "observedAt": "2026-09-18T10:56:23.267528Z",[m
+[32m+[m[32m      "status": "observed",[m
+[32m+[m[32m      "summary": "status_code=200; evidence=41",[m
+[32m+[m[32m      "reference": "ember-lite:2bb64e184c5618cf5d7fef2f4755975b6041b535:backend"[m
+[32m+[m[32m    },[m
+[32m+[m[32m    {[m
+[32m+[m[32m      "id": "ember-lite-9a91f4311e2bcd1f",[m
+[32m+[m[32m      "title": "ember-lite repo observation",[m
+[32m+[m[32m      "source": "ember-lite verified bundle",[m
+[32m+[m[32m      "observedAt": "2026-09-18T10:56:23.267528Z",[m
+[32m+[m[32m      "status": "observed",[m
+[32m+[m[32m      "summary": "release identity observed",[m
+[32m+[m[32m      "reference": "ember-lite:2bb64e184c5618cf5d7fef2f4755975b6041b535:repo"[m
+[32m+[m[32m    }[m
+[32m+[m[32m  ],[m
+[32m+[m[32m  "sourceCommit": "2bb64e184c5618cf5d7fef2f4755975b6041b535"[m
+[32m+[m[32m}[m
+[1mdiff --git a/docs/ember-lite-adapter.md b/docs/ember-lite-adapter.md[m
+[1mnew file mode 100644[m
+[1mindex 0000000..eee53bc[m
+[1m--- /dev/null[m
+[1m+++ b/docs/ember-lite-adapter.md[m
+[36m@@ -0,0 +1,26 @@[m
+[32m+[m[32m# ember-lite Evidence Adapter[m
+[32m+[m
+[32m+[m[32mThis adapter is an independently written TypeScript transformation. It does not copy or import Python source from `highfive251677-wq/ember-lite`; it reads a sanitized JSON evidence bundle and emits Ember Signal records.[m
+[32m+[m
+[32m+[m[32m## Provenance wording[m
+[32m+[m
+[32m+[m[32mUse: `Imported observation from ember-lite bundle, traced to the exact source commit.`[m
+[32m+[m
+[32m+[m[32mDo not use: `Commercially cleared`, `owned by Luma Foundry`, or any statement that a source commit proves ownership or licence validity.[m
+[32m+[m
+[32m+[m[32m## Source trace[m
+[32m+[m
+[32m+[m[32m- Repository: https://github.com/highfive251677-wq/ember-lite[m
+[32m+[m[32m- Branch inspected: `master`[m
+[32m+[m[32m- Source commit: `2bb64e184c5618cf5d7fef2f4755975b6041b535`[m
+[32m+[m[32m- Source repository licence observed: MIT[m
+[32m+[m
+[32m+[m[32mBecause this adapter does not copy or adapt source code, the MIT copyright notice is not being used as a licence claim over generated observation data. If future changes copy or adapt any `ember-lite` source code, preserve the upstream copyright and MIT licence notice in a third-party notices file before merge.[m
+[32m+[m
+[32m+[m[32m## Input contract[m
+[32m+[m
+[32m+[m[32mThe adapter requires a JSON object with `chain.signed === true`, `chain.verified === true`, and `perception.observations`. It rejects malformed, unsigned, unverified, and credential-like input.[m
+[32m+[m
+[32m+[m[32m## Output contract[m
+[32m+[m
+[32m+[m[32mEach safe observation becomes an Ember Signal record with `id`, `title`, `source`, `observedAt`, `status`, `summary`, and `reference`. The source commit is retained in `reference`; the original bundle must be preserved separately from the generated records.[m
+[1mdiff --git a/scripts/generate-ember-lite-output.ts b/scripts/generate-ember-lite-output.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..ee7d586[m
+[1m--- /dev/null[m
+[1m+++ b/scripts/generate-ember-lite-output.ts[m
+[36m@@ -0,0 +1,6 @@[m
+[32m+[m[32mimport { readFile, writeFile } from "node:fs/promises";[m
+[32m+[m[32mimport { adaptEmberLiteEvidenceBundle } from "../server/emberLiteEvidenceAdapter";[m
+[32m+[m
+[32m+[m[32mconst input = JSON.parse(await readFile("fixtures/ember-lite/verified-bundle.json", "utf8"));[m
+[32m+[m[32mconst output = adaptEmberLiteEvidenceBundle(input);[m
+[32m+[m[32mawait writeFile("fixtures/ember-lite/expected-ember-signal-output.json", `${JSON.stringify(output, null, 2)}\n`);[m
